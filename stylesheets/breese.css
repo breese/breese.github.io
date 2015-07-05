@@ -1,0 +1,37 @@
+h2, h3 {
+    color: #A52025;
+}
+
+body {
+    color: #444;
+}
+
+table {
+    font-size: 1rem;
+    text-align: left;
+}
+
+/* Should be moved to tufte.css */
+li {
+    width: 53%;
+    margin: 0 0 0.5rem 0;
+}
+
+hr {
+    width: 55%;
+    margin: 0 0 0 0;
+    text-align: left;
+}
+
+.overline {
+    text-decoration: overline;
+    text-decoration-color: inherit p;
+}
+
+.quote {
+    color: #777;
+    background: #e5e5e5;
+    width: 53%;
+    font-size: 80%;
+    box-shadow: 7px 6px #ccc;
+}
