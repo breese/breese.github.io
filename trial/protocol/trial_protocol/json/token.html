@@ -1,0 +1,521 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Token</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_59_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Trial.Protocol">
+<link rel="up" href="../json.html" title="JSON">
+<link rel="prev" href="tutorial/push_parser.html" title="Push parser">
+<link rel="next" href="error.html" title="Error">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_59_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="tutorial/push_parser.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../json.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="error.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="trial_protocol.json.token"></a><a name="protocol.json.token"></a><a class="link" href="token.html" title="Token">Token</a>
+</h3></div></div></div>
+<p>
+        The JSON parser and generator use tokens to identify data types as well as
+        errors. All token-related types are located in the <code class="computeroutput"><span class="identifier">trial</span><span class="special">::</span><span class="identifier">protocol</span><span class="special">::</span><span class="identifier">json</span><span class="special">::</span><span class="identifier">token</span></code>
+        namespace, which we will simply refer to as <code class="computeroutput"><span class="identifier">token</span></code>
+        below.
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          Tokens are located in the <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">json</span><span class="special">/</span><span class="identifier">token</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
+          header.
+        </p></td></tr>
+</table></div>
+<h5>
+<a name="trial_protocol.json.token.h0"></a>
+        <span class="phrase"><a name="trial_protocol.json.token.token_constants"></a></span><a class="link" href="token.html#trial_protocol.json.token.token_constants">Token
+        constants</a>
+      </h5>
+<p>
+        A token is represented by the <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span></code>
+        enumeration type with a constant for each possible token or error state.
+        This means that each error is represented by its own enumerator constant.
+      </p>
+<h6>
+<a name="trial_protocol.json.token.h1"></a>
+        <span class="phrase"><a name="trial_protocol.json.token.symbols"></a></span><a class="link" href="token.html#trial_protocol.json.token.symbols">Symbols</a>
+      </h6>
+<p>
+        Working directly with <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span></code>
+        can be tedious. Suppose you want to check if an error occurred, then you
+        have to check if the current token is one of the numerous error constants.
+        Each <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span></code> enumerator has therefore been grouped
+        into a more convenient enumeration type called <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">symbol</span></code>
+        that is better suited for normal operation.
+      </p>
+<p>
+        All <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span></code> error constants have been grouped
+        into the single <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">error</span></code> constant, and we can now check for
+        errors with a single comparison.
+      </p>
+<div class="table">
+<a name="trial_protocol.json.token.json_symbol_constants"></a><p class="title"><b>Table&#160;1.2.&#160;JSON symbol constants</b></p>
+<div class="table-contents"><table class="table" summary="JSON symbol constants">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">symbol</span></code>
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">boolean</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  True or false.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">integer</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Integer number.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">floating</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Floating-point number.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">string</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  String value.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">null</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  No data.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">begin_array</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Start of an array.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">end_array</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  End of an array.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">begin_object</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Start of an associative array.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">end_object</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  End of an associative array.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">separator</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  A context-specific separator.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">end</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  End of input or output buffer.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">error</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Erroneous format.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>
+        The symbol type will be the preferred manner to use tokens in the examples
+        throughout this documentation. In fact, we are not even going to describe
+        the <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span></code> enumerator constants here,<a href="#ftn.trial_protocol.json.token.f0" class="footnote" name="trial_protocol.json.token.f0"><sup class="footnote">[2]</sup></a> because we are only interested in the subset that contains the
+        error codes and they are described in the section on <a class="link" href="error.html#protocol.json.error">errors</a>.
+      </p>
+<h6>
+<a name="trial_protocol.json.token.h2"></a>
+        <span class="phrase"><a name="trial_protocol.json.token.categories"></a></span><a class="link" href="token.html#trial_protocol.json.token.categories">Categories</a>
+      </h6>
+<p>
+        The symbol constants are grouped into the <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">category</span></code>
+        enumeration type. There are different categories of tokens:
+      </p>
+<div class="table">
+<a name="trial_protocol.json.token.json_category_constants"></a><p class="title"><b>Table&#160;1.3.&#160;JSON category constants</b></p>
+<div class="table-contents"><table class="table" summary="JSON category constants">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">category</span></code>
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">data</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Data tokens have a value associated with them, whose content can
+                  be retrieved. Examples of data tokens are booleans, numbers, and
+                  strings.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">structural</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Structural tokens wrap containers and separate items.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">nullable</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  The nullable token is a special case, because it can represent
+                  either a data token without and associated value or structural
+                  token without an associated container, such as a missing integer
+                  or a missing array. The nullable token is typeless.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">status</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  A status token indicates another condition.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>
+        The following table shows which categories the the various symbols belong
+        to.
+      </p>
+<div class="table">
+<a name="trial_protocol.json.token.relation_between_symbols_and_categories"></a><p class="title"><b>Table&#160;1.4.&#160;Relation between symbols and categories</b></p>
+<div class="table-contents"><table class="table" summary="Relation between symbols and categories">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">symbol</span></code>
+                </p>
+              </th>
+<th>
+                <p>
+                  <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">category</span></code>
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">boolean</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">data</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">integer</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">data</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">floating</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">data</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">string</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">data</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">null</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">nullable</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">begin_array</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">structural</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">end_array</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">structural</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">begin_object</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">structural</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">end_object</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">structural</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">separator</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">structural</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">end</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">status</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">error</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">status</span></code>
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><div class="footnotes">
+<br><hr style="width:100; text-align:left;margin-left: 0">
+<div id="ftn.trial_protocol.json.token.f0" class="footnote"><p><a href="#trial_protocol.json.token.f0" class="para"><sup class="para">[2] </sup></a>
+          The description of all <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span></code>
+          enumerator constants can be found in the reference documentation.
+        </p></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2015 Bjorn Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="tutorial/push_parser.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../json.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="error.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

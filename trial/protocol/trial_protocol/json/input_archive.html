@@ -1,0 +1,103 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Input Archive</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_59_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Trial.Protocol">
+<link rel="up" href="../json.html" title="JSON">
+<link rel="prev" href="writer.html" title="Writer">
+<link rel="next" href="output_archive.html" title="Output Archive">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_59_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="writer.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../json.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="output_archive.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="trial_protocol.json.input_archive"></a><a name="protocol.json.iarchive"></a><a class="link" href="input_archive.html" title="Input Archive">Input
+      Archive</a>
+</h3></div></div></div>
+<p>
+        Deserialization of JSON input directly into C++ data structures is done with
+        the help of Boost.Serialization. The input archive transforms the entire
+        JSON input into C++ data structures all at once.
+      </p>
+<p>
+        The full parser transforms the entire input into a data structure. This is
+        done via an input archive (called iarchive.) You can either use a generic
+        tree data structure, such as dynamic-cpp, as the Document Object Model, or
+        you can parse the input directly into your own data structures or the standard
+        containers in C++.
+      </p>
+<h5>
+<a name="trial_protocol.json.input_archive.h0"></a>
+        <span class="phrase"><a name="trial_protocol.json.input_archive.simple_types"></a></span><a class="link" href="input_archive.html#trial_protocol.json.input_archive.simple_types">Simple
+        types</a>
+      </h5>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">json</span><span class="special">/</span><span class="identifier">serialization</span><span class="special">/</span><span class="identifier">iarchive</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"true"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">iarchive</span> <span class="identifier">archive</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="keyword">bool</span> <span class="identifier">result</span><span class="special">;</span>
+<span class="identifier">archive</span> <span class="special">&gt;&gt;</span> <span class="identifier">result</span><span class="special">;</span> <span class="comment">// Read the boolean value</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">result</span> <span class="special">==</span> <span class="keyword">true</span><span class="special">);</span>
+</pre>
+<p>
+      </p>
+<h5>
+<a name="trial_protocol.json.input_archive.h1"></a>
+        <span class="phrase"><a name="trial_protocol.json.input_archive.custom_types"></a></span><a class="link" href="input_archive.html#trial_protocol.json.input_archive.custom_types">Custom
+        types</a>
+      </h5>
+<h5>
+<a name="trial_protocol.json.input_archive.h2"></a>
+        <span class="phrase"><a name="trial_protocol.json.input_archive.stl_types"></a></span><a class="link" href="input_archive.html#trial_protocol.json.input_archive.stl_types">STL
+        types</a>
+      </h5>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">json</span><span class="special">/</span><span class="identifier">serialization</span><span class="special">/</span><span class="identifier">iarchive</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">json</span><span class="special">/</span><span class="identifier">serialization</span><span class="special">/</span><span class="identifier">vector</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"[1,2,3]"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">iarchive</span> <span class="identifier">archive</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">result</span><span class="special">;</span>
+<span class="identifier">archive</span> <span class="special">&gt;&gt;</span> <span class="identifier">result</span><span class="special">;</span> <span class="comment">// Read the entire input into a vector</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">result</span> <span class="special">==</span> <span class="special">{</span><span class="number">1</span><span class="special">,</span><span class="number">2</span><span class="special">,</span><span class="number">3</span><span class="special">});</span>
+</pre>
+<p>
+      </p>
+<h5>
+<a name="trial_protocol.json.input_archive.h3"></a>
+        <span class="phrase"><a name="trial_protocol.json.input_archive.integration_with_reader"></a></span><a class="link" href="input_archive.html#trial_protocol.json.input_archive.integration_with_reader">Integration
+        with reader</a>
+      </h5>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2015 Bjorn Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="writer.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../json.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="output_archive.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

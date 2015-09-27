@@ -1,0 +1,377 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Reader</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_59_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Trial.Protocol">
+<link rel="up" href="../json.html" title="JSON">
+<link rel="prev" href="error.html" title="Error">
+<link rel="next" href="writer.html" title="Writer">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_59_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="error.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../json.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="writer.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="trial_protocol.json.reader"></a><a name="protocol.json.reader"></a><a class="link" href="reader.html" title="Reader">Reader</a>
+</h3></div></div></div>
+<p>
+        Reader is an incremental parser (also called a pull parser) that transforms
+        the JSON input into a sequence of C++ tokens. This transformation is done
+        piecemeal, which means that the reader will stay at the first token until
+        explicitly instructed to parse and move to the next token.
+      </p>
+<p>
+        Based on the <a href="http://en.wikipedia.org/wiki/Iterator_pattern" target="_top">Iterator
+        design pattern</a>, <code class="computeroutput"><span class="identifier">reader</span></code>
+        parses just enough of the input to identify a single token. The <code class="computeroutput"><span class="identifier">reader</span></code> provides various accessors that
+        can be used to examine or convert the current <a class="link" href="token.html#protocol.json.token">token</a>.
+      </p>
+<div class="table">
+<a name="trial_protocol.json.reader.reader_accessors"></a><p class="title"><b>Table&#160;1.6.&#160;Reader Accessors</b></p>
+<div class="table-contents"><table class="table" summary="Reader Accessors">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Reader member function
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">value</span> <span class="identifier">code</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Returns the current token.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">value</span> <span class="identifier">symbol</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Returns the symbol of the current token.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">category</span><span class="special">::</span><span class="identifier">value</span> <span class="identifier">category</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Returns the category of the current token.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">size_type</span> <span class="identifier">level</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Returns the current level of nested containers. The levels starts
+                  with zero for the outmost level.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">error_code</span> <span class="identifier">error</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Returns the current error code.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">view_type</span><span class="special">&amp;</span> <span class="identifier">literal</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Returns a view of the raw input of the current value.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">T</span> <span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Returns the current value. The raw input is converted into the
+                  requested value type.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>
+        No data is converted until explicitly requested with <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>.
+        Notice that the return type for <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>
+        must be specified as a template parameter. The return type can be a boolean,
+        a number, or a string as described below. The requested type must match the
+        current token as returned by <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">type</span><span class="special">()</span></code>; otherwise a run-time error will be raised.
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+          Requesting the value of an incompatible type will result in a run-time
+          error. For example, attempting to read a string as an integer:
+</p>
+<pre class="programlisting"><span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">string</span><span class="special">);</span>
+<span class="keyword">int</span> <span class="identifier">number</span> <span class="special">=</span> <span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;();</span> <span class="comment">// Throws exception</span>
+</pre>
+<p>
+        </p>
+</td></tr>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+          Requesting an unsupported type will result in a compile-time error. For
+          example, attempting to read a user-defined struct:
+</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">dummy</span> <span class="special">{};</span>
+<span class="identifier">dummy</span> <span class="identifier">d</span> <span class="special">=</span> <span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">dummy</span><span class="special">&gt;();</span> <span class="comment">// Causes compilation error</span>
+</pre>
+<p>
+        </p>
+</td></tr>
+</table></div>
+<p>
+        The unconverted textual data of the current token can be obtained with <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">literal</span><span class="special">()</span></code>.
+        This can be useful useful when displaying errors. The result of <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">literal</span><span class="special">()</span></code>
+        is different from <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;()</span></code>.
+      </p>
+<p>
+        When done with the current token, the next token is found with <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">next</span><span class="special">()</span></code>.
+        This function returns a bool, which is true unless either an error or the
+        end of the input was encountered. Whitespaces and separators are skipped.
+      </p>
+<p>
+        Errors in the input are identified with an error token, and the current error
+        can be obtained with <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">error</span><span class="special">()</span></code>.
+      </p>
+<h5>
+<a name="trial_protocol.json.reader.h0"></a>
+        <span class="phrase"><a name="trial_protocol.json.reader.boolean"></a></span><a class="link" href="reader.html#trial_protocol.json.reader.boolean">Boolean</a>
+      </h5>
+<p>
+        Boolean values are indicated by the <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">boolean</span></code>
+        token. The value is requested by <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">&gt;()</span></code>.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"true"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">boolean</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">literal</span><span class="special">()</span> <span class="special">==</span> <span class="string">"true"</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">&gt;());</span>
+</pre>
+<p>
+      </p>
+<h5>
+<a name="trial_protocol.json.reader.h1"></a>
+        <span class="phrase"><a name="trial_protocol.json.reader.number"></a></span><a class="link" href="reader.html#trial_protocol.json.reader.number">Number</a>
+      </h5>
+<p>
+        While JSON does not distinguish between integer and floating-point numbers,
+        C++ does make this distinction and therefore Trial.Protocol does too. However,
+        integers can be read as floating-point numbers, and floating-point numbers
+        can be read as integers.
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          Reading a floating-point number as an integer will round the number, so
+          it may result in loss of information.
+        </p></td></tr>
+</table></div>
+<p>
+        Numbers are identified as integers if the consists of digits only.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"42"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">literal</span><span class="special">()</span> <span class="special">==</span> <span class="string">"42"</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;()</span> <span class="special">==</span> <span class="number">42</span><span class="special">);</span>
+</pre>
+<p>
+        Numbers are detected as floating-point if they contain a decimal point or
+        an exponent.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"3.1415"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">floating</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">literal</span><span class="special">()</span> <span class="special">==</span> <span class="string">"3.1415"</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;()</span> <span class="special">==</span> <span class="number">3.1415</span><span class="special">);</span>
+</pre>
+<p>
+        Integers can be read as floating-point numbers as well.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"42"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;()</span> <span class="special">==</span> <span class="number">42.0</span><span class="special">);</span>
+</pre>
+<p>
+        Floating-point numbers can also be read as integers. The number will be rounded
+        to the nearest integer.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"3.1415"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">floating</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;()</span> <span class="special">==</span> <span class="number">3</span><span class="special">);</span>
+</pre>
+<p>
+      </p>
+<p>
+        Any kind of additional constraints have to be enforced by the application
+        layer. For instance, if we have a protocol with a size field, then logically
+        this field cannot be negative or a fraction, even if JSON numbers allow this.
+      </p>
+<h5>
+<a name="trial_protocol.json.reader.h2"></a>
+        <span class="phrase"><a name="trial_protocol.json.reader.string"></a></span><a class="link" href="reader.html#trial_protocol.json.reader.string">String</a>
+      </h5>
+<p>
+        Strings are identified with the <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">string</span></code>
+        token, and is converted into a UTF-8 encoded string with <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;()</span></code>.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"\"alpha\\n\""</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">string</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">literal</span><span class="special">()</span> <span class="special">==</span> <span class="string">"\"alpha\\n\""</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;()</span> <span class="special">==</span> <span class="string">"alpha\n"</span><span class="special">);</span>
+</pre>
+<p>
+      </p>
+<h5>
+<a name="trial_protocol.json.reader.h3"></a>
+        <span class="phrase"><a name="trial_protocol.json.reader.null"></a></span><a class="link" href="reader.html#trial_protocol.json.reader.null">Null</a>
+      </h5>
+<p>
+        Null indicates the absence of a value, although it is encoded explicitly
+        in the JSON format as the <code class="computeroutput"><span class="identifier">null</span></code>
+        literal string.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"null"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">null</span><span class="special">);</span>
+</pre>
+<p>
+      </p>
+<h5>
+<a name="trial_protocol.json.reader.h4"></a>
+        <span class="phrase"><a name="trial_protocol.json.reader.array"></a></span><a class="link" href="reader.html#trial_protocol.json.reader.array">Array</a>
+      </h5>
+<p>
+        Arrays are delimited by a begin-token and an end-token. Array members are
+        comma separated. Arrays can contain any JSON type, including a nested array
+        or a nested associative array.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"[42]"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">begin_array</span><span class="special">);</span>
+
+<span class="identifier">reader</span><span class="special">.</span><span class="identifier">next</span><span class="special">();</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;()</span> <span class="special">==</span> <span class="number">42</span><span class="special">);</span>
+
+<span class="identifier">reader</span><span class="special">.</span><span class="identifier">next</span><span class="special">();</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">end_array</span><span class="special">);</span>
+</pre>
+<p>
+      </p>
+<h5>
+<a name="trial_protocol.json.reader.h5"></a>
+        <span class="phrase"><a name="trial_protocol.json.reader.associative_array"></a></span><a class="link" href="reader.html#trial_protocol.json.reader.associative_array">Associative
+        array</a>
+      </h5>
+<p>
+        An associative array is called a JSON object, which as a first approximation
+        can be thought of as a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span></code> in
+        C++.
+      </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2015 Bjorn Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="error.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../json.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="writer.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

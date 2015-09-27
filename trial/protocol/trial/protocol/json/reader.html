@@ -1,0 +1,154 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class reader</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_59_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Trial.Protocol">
+<link rel="up" href="../../../reference.html#header.boost.libs.protocol.include.trial.protocol.json.reader_hpp" title="Header &lt;boost/libs/protocol/include/trial/protocol/json/reader.hpp&gt;">
+<link rel="prev" href="../../../reference.html" title="Reference">
+<link rel="next" href="../../../header/boost/libs/protocol/include/trial/protocol/json/serialization/iarchive_hpp.html" title="Header &lt;boost/libs/protocol/include/trial/protocol/json/serialization/iarchive.hpp&gt;">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_59_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../../reference.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../reference.html#header.boost.libs.protocol.include.trial.protocol.json.reader_hpp"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../../../header/boost/libs/protocol/include/trial/protocol/json/serialization/iarchive_hpp.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="trial.protocol.json.reader"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class reader</span></h2>
+<p>trial::protocol::json::reader</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../reference.html#header.boost.libs.protocol.include.trial.protocol.json.reader_hpp" title="Header &lt;boost/libs/protocol/include/trial/protocol/json/reader.hpp&gt;">boost/libs/protocol/include/trial/protocol/json/reader.hpp</a>&gt;
+
+</span>
+<span class="keyword">class</span> <a class="link" href="reader.html" title="Class reader">reader</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span>  <a name="trial.protocol.json.reader.size_type"></a><span class="identifier">size_type</span><span class="special">;</span> 
+  <span class="keyword">typedef</span> <span class="keyword">const</span> <span class="keyword">char</span>   <a name="trial.protocol.json.reader.value_type"></a><span class="identifier">value_type</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">value_type</span> <span class="special">*</span> <a name="trial.protocol.json.reader.pointer"></a><span class="identifier">pointer</span><span class="special">;</span>   
+  <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span>  <a name="trial.protocol.json.reader.view_type"></a><span class="identifier">view_type</span><span class="special">;</span> 
+
+  <span class="comment">// <a class="link" href="reader.html#trial.protocol.json.readerconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ForwardIterator<span class="special">&gt;</span> <a class="link" href="reader.html#idp13238460-bb"><span class="identifier">reader</span></a><span class="special">(</span><span class="identifier">ForwardIterator</span><span class="special">,</span> <span class="identifier">ForwardIterator</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="reader.html#idp13239740-bb"><span class="identifier">reader</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">view_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="reader.html#idp13240236-bb"><span class="identifier">reader</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="reader.html" title="Class reader">reader</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="reader.html#idp13228708-bb">public member functions</a></span>
+  <span class="keyword">bool</span> <a class="link" href="reader.html#idp13228972-bb"><span class="identifier">next</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="reader.html#idp13229524-bb"><span class="identifier">next</span></a><span class="special">(</span><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="reader.html#idp13231284-bb"><span class="identifier">next_sibling</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a class="link" href="reader.html#idp13231716-bb"><span class="identifier">level</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">value</span> <a class="link" href="reader.html#idp13232412-bb"><span class="identifier">code</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="identifier">token</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">value</span> <a class="link" href="reader.html#idp13233116-bb"><span class="identifier">symbol</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="identifier">token</span><span class="special">::</span><span class="identifier">category</span><span class="special">::</span><span class="identifier">value</span> <a class="link" href="reader.html#idp13233796-bb"><span class="identifier">category</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <a class="link" href="reader.html#idp13234476-bb"><span class="identifier">error</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ReturnType<span class="special">&gt;</span> <span class="identifier">ReturnType</span> <a class="link" href="reader.html#idp13235868-bb"><span class="identifier">value</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="identifier">view_type</span> <span class="special">&amp;</span> <a class="link" href="reader.html#idp13237596-bb"><span class="identifier">literal</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp56081540"></a><h2>Description</h2>
+<div class="refsect2">
+<a name="idp56081732"></a><h3>
+<a name="trial.protocol.json.readerconstruct-copy-destruct"></a><code class="computeroutput">reader</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ForwardIterator<span class="special">&gt;</span> 
+  <a name="idp13238460-bb"></a><span class="identifier">reader</span><span class="special">(</span><span class="identifier">ForwardIterator</span> begin<span class="special">,</span> <span class="identifier">ForwardIterator</span> end<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idp13239740-bb"></a><span class="identifier">reader</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">view_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idp13240236-bb"></a><span class="identifier">reader</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="reader.html" title="Class reader">reader</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="idp56091452"></a><h3>
+<a name="idp13228708-bb"></a><code class="computeroutput">reader</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp13228972-bb"></a><span class="identifier">next</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Advance to the next token. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp13229524-bb"></a><span class="identifier">next</span><span class="special">(</span><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">value</span> expect<span class="special">)</span><span class="special">;</span></pre>Advance to the next token if current token has a given value. <p>
+
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">expect</code></span></p></td>
+<td><p>Expected value of current token. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Throws:</span></p></td>
+<td>system_error If current token does not have the expected value. </td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">bool</span> <a name="idp13231284-bb"></a><span class="identifier">next_sibling</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="idp13231716-bb"></a><span class="identifier">level</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Returns the current nesting level. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">value</span> <a name="idp13232412-bb"></a><span class="identifier">code</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Returns the current token. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">token</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">value</span> <a name="idp13233116-bb"></a><span class="identifier">symbol</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Returns the symbol of the current token. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">token</span><span class="special">::</span><span class="identifier">category</span><span class="special">::</span><span class="identifier">value</span> <a name="idp13233796-bb"></a><span class="identifier">category</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Returns the category of the current token. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <a name="idp13234476-bb"></a><span class="identifier">error</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Returns the last error code. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ReturnType<span class="special">&gt;</span> <span class="identifier">ReturnType</span> <a name="idp13235868-bb"></a><span class="identifier">value</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Return the current value. <p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term">Throws:</span></p></td>
+<td>system_error If requested type is incompatible with the current token. </td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">view_type</span> <span class="special">&amp;</span> <a name="idp13237596-bb"></a><span class="identifier">literal</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Return a view of the current value before it is converted into its type. </li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2015 Bjorn Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../../reference.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../reference.html#header.boost.libs.protocol.include.trial.protocol.json.reader_hpp"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../../../header/boost/libs/protocol/include/trial/protocol/json/serialization/iarchive_hpp.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
