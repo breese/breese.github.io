@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/tufte.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/breese.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pygment_trac.css" media="screen" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>On Average</title>
+  </head>
+
+  <body>
+    <h1>On Average</h1>
+    <p>Calculating the <a href="http://en.wikipedia.org/wiki/Average">mean</a> of a sample can be done in various ways. A widely used method is the exponential moving average. We will show that this method has a bias towards the initial value, and present a way to remove the bias from the results.</p>
+<p><!--more--></p>
+<h2>Arithmetic average</h2>
+<p>We are going to start with the <a href="http://en.wikipedia.org/wiki/Arithmetic_mean">arithmetic mean</a> to have a reference for the discussion below . The arithmetic mean of a sample <strong>X</strong> is given by summing all values X<sub>i</sub> in the sample and dividing the sum by the sample size N:</p>
+<table>
+	<tr>
+		<td style="text-align:right;">M</td>
+		<td>=</td>
+		<td>( &sum;<sup>N</sup><sub>k=1</sub>X<sub>k</sub> ) &frasl; N</td>
+	</tr>
+</table>
+<p>Let <span class='marginnote'><img class='fullwidth' src='/assets/average-arithmetic.png'/><em>Figure 1: Arithmetic Average.</em> Each X<sub>k</sub> value contributes in equal proportion as N is increased.</span> us visualize how this evolves as we add more values to the sample. When we add the first value X<sub>1</sub> at iteration N = 1 it will be equal to the mean. In other words, X<sub>1</sub> will contribute 100% to the mean. When we add the next value X<sub>2</sub> at iteration N = 2, both X<sub>1</sub> and X<sub>2</sub> values will contribute 50% to the mean. This pattern will continue as we add even more values to the sample; no surprises here.</p>
+<p>This is illustrated in Figure 1, where a stacked bar chart is used to show the proportion by which each value X<sub>k</sub> contributes to the mean. The x-axis shows the development as more values are added to the sample.</p>
+<h2>Exponential average</h2>
+<p>Another technique for calculating the average is the <a href="http://en.wikipedia.org/wiki/Exponential_smoothing">exponential moving average</a> given by recurrent formula:</p>
+<table>
+	<tr>
+		<td style="text-align:right;">M<sub>1</sub></td>
+		<td>=</td>
+		<td>X<sub>1</sub></td>
+	</tr>
+	<tr>
+		<td style="text-align:right;">M<sub>i</sub></td>
+		<td>=</td>
+		<td>&alpha; X<sub>i</sub> + (1 &#8211; &alpha;) M<sub>i-1</sub></td>
+	</tr>
+</table>
+<p>where &alpha; is a smoothing factor.</p>
+<p>This technique has the clear advantage that we do not need to keep all previous values; we only need to store the previously calculated mean M<sub>i-1</sub>.</p>
+<p>This leanness makes the exponential moving average quite popular in practical applications. For instance, it is used to calculate the smoothed round-trip time in the <a href="http://tools.ietf.org/html/rfc6298"><span class="caps">TCP</span></a> protocol.</p>
+<p>In the examples below we are going to use &alpha; = <sup>1</sup>&frasl;<sub>8</sub>, which happens to be the smoothing factor chosen by <span class="caps">TCP</span>. The general observations also hold for other values of &alpha; albeit some thresholds may be different.</p>
+<p>In order to better understand the recurrent formula above, we rewrite it as a sum:</p>
+<table>
+	<tr>
+		<td style="text-align:right;">M&#8217;<sub>i</sub></td>
+		<td>=</td>
+		<td>(1 &#8211; &alpha;)<sup>i-1</sup> X<sub>1</sub> + &alpha; &sum;<sub>k=2</sub> (1 &#8211; &alpha;)<sup>i-1-k</sup> X<sub>k</sub></td>
+	</tr>
+</table>
+<p>If <span class='marginnote'><img class='fullwidth' src='/assets/average-exponential.png'/><em>Figure 2: Exponential Average.</em> The initial value X<sub>1</sub> contributes disproportionately.</span> we plot the evolvement of this formula just as we did for the arithmetic average, then we arrive at Figure 2. This graph shows a quite surprising feature of the exponential moving average, namely that the initial value X<sub>1</sub> dominates the results for many iterations.</p>
+<p>Normally we would expect that a value X<sub>i</sub> contributes more to the result that then previous value X<sub>i-1</sub>. This is true for all values except the initial value X<sub>1</sub>.</p>
+<p>We would furthermore expect that the most recently added value X<sub>N</sub> contributes more that any of the other individual values X<sub>i</sub>, but that is not true for the first 16 iterations, where the initial value X<sub>1</sub> continues to dominate.</p>
+<p>The bad news is that the moving exponential average filter is critically dependent on a good measurement for the initial value. If the initial value is way off compared with the subsequent values, then it will take many iterations before this outlier is smoothed out.</p>
+<h2>Normalization</h2>
+<p>The problem with the bias of the initial value is inherent in the recurrent formula for the exponential moving average:</p>
+<table>
+	<tr>
+		<td style="text-align:right;">M<sub>1</sub></td>
+		<td>=</td>
+		<td>X<sub>1</sub></td>
+	</tr>
+	<tr>
+		<td style="text-align:right;">M<sub>i</sub></td>
+		<td>=</td>
+		<td>&alpha; X<sub>i</sub> + (1 &#8211; &alpha;) M<sub>i-1</sub></td>
+	</tr>
+</table>
+<p>The first equation treats the initial value as a special value in order to get the subsequent values correct.</p>
+<p>In the second equation, when we add a new value X<sub>i</sub> it contributes only by a factor of &alpha;. For &alpha; = <sup>1</sup>&frasl;<sub>8</sub> this becomes 12.5%. The remaining 87.5% comes from the previously calculated mean M<sub>i-1</sub>. This is generally a good solution, but we do have a bootstrap problem. This is solved by setting M<sub>1</sub> to X<sub>1</sub>, but it also create the bias problem described in the previous section.</p>
+<p>Let us dispense with the first equation in the recurrent formula as see if we can come up with a better solution.</p>
+<p>In iteration 1 we calculate the contribution of the initial value X<sub>1</sub> to be &alpha; = 12.5%. In iteration 2 the second value X<sub>2</sub> contributes 12.5% and X<sub>1</sub> contributes &alpha; &times; (1 &#8211; &alpha;) = 10.9%. We can derive the percentages for the remaining iterations from the second term in the non-recurrent formula M&#8217;<sub>i</sub>.</p>
+<p>This gives us values that are much too small during the initial iterations, so we need to scale the 12.5% of X<sub>1</sub> in iteration 1 to 100%, and the 12.5% + 10.9% for X<sub>2</sub> and X<sub>1</sub> in iteration 2 to 100%, and so on. In other works, in iteration 1 we must divide the calculated value by 12.5%, in iteration 2 by 12.5% + 10.9%, and so on.</p>
+<p>We therefore introduce a normalization factor &gamma;<sub>i</sub>. Let us write out some of the values to extrapolate a formula:</p>
+<table>
+	<tr>
+		<td style="text-align:right;">&gamma;<sub>1</sub></td>
+		<td>=</td>
+		<td>&alpha;</td>
+		<td>=</td>
+		<td>12.5%</td>
+	</tr>
+	<tr>
+		<td style="text-align:right;">&gamma;<sub>2</sub></td>
+		<td>=</td>
+		<td>&alpha; + &alpha; (1 &#8211; &alpha;)</td>
+		<td>=</td>
+		<td>12.5% + 10.9%</td>
+	</tr>
+	<tr>
+		<td style="text-align:right;">&gamma;<sub>3</sub></td>
+		<td>=</td>
+		<td>&alpha; + &alpha; (1 &#8211; &alpha;) + &alpha; (1 &#8211; &alpha;)<sup>2</sup></td>
+		<td>=</td>
+		<td>12.5% + 10.9% + 9.6%</td>
+	</tr>
+	<tr>
+		<td style="text-align:right;">&#8230;</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td style="text-align:right;">&gamma;<sub>i</sub></td>
+		<td>=</td>
+		<td>&alpha; &sum;<sup>i</sup><sub>k=1</sub> (1 &#8211; &alpha;)<sup>k-1</sup></td>
+		<td></td>
+	</tr>
+</table>
+<p>This formula can be rewritten as a recurrent formula:</p>
+<table>
+	<tr>
+		<td style="text-align:right;">&Gamma;<sub>0</sub></td>
+		<td>=</td>
+		<td>0</td>
+	</tr>
+	<tr>
+		<td style="text-align:right;">&Gamma;<sub>i</sub></td>
+		<td>=</td>
+		<td>&alpha; + (1 &#8211; &alpha;) &Gamma;<sub>i-1</sub></td>
+	</tr>
+</table>
+<p>We can incorporate this normalization factor into the exponential moving average and get an unbiased exponential moving average:</p>
+<table>
+	<tr>
+		<td style="text-align:right;">MM<sub>0</sub></td>
+		<td>=</td>
+		<td>0</td>
+	</tr>
+	<tr>
+		<td style="text-align:right;">MM<sub>i</sub></td>
+		<td>=</td>
+		<td>&alpha; X<sub>i</sub> + (1 &#8211; &alpha;) MM<sub>i-1</sub></td>
+	</tr>
+	<tr>
+		<td style="text-align:right;">M<sub>i</sub></td>
+		<td>=</td>
+		<td>MM<sub>i</sub> / &Gamma;<sub>i</sub></td>
+	</tr>
+</table>
+<p>Figure 3 <span class='marginnote'><img class='fullwidth' src='/assets/average-unbiased.png'/><em>Figure 3: Unbiased Exponential Average.</em></span> shows the results from the unbiased exponential moving average formula. It confirms that we get the expected results, namely firstly that normalization gives us correctly scaled values, and secondly that most recent values contributes more than older values.</p>
+<p>Whereas the exponential moving average only maintains a single state variable M<sub>i</sub>, the unbiased version maintains two state variables MM<sub>i</sub> and &Gamma;<sub>i</sub>.</p>
+    <br/>
+<br/>
+<br/>
+<hr>
+&copy; 2015 <a href="http://breese.github.io/">Bj&oslash;rn Reese</a>.
+
+  </body>
+</html>
