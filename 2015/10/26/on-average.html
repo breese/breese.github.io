@@ -76,7 +76,7 @@
 <p>Let us dispense with the first equation in the recurrent formula as see if we can come up with a better solution.</p>
 <p>In iteration 1 we calculate the contribution of the initial value X<sub>1</sub> to be &alpha; = 12.5%. In iteration 2 the second value X<sub>2</sub> contributes 12.5% and X<sub>1</sub> contributes &alpha; &times; (1 &#8211; &alpha;) = 10.9%. We can derive the percentages for the remaining iterations from the second term in the non-recurrent formula M&#8217;<sub>i</sub>.</p>
 <p>This gives us values that are much too small during the initial iterations, so we need to scale the 12.5% of X<sub>1</sub> in iteration 1 to 100%, and the 12.5% + 10.9% for X<sub>2</sub> and X<sub>1</sub> in iteration 2 to 100%, and so on. In other works, in iteration 1 we must divide the calculated value by 12.5%, in iteration 2 by 12.5% + 10.9%, and so on.</p>
-<p>We therefore introduce a normalization factor &gamma;<sub>i</sub>. Let us write out some of the values to extrapolate a formula:</p>
+<p>We <span class='marginnote'><img class='fullwidth' src='/assets/average-gamma.png'/><em>Figure 3: Normalization factor.</em> &gamma;<sub>i</sub> converges towards 100% as i grows.</span> therefore introduce a normalization factor &gamma;<sub>i</sub>. Let us write out some of the values to extrapolate a formula:</p>
 <table>
 	<tr>
 		<td style="text-align:right;">&gamma;<sub>1</sub></td>
@@ -144,7 +144,7 @@
 		<td>MM<sub>i</sub> / &Gamma;<sub>i</sub></td>
 	</tr>
 </table>
-<p>Figure 3 <span class='marginnote'><img class='fullwidth' src='/assets/average-unbiased.png'/><em>Figure 3: Unbiased Exponential Average.</em></span> shows the results from the unbiased exponential moving average formula. It confirms that we get the expected results, namely firstly that normalization gives us correctly scaled values, and secondly that most recent values contributes more than older values.</p>
+<p>Figure 4 <span class='marginnote'><img class='fullwidth' src='/assets/average-unbiased.png'/><em>Figure 4: Unbiased Exponential Average.</em></span> shows the results from the unbiased exponential moving average formula. It confirms that we get the expected results, namely firstly that normalization gives us correctly scaled values, and secondly that most recent values contributes more than older values.</p>
 <p>Whereas the exponential moving average only maintains a single state variable M<sub>i</sub>, the unbiased version maintains two state variables MM<sub>i</sub> and &Gamma;<sub>i</sub>.</p>
     <br/>
 <br/>
