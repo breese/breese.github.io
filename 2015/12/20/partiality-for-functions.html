@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/tufte.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/breese.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pygment_trac.css" media="screen" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Partiality for Functions</title>
+  </head>
+
+  <body>
+    <h1>Partiality for Functions</h1>
+    <p>While C++ does support partial specialization of templates, it does not do so for function templates. Instead, the general advice is to use function overloading instead. Sometimes that is not a feasible solution though, so we will see how to emulate partial specialization of function template with a some boiler-plate code.</p>
+<p><!--more--></p>
+<h2>Partial specialization of function templates</h2>
+<p>Assume that we have a <code>formatter</code> class that converts C++ values of different types into text, such as a <span class="caps">JSON</span> writer. We want this class to have a consistent <span class="caps">API</span> where any kind of value is written with the <code>formatter::write</code> function.</p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="lineno">1</span> <span class="c1">// Create the formatter</span>
+<span class="lineno">2</span> <span class="n">formatter</span> <span class="n">output</span><span class="p">;</span>
+<span class="lineno">3</span> 
+<span class="lineno">4</span> <span class="c1">// Write an integer</span>
+<span class="lineno">5</span> <span class="n">output</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="lineno">6</span> 
+<span class="lineno">7</span> <span class="c1">// Write a map</span>
+<span class="lineno">8</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span> <span class="s">&quot;alpha&quot;</span><span class="p">,</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">};</span>
+<span class="lineno">9</span> <span class="n">output</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">dictionary</span><span class="p">);</span></code></pre></div><p>The obvious solution to handle any kind of type is to use a (member) function template for <code>formatter::write</code>.</p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="lineno">1</span> <span class="k">class</span> <span class="nc">formatter</span>
+<span class="lineno">2</span> <span class="p">{</span>
+<span class="lineno">3</span> <span class="k">public</span><span class="o">:</span>
+<span class="lineno">4</span>     <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="lineno">5</span>     <span class="kt">void</span> <span class="n">write</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">);</span>
+<span class="lineno">6</span> <span class="p">};</span></code></pre></div><p>As different types have to be formatted in different ways, we need specializations for the different types that our class is going to support. The <span class='marginnote'>Function overload.</span>  <code>int</code> case from the example above is easily added using function overloading.</p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="lineno">1</span> <span class="k">class</span> <span class="nc">formatter</span>
+<span class="lineno">2</span> <span class="p">{</span>
+<span class="lineno">3</span> <span class="k">public</span><span class="o">:</span>
+<span class="lineno">4</span>     <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="lineno">5</span>     <span class="kt">void</span> <span class="n">write</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">);</span>
+<span class="lineno">6</span> 
+<span class="lineno">7</span>     <span class="c1">// Added overload for int</span>
+<span class="lineno">8</span>     <span class="kt">void</span> <span class="nf">write</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+<span class="lineno">9</span> <span class="p">};</span></code></pre></div><p>Adding <span class='marginnote'>Need for partial specialization.</span>  support for <code>std::map</code> is more tricky, because we want to invoke different formatting depending on the <code>key_type</code> of the map. For instance, when <code>key_type</code> is a string then we want a <span class="caps">JSON</span> formatter to output the map as a <span class="caps">JSON</span> object, but for all other data types we want to output it as a <span class="caps">JSON</span> array of pairs. This is not an arbitrary restriction that I have dreamt up; this is how <span class="caps">JSON</span> is defined.</p>
+<p>Ideally we would like to be able to write the following:</p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="lineno"> 1</span> <span class="k">class</span> <span class="nc">formatter</span>
+<span class="lineno"> 2</span> <span class="p">{</span>
+<span class="lineno"> 3</span> <span class="k">public</span><span class="o">:</span>
+<span class="lineno"> 4</span>     <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="lineno"> 5</span>     <span class="kt">void</span> <span class="n">write</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">);</span>
+<span class="lineno"> 6</span> 
+<span class="lineno"> 7</span>     <span class="c1">// Added general map case (illegal)</span>
+<span class="lineno"> 8</span>     <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">Key</span><span class="p">,</span> <span class="k">typename</span> <span class="n">Value</span><span class="o">&gt;</span>
+<span class="lineno"> 9</span>     <span class="kt">void</span> <span class="n">write</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">Key</span><span class="p">,</span> <span class="n">Value</span><span class="o">&gt;&amp;</span><span class="p">);</span>
+<span class="lineno">10</span> 
+<span class="lineno">11</span>     <span class="c1">// Added special map case (illegal)</span>
+<span class="lineno">12</span>     <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">Value</span><span class="o">&gt;</span>
+<span class="lineno">13</span>     <span class="kt">void</span> <span class="n">write</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">Value</span><span class="o">&gt;&amp;</span><span class="p">);</span>
+<span class="lineno">14</span> 
+<span class="lineno">15</span>     <span class="kt">void</span> <span class="nf">write</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+<span class="lineno">16</span> <span class="p">};</span></code></pre></div><p>Unfortunately the above specializations of the <code>write</code> function are partial and therefore not legal in C++. We need something else to resolve the different map cases. Function overloading cannot be used in this case either, because all types must be fully specialized but our <code>Value</code> parameter is not specialized in either case.</p>
+<h2>Indirect specialization</h2>
+<p>As in so many other situations, we are going to overcome the limitation with another level of indirection. The basic idea is this:</p>
+<blockquote>
+<p>Use partial specialization of templates to emulate partial specialization of function templates.</p>
+</blockquote>
+<p>In our second attempt, our <code>formatter::write</code> is a single template function that uses forwarding references, and consequently all function overloads have been removed.<sup class='sidenote-number'>1</sup><span class='sidenote'><sup class='sidenote-number'>1</sup> Read <em>Item 26: Avoid overloading on universal references</em> in Scott Meyers ``Effective Modern C++&#8217;&#8217; if you wonder why.</span> This function forwards any call to a helper class called <code>formatter::overloader</code>, which will handle partial specialization for us.</p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="lineno"> 1</span> <span class="k">class</span> <span class="nc">formatter</span>
+<span class="lineno"> 2</span> <span class="p">{</span>
+<span class="lineno"> 3</span> <span class="k">public</span><span class="o">:</span>
+<span class="lineno"> 4</span>     <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="lineno"> 5</span>     <span class="kt">void</span> <span class="n">write</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">value</span><span class="p">)</span>
+<span class="lineno"> 6</span>     <span class="p">{</span>
+<span class="lineno"> 7</span>         <span class="c1">// Bounce to helper class</span>
+<span class="lineno"> 8</span>         <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">decay</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+<span class="lineno"> 9</span>         <span class="n">overloader</span><span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;::</span><span class="n">write</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">value</span><span class="p">));</span>
+<span class="lineno">10</span>     <span class="p">}</span>
+<span class="lineno">11</span> 
+<span class="lineno">12</span> <span class="k">private</span><span class="o">:</span>
+<span class="lineno">13</span>     <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">Enable</span> <span class="o">=</span> <span class="kt">void</span><span class="o">&gt;</span>
+<span class="lineno">14</span>     <span class="k">struct</span> <span class="n">overloader</span><span class="p">;</span>
+<span class="lineno">15</span> <span class="p">};</span></code></pre></div><p>The actual formatting implementations are added as the uniquely named private member functions <code>write_integral</code>, <code>write_map</code>, and <code>write_string_map</code> in the <code>formatter</code> class.<sup class='sidenote-number'>2</sup><span class='sidenote'><sup class='sidenote-number'>2</sup> These implementation functions are part of the boiler-plate code, not of the <span class="caps">API</span>. We could just as well have placed them in the <code>formatter::overloader</code> class. That is simply an implementation detail.</span></p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="lineno"> 1</span> <span class="k">class</span> <span class="nc">formatter</span>
+<span class="lineno"> 2</span> <span class="p">{</span>
+<span class="lineno"> 3</span> <span class="k">public</span><span class="o">:</span>
+<span class="lineno"> 4</span>     <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="lineno"> 5</span>     <span class="kt">void</span> <span class="n">write</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">value</span><span class="p">)</span>
+<span class="lineno"> 6</span>     <span class="p">{</span>
+<span class="lineno"> 7</span>         <span class="c1">// Bounce to helper class</span>
+<span class="lineno"> 8</span>         <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">decay</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+<span class="lineno"> 9</span>         <span class="n">overloader</span><span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;::</span><span class="n">write</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">value</span><span class="p">));</span>
+<span class="lineno">10</span>     <span class="p">}</span>
+<span class="lineno">11</span> 
+<span class="lineno">12</span> <span class="k">private</span><span class="o">:</span>
+<span class="lineno">13</span>     <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">Enable</span> <span class="o">=</span> <span class="kt">void</span><span class="o">&gt;</span>
+<span class="lineno">14</span>     <span class="k">struct</span> <span class="n">overloader</span><span class="p">;</span>
+<span class="lineno">15</span> 
+<span class="lineno">16</span>     <span class="c1">// Added int case</span>
+<span class="lineno">17</span>     <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="lineno">18</span>     <span class="kt">void</span> <span class="n">write_integral</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">);</span>
+<span class="lineno">19</span> 
+<span class="lineno">20</span>     <span class="c1">// Added general map case</span>
+<span class="lineno">21</span>     <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="lineno">22</span>     <span class="kt">void</span> <span class="n">write_map</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">);</span>
+<span class="lineno">23</span> 
+<span class="lineno">24</span>     <span class="c1">// Added special map case</span>
+<span class="lineno">25</span>     <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="lineno">26</span>     <span class="kt">void</span> <span class="n">write_string_map</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">);</span>
+<span class="lineno">27</span> <span class="p">};</span></code></pre></div><p>The <code>formatter::write</code> function forwards calls to the <code>formatter::overloader&lt;T&gt;::write</code> function. We first need to define the general case. This should fail if our input type does not match any of our overloads.</p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="lineno">1</span> <span class="c1">// Matches all non-specialized types</span>
+<span class="lineno">2</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">Enable</span><span class="o">&gt;</span>
+<span class="lineno">3</span> <span class="k">struct</span> <span class="n">formatter</span><span class="o">::</span><span class="n">overloader</span>
+<span class="lineno">4</span> <span class="p">{</span>
+<span class="lineno">5</span>     <span class="c1">// No implementation for the general case</span>
+<span class="lineno">6</span> <span class="p">};</span></code></pre></div><p>Next we define the <code>int</code> case. Let us extend this case to handle any integral type while we are at it. The <code>write</code> function simply calls the appropriate private implementation function on the <code>formatter</code> class.</p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="lineno"> 1</span> <span class="c1">// Matches any integral type</span>
+<span class="lineno"> 2</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="lineno"> 3</span> <span class="k">struct</span> <span class="n">formatter</span><span class="o">::</span><span class="n">overloader</span><span class="o">&lt;</span>
+<span class="lineno"> 4</span>     <span class="n">T</span><span class="p">,</span>
+<span class="lineno"> 5</span>     <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">is_integral</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">value</span><span class="o">&gt;::</span><span class="n">type</span>
+<span class="lineno"> 6</span>     <span class="o">&gt;</span>
+<span class="lineno"> 7</span> <span class="p">{</span>
+<span class="lineno"> 8</span>     <span class="kr">inline</span> <span class="k">static</span>
+<span class="lineno"> 9</span>     <span class="kt">void</span> <span class="n">write</span><span class="p">(</span><span class="n">formatter</span><span class="o">&amp;</span> <span class="n">self</span><span class="p">,</span> <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span>
+<span class="lineno">10</span>     <span class="p">{</span>
+<span class="lineno">11</span>         <span class="c1">// Bounce back into the formatter class</span>
+<span class="lineno">12</span>         <span class="n">self</span><span class="p">.</span><span class="n">write_integral</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<span class="lineno">13</span>     <span class="p">}</span>
+<span class="lineno">14</span> <span class="p">};</span></code></pre></div><p>Finally we add the two different <code>std::map</code> cases.</p>
+<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="lineno"> 1</span> <span class="c1">// Matches maps with non-string keys</span>
+<span class="lineno"> 2</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">Key</span><span class="p">,</span> <span class="k">typename</span> <span class="n">Value</span><span class="o">&gt;</span>
+<span class="lineno"> 3</span> <span class="k">struct</span> <span class="n">formatter</span><span class="o">::</span><span class="n">overloader</span><span class="o">&lt;</span>
+<span class="lineno"> 4</span>     <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">Key</span><span class="p">,</span> <span class="n">Value</span><span class="o">&gt;</span>
+<span class="lineno"> 5</span>     <span class="o">&gt;</span>
+<span class="lineno"> 6</span> <span class="p">{</span>
+<span class="lineno"> 7</span>     <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">Key</span><span class="p">,</span> <span class="n">Value</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="lineno"> 8</span> 
+<span class="lineno"> 9</span>     <span class="kr">inline</span> <span class="k">static</span>
+<span class="lineno">10</span>     <span class="kt">void</span> <span class="nf">write</span><span class="p">(</span><span class="n">formatter</span><span class="o">&amp;</span> <span class="n">self</span><span class="p">,</span> <span class="k">const</span> <span class="n">type</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span>
+<span class="lineno">11</span>     <span class="p">{</span>
+<span class="lineno">12</span>         <span class="n">self</span><span class="p">.</span><span class="n">write_map</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<span class="lineno">13</span>     <span class="p">}</span>
+<span class="lineno">14</span> <span class="p">};</span>
+<span class="lineno">15</span> 
+<span class="lineno">16</span> <span class="c1">// Matches maps with string keys</span>
+<span class="lineno">17</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">Value</span><span class="o">&gt;</span>
+<span class="lineno">18</span> <span class="k">struct</span> <span class="n">formatter</span><span class="o">::</span><span class="n">overloader</span><span class="o">&lt;</span>
+<span class="lineno">19</span>     <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">Value</span><span class="o">&gt;</span>
+<span class="lineno">20</span>     <span class="o">&gt;</span>
+<span class="lineno">21</span> <span class="p">{</span>
+<span class="lineno">22</span>     <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">Value</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="lineno">23</span> 
+<span class="lineno">24</span>     <span class="kr">inline</span> <span class="k">static</span>
+<span class="lineno">25</span>     <span class="kt">void</span> <span class="nf">write</span><span class="p">(</span><span class="n">formatter</span><span class="o">&amp;</span> <span class="n">self</span><span class="p">,</span> <span class="k">const</span> <span class="n">type</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span>
+<span class="lineno">26</span>     <span class="p">{</span>
+<span class="lineno">27</span>         <span class="n">self</span><span class="p">.</span><span class="n">write_string_map</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<span class="lineno">28</span>     <span class="p">}</span>
+<span class="lineno">29</span> <span class="p">};</span></code></pre></div><p>And that is that. A lot of boiler-plate is needed, but is doable to emulate partial specialization of function templates in C++. The examples above used C++11 for convenience, but this technique can also be written in C++03 with the use of Boost type-traits.</p>
+    <br/>
+<br/>
+<br/>
+<hr>
+&copy; 2015 <a href="http://breese.github.io/">Bj&oslash;rn Reese</a>.
+
+  </body>
+</html>
