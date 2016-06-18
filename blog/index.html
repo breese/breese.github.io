@@ -14,15 +14,30 @@
 
   <body>
     <h1>Under Development</h1>
-<h2>by Bj&oslash;rn Reese</h2>
+<p style="font-style: italic;">by Bj&oslash;rn Reese</p>
 <article>
 
-  <p><span class='marginnote'><em>C++</em></span></p>
+  <p><span class='marginnote'><em>C++,</em></span></p>
+
+  <p><span class='marginnote'><em>Error</em></span></p>
+
+  <center class='postdate'>18 June 2016</center>
+<span class='postdateseparator'></span>
+  <h3><a href="/2016/06/18/unifying-error-codes.html">Unifying error codes</a></h3>
+<blockquote>
+  <p>C++11 and Boost both have an <code>error_code</code> class, but they cannot be used interchangeably despite their close resemblance. We introduce a trick of re-catogorizing the <code>error_code</code> from Boost to make it compatible with C++11. This enables us to use <code>std::error_code</code> throughout our entire project, and still integrate with third-party libraries that use <code>boost::system::error_code</code>.</p>
+<p>First we have to learn how to define custom error codes.</p>
+</blockquote>
+</article>
+<article>
+
+  <p><span class='marginnote'><em>C++,</em></span></p>
 
   <p><span class='marginnote'><em>Template</em></span></p>
 
+  <center class='postdate'>20 December 2015</center>
+<span class='postdateseparator'></span>
   <h3><a href="/2015/12/20/partiality-for-functions.html">Partiality for Functions</a></h3>
-  <time style="color:gray">20 December 2015</time>
 <blockquote>
   <p>While C++ does support partial specialization of templates, it does not do so for function templates. Instead, the general advice is to use function overloading instead. Sometimes that is not a feasible solution though, so we will see how to emulate partial specialization of function template with a some boiler-plate code.</p>
 </blockquote>
@@ -31,20 +46,22 @@
 
   <p><span class='marginnote'><em>Statistics</em></span></p>
 
+  <center class='postdate'>26 October 2015</center>
+<span class='postdateseparator'></span>
   <h3><a href="/2015/10/26/on-average.html">On Average</a></h3>
-  <time style="color:gray">26 October 2015</time>
 <blockquote>
   <p>Calculating the <a href="http://en.wikipedia.org/wiki/Average">mean</a> of a sample can be done in various ways. A widely used method is the exponential moving average. We will show that this method has a bias towards the initial value, and present a way to remove the bias from the results.</p>
 </blockquote>
 </article>
 <article>
 
-  <p><span class='marginnote'><em>Logic</em></span></p>
+  <p><span class='marginnote'><em>Logic,</em></span></p>
 
   <p><span class='marginnote'><em>Tribool</em></span></p>
 
+  <center class='postdate'>05 July 2015</center>
+<span class='postdateseparator'></span>
   <h3><a href="/2015/07/05/layers-of-three-valued-logic.html">Layers of three-valued logic</a></h3>
-  <time style="color:gray">05 July 2015</time>
 <blockquote>
   <p><a href="http://en.wikipedia.org/wiki/Three-valued_logic">Three-valued logic</a> has three states:</p>
 <ul>

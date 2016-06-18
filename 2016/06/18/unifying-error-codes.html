@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/tufte.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/breese.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pygment_trac.css" media="screen" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Unifying error codes</title>
+  </head>
+
+  <body>
+    <h1>Unifying error codes</h1>
+    <p>C++11 and Boost both have an <code>error_code</code> class, but they cannot be used interchangeably despite their close resemblance. We introduce a trick of re-catogorizing the <code>error_code</code> from Boost to make it compatible with C++11. This enables us to use <code>std::error_code</code> throughout our entire project, and still integrate with third-party libraries that use <code>boost::system::error_code</code>.</p>
+<p>First we have to learn how to define custom error codes.</p>
+<p><!--more--></p>
+<label for='figure-std-error-code' class='margin-toggle'>&#8853;</label><p><input type='checkbox' id='figure-std-error-code' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/errorcode/error_code.png'/><br><em>Figure 1</em>: Anatomy of std::error&#95;code.</span></p>
+<h2>Error codes</h2>
+<p>The <a href="http://en.cppreference.com/w/cpp/header/system_error"><code>&lt;system_error&gt;</code></a> header added in C++11 originates from <a href="http://www.boost.org/libs/system/doc/index.html">Boost.System</a>. The following description applies to both the C++11 and the Boost.System variants. The header contains the <code>error_code</code> class used to carry system error codes, and it can be extended with our own custom error codes as well.</p>
+<p>When we combine error codes from different sub-systems into a single framework, each error code must be globally unique. <code>error_code</code> achieves this by containing both an error category identifying the sub-system and the sub-system-specific integral value (an enum) identifying the actual error. This way, each sub-system can use their own enum without having to worry about which values the other sub-systems have chosen. The category furthermore provide textual representations of the category and the enumerators.</p>
+<label for='figure-std-error-category' class='margin-toggle'>&#8853;</label><p><input type='checkbox' id='figure-std-error-category' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/errorcode/error_category.png'/><br><em>Figure 2</em>: Anatomy of std::error&#95;category.</span></p>
+<p>C++11 comes with two error categories: <a href="http://en.cppreference.com/w/cpp/error/system_category"><code>std::system_category</code></a> for platform-dependent error codes, and <a href="http://en.cppreference.com/w/cpp/error/generic_category"><code>std::generic_category</code></a> for C++11 defined system error codes (originating from <span class="caps">POSIX</span> error codes.) You can think of the latter as the former with a cross-platform enum.</p>
+<p>We can pass an <code>error_code</code> variable around like a normal function argument or return value, or throw it via the <code>system_error</code> exception.</p>
+<p>This construct is both extensible and reasonably efficient.</p>
+<h2>Custom error codes</h2>
+<p>Extending <code>std::error_code</code> with custom error codes is done by:</p>
+<ol>
+	<li>Defining the custom error codes as an enum.</li>
+	<li>Defining a custom error category that inherits from <a href="http://en.cppreference.com/w/cpp/error/error_category"><code>std::error_category</code></a>.</li>
+	<li>Register the custom enum within the <code>std::error_code</code> framework.</li>
+</ol>
+<label for='figure-custom-error-code' class='margin-toggle'>&#8853;</label><p><input type='checkbox' id='figure-custom-error-code' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/errorcode/custom_error_code.png'/><br><em>Figure 3</em>: Anatomy of custom error codes.</span></p>
+<p>We can then generate <code>std::error_code</code>s containing the custom error category and a custom enumerator.</p>
+<p>The custom error codes are defined in a normal enum within a custom namespace.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">namespace</span> <span class="n">custom</span>
+<span class="p">{</span>
+<span class="k">enum</span> <span class="n">errc_t</span>
+<span class="p">{</span>
+    <span class="n">forbidden</span>
+    <span class="c1">// Add more error values here
+</span><span class="p">};</span>
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">custom</span></code></pre></figure><p>This custom enum must be registered using the <a href="http://en.cppreference.com/w/cpp/error/error_code/is_error_code_enum"><code>std::is_error_code_enum</code></a> trait.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">namespace</span> <span class="n">std</span>
+<span class="p">{</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span>
+<span class="k">struct</span> <span class="n">is_error_code_enum</span><span class="o">&lt;</span><span class="n">custom</span><span class="o">::</span><span class="n">errc_t</span><span class="o">&gt;</span>
+    <span class="o">:</span> <span class="k">public</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span> <span class="p">{};</span>
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">std</span></code></pre></figure><p>We also want to overload <code>std::make_error_code()</code> for convenience.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">namespace</span> <span class="n">std</span>
+<span class="p">{</span>
+<span class="kr">inline</span> <span class="n">std</span><span class="o">::</span><span class="n">error_code</span> <span class="n">make_error_code</span><span class="p">(</span><span class="n">custom</span><span class="o">::</span><span class="n">errc_t</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">error_code</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
+                           <span class="n">custom</span><span class="o">::</span><span class="n">some_category</span><span class="p">());</span>
+<span class="p">}</span>
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">std</span></code></pre></figure><p>The custom error category must inherit from <code>std::error_category</code> and be obtainable via a singleton.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">namespace</span> <span class="n">custom</span>
+<span class="p">{</span>
+<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">error_category</span><span class="o">&amp;</span> <span class="n">some_category</span><span class="p">();</span>
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">custom</span></code></pre></figure><p>Its implementation must override some virtual functions to provide textual representations of the error category (<code>name</code>) and enumerators (<code>message</code>.)</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">namespace</span> <span class="n">custom</span>
+<span class="p">{</span>
+<span class="k">namespace</span> <span class="n">detail</span>
+<span class="p">{</span>
+<span class="k">class</span> <span class="nc">some</span><span class="n">_category</span> <span class="o">:</span> <span class="k">public</span> <span class="n">std</span><span class="o">::</span><span class="n">error_category</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">virtual</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">()</span> <span class="k">const</span> <span class="n">noexcept</span> <span class="n">override</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="s">"custom::category"</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">virtual</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">message</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="k">const</span> <span class="n">override</span>
+    <span class="p">{</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="n">errc_t</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="p">{</span>
+        <span class="k">case</span> <span class="n">custom</span><span class="p">:</span><span class="o">:</span><span class="n">forbidden</span><span class="o">:</span>
+            <span class="k">return</span> <span class="s">"forbidden"</span><span class="p">;</span>
+        <span class="c1">// Add more descriptions here
+</span>        <span class="p">}</span>
+        <span class="k">return</span> <span class="s">"unknown custom::category error"</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+<span class="p">}</span> <span class="c1">// namespace detail
+</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">error_category</span><span class="o">&amp;</span> <span class="n">some_category</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">detail</span><span class="o">::</span><span class="n">some_category</span> <span class="n">instance</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">custom</span></code></pre></figure><h2>Error impedance</h2>
+<p>Everything has been rosy so far, but we still have to face our original challenge of using both <code>std::error_code</code> and <code>boost::system::error_code</code> in the same application.</p>
+<p>Let us say that we use C++11 throughout our application, but we also rely on some Boost libraries such as <a href="http://www.boost.org/doc/html/boost_asio.html">Boost.Asio</a> that defines their own error codes based on Boost.System. If we want to propagate these errors, whether by value or via exceptions, we will quickly discover that we cannot pass a <code>boost::system::error_code</code> to a function that expects a <code>std::error_code</code>.</p>
+<p>When we try to come up with workarounds, we will eventually run into the constraint that the two inherit from different <code>error_category</code> base classes. That is the root cause, but also the seed for a solution.</p>
+<h2>Bridging the impedance</h2>
+<label for='figure-bridge-error-code' class='margin-toggle'>&#8853;</label><p><input type='checkbox' id='figure-bridge-error-code' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/errorcode/bridge_error_code.png'/><br><em>Figure 4</em>: Example of the boost-to-std bridge.</span></p>
+<p>The trick to overcome the before-mentioned problem is to transform <code>boost::system::error_code</code>s into <code>std::error_code</code>s by re-categorizing the error codes.</p>
+<p>This is done by defining a bridge error category that acts as a placeholder for a boost error category within the <code>std::error_code</code> framework. This bridge error category inherits from <code>std::error_category</code>, so we make it look like a <code>std::error_category</code> but act like a <code>boost::system::error_category</code>.</p>
+<p>We do not need to redefine the enum as we reuse that from Boost.System verbatim. Converting the boost error code into C++11 is then done by creating a <code>std::error_code</code> with the Boost.System enum and our bridge error category.</p>
+<p>We start by defining our bridge error category. While Boost.System contains several error categories, we are only interested in <code>generic_category</code> for now.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">namespace</span> <span class="n">bridge</span>
+<span class="p">{</span>
+<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">error_category</span><span class="o">&amp;</span> <span class="n">generic_category</span><span class="p">();</span>
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">bridge</span></code></pre></figure><p>The following step is a bit controversial because we register the Boost.System error values in the <code>std::error_code</code> framework.<label for='1' class='margin-toggle sidenote-number'></label><input type='checkbox' id='1' class='margin-toggle'/><span class='sidenote'>A less controversial solution is to import the Boost.System enum into our custom namespace, and then register that instead. </span> While this is legal code, it is not good style to do this on behalf of Boost.System&#8230; but here we go.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">namespace</span> <span class="n">std</span>
+<span class="p">{</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span>
+<span class="k">struct</span> <span class="n">is_error_code_enum</span><span class="o">&lt;</span><span class="n">boost</span><span class="o">::</span><span class="n">system</span><span class="o">::</span><span class="n">errc</span><span class="o">::</span><span class="n">errc_t</span><span class="o">&gt;</span>
+    <span class="o">:</span> <span class="k">public</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span>
+<span class="p">{</span>
+<span class="p">};</span>
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">std</span></code></pre></figure><p>And equally controversial, we also overload <code>std::make_error_code()</code> with the Boost.System error codes.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">namespace</span> <span class="n">std</span>
+<span class="p">{</span>
+<span class="kr">inline</span> <span class="n">std</span><span class="o">::</span><span class="n">error_code</span> <span class="n">make_error_code</span><span class="p">(</span><span class="n">boost</span><span class="o">::</span><span class="n">system</span><span class="o">::</span><span class="n">errc</span><span class="o">::</span><span class="n">errc_t</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">error_code</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
+                           <span class="n">bridge</span><span class="o">::</span><span class="n">generic_category</span><span class="p">());</span>
+<span class="p">}</span>
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">std</span></code></pre></figure><p>With the above we are (almost) able to create a <code>std::error_code</code> with Boost.System error values.</p>
+<p>We still need to implement the <code>bridge::generic_category</code> singleton with overloaded functions that returns the names of the error category and the error values. Rather than providing the textual representations of all error values ourselves we leverage the fact that <code>boost::system::generic_category</code> already is able to do this.<label for='2' class='margin-toggle sidenote-number'></label><input type='checkbox' id='2' class='margin-toggle'/><span class='sidenote'>This is not only the easiest, but also the most correct solution. </span></p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">namespace</span> <span class="n">bridge</span>
+<span class="p">{</span>
+<span class="k">namespace</span> <span class="n">detail</span>
+<span class="p">{</span>
+<span class="k">class</span> <span class="nc">generic</span><span class="n">_category</span> <span class="o">:</span> <span class="k">public</span> <span class="n">std</span><span class="o">::</span><span class="n">error_category</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">virtual</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">()</span> <span class="k">const</span> <span class="n">noexcept</span> <span class="n">override</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">boost</span><span class="o">::</span><span class="n">system</span><span class="o">::</span><span class="n">generic_category</span><span class="p">().</span><span class="n">name</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">virtual</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">message</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="k">const</span> <span class="n">override</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">boost</span><span class="o">::</span><span class="n">system</span><span class="o">::</span><span class="n">generic_category</span><span class="p">().</span><span class="n">message</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+<span class="p">}</span> <span class="c1">// namespace detail
+</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">error_category</span><span class="o">&amp;</span> <span class="n">generic_category</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">detail</span><span class="o">::</span><span class="n">generic_category</span> <span class="n">instance</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">bridge</span></code></pre></figure><p>The above procedure can also be applied to Boost.Asio error codes.</p>
+<h2>Conversion</h2>
+<p>All that is left now is to do the actual conversion.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">namespace</span> <span class="n">bridge</span>
+<span class="p">{</span>
+<span class="kr">inline</span> <span class="n">std</span><span class="o">::</span><span class="n">error_code</span> <span class="n">convert</span><span class="p">(</span><span class="k">const</span> <span class="n">boost</span><span class="o">::</span><span class="n">system</span><span class="o">::</span><span class="n">error_code</span><span class="o">&amp;</span> <span class="n">error</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">category</span><span class="p">()</span> <span class="o">==</span> <span class="n">boost</span><span class="o">::</span><span class="n">system</span><span class="o">::</span><span class="n">generic_category</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">error_code</span><span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">value</span><span class="p">(),</span>
+                               <span class="n">bridge</span><span class="o">::</span><span class="n">generic_category</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="n">assert</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">{};</span> <span class="c1">// We could define a bridge conversion error instead
+</span><span class="p">}</span>
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">bridge</span></code></pre></figure><p>Disclaimer: I ought to have used <code>error_condition</code> instead of <code>error_code</code> for custom error codes in the above, but as the distinction between platform-dependent and platform-independent error codes can be expressed via error categories, I just do not see the point of <code>error_condition</code>.</p>
+    <br/>
+<br/>
+<br/>
+<hr>
+&copy; 2016 <a href="http://breese.github.io/">Bj&oslash;rn Reese</a>.
+
+  </body>
+</html>
