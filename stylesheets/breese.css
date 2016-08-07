@@ -2,6 +2,16 @@ h2, h3 {
     color: #A52025;
 }
 
+h4 {
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    margin-bottom: 0;
+    line-height: 1;
+    color: #A52025;
+}
+
 body {
     color: #444;
 }

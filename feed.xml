@@ -5,8 +5,24 @@
     <description>by Bjorn Reese</description>
     <link>http://breese.github.io/blog/</link>
     <atom:link href="http://breese.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>19 June 2016</pubDate>
-    <lastBuildDate>Sun, 19 Jun 2016 13:03:20 +0200</lastBuildDate>
+    <pubDate>07 August 2016</pubDate>
+    <lastBuildDate>Sun, 07 Aug 2016 13:03:29 +0200</lastBuildDate>
+    
+    <item>
+        <title>Outliers and Structural Change</title>
+        <description>&lt;p&gt;Sensors are prone to measurement errors (deviation from expectation.) Large deviations can have an adverse impact on &lt;a href=&quot;https://en.wikipedia.org/wiki/Online_algorithm&quot;&gt;on-line processing&lt;/a&gt; where irrevocable decisions are made based on partial information. Overreactions can be avoided by removing &lt;a href=&quot;https://en.wikipedia.org/wiki/Outlier&quot;&gt;outliers&lt;/a&gt; (deviations larger than an accepted threshold.) This makes processing less sensitive to random fluctuation in the measurements.&lt;/p&gt;
+&lt;p&gt;The downside of outlier removal is that it makes us blind to abrupt structural changes. If the expected level of the measurements suddenly changes, then all subsequent measurements will be discarded as outliers.&lt;/p&gt;
+&lt;p&gt;We need a way to &lt;a href=&quot;https://en.wikipedia.org/wiki/Change_detection&quot;&gt;detect such structural changes&lt;/a&gt;.&lt;/p&gt;</description>
+        <pubDate>07 August 2016</pubDate>
+        <link>http://breese.github.io/2016/08/07/outliers-and-structural-change.html</link>
+        <guid isPermaLink="true">http://breese.github.io/2016/08/07/outliers-and-structural-change.html</guid>
+        
+        <category>statistics</category>
+        
+        <category>outliers</category>
+        
+        
+    </item>
     
     <item>
         <title>Unifying error codes</title>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/tufte.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/breese.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pygment_trac.css" media="screen" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="application/atom+xml" rel="alternate" href="http://breese.github.io/feed.xml" title="" />
+    <title>Outliers and Structural Change</title>
+  </head>
+
+  <body>
+    <h1>Outliers and Structural Change</h1>
+    <p>Sensors are prone to measurement errors (deviation from expectation.) Large deviations can have an adverse impact on <a href="https://en.wikipedia.org/wiki/Online_algorithm">on-line processing</a> where irrevocable decisions are made based on partial information. Overreactions can be avoided by removing <a href="https://en.wikipedia.org/wiki/Outlier">outliers</a> (deviations larger than an accepted threshold.) This makes processing less sensitive to random fluctuation in the measurements.</p>
+<p>The downside of outlier removal is that it makes us blind to abrupt structural changes. If the expected level of the measurements suddenly changes, then all subsequent measurements will be discarded as outliers.</p>
+<p>We need a way to <a href="https://en.wikipedia.org/wiki/Change_detection">detect such structural changes</a>.</p>
+<p><!--more--></p>
+<p>In the following we are going to assume normally distributed measurements.</p>
+<h2>Outlier removal</h2>
+<p>Outliers are measurements that differ too much from expectation. Consider a sample of small measurements, say, temperature measurements from a frozen lake. This sample has a small expected value, represented by the sample mean, around the freezing point of water. A few large erroneous measurements, or even a single very large measurement such as the melting temperature of iron, can cause the mean to change significantly, thus misrepresenting the expected value. Outliers are therefore commonly removed from consideration to avoid damaging impact on processing.</p>
+<label for='figure-outlier' class='margin-toggle'>&#8853;</label><p><input type='checkbox' id='figure-outlier' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/outlier/outlier.png'/><br><em>Figure 1: Outliers.</em> The histogram shows a normal distribution whose mean is at the peak. Red marks the values that are too far away from the mean. Z<sub>out</sub> is a z-score that represents an outlier, whereas Z<sub>in</sub> does not.</span></p>
+<p>Detecting outliers are done by calculating how much a measurement X<sub>i</sub> differs from the average M<sub>i</sub> of the sample measurements. The difference is normalized by dividing it with the standard deviation &sigma;<sub>i</sub>. This is called the <a href="https://en.wikipedia.org/wiki/Standard_score">z-score</a>:</p>
+<table>
+	<tr>
+		<td style="width:15%;text-indent:3em;">Z<sub>i</sub></td>
+		<td style="width:5%;">=</td>
+		<td style="text-align:left;">( X<sub>i</sub> &#8211; M<sub>i</sub> ) &frasl; &sigma;<sub>i</sub></td>
+	</tr>
+</table>
+<p>The simplest outlier detection uses a fixed threshold &theta; to determine whether or not a measurement is an outlier as illustrated in Figure 1. In mathematical terms, the outlier criterion is given by:</p>
+<table>
+	<tr>
+		<td style="width:15%;text-indent:3em;">&#124;Z<sub>i</sub>&#124;</td>
+		<td style="width:5%;">&ge;</td>
+		<td style="text-align:left;">&theta;</td>
+	</tr>
+</table>
+<p>We use &theta; to denote a threshold relative to the standard deviation &sigma;, and &Theta; to denote an absolute threshold.</p>
+<p>There are other ways to remove outliers, such as <a href="https://en.wikipedia.org/wiki/Peirce%27s_criterion">Pierce&#8217;s criterion</a> that iterate over the data set applying stricter thresholds each iteration, but we are going to focus on those that are suitable for on-line processing. Let us look at a couple of those criteria.</p>
+<h4>Three-sigma criterion</h4>
+<p>A commonly used threshold is <a href="https://en.wikipedia.org/wiki/Three_sigma_rule">three times the standard deviation</a>. As the z-score already is divided by the standard deviation, the threshold becomes:</p>
+<table>
+	<tr>
+		<td style="width:15%;text-indent:3em;">&theta;</td>
+		<td style="width:5%;">=</td>
+		<td style="text-align:left;">3</td>
+	</tr>
+</table>
+<p>With this threshold only the worst 0.3% of the measurements are marked as outliers.</p>
+<label for='figure-chauvenet' class='margin-toggle'>&#8853;</label><p><input type='checkbox' id='figure-chauvenet' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/outlier/chauvenet.png'/><br><em>Figure 2: Chauvenet&#8217;s criterion.</em> Threshold &theta; becomes larger as the sample size grows.</span></p>
+<h4>Chauvenet&#8217;s criterion</h4>
+<p>Another possibility is <a href="https://en.wikipedia.org/wiki/Chauvenet%27s_criterion">Chauvenet&#8217;s criterion</a> defined as:</p>
+<table>
+	<tr>
+		<td style="width:15%;text-indent:3em;">&theta;</td>
+		<td style="width:5%;">=</td>
+		<td style="text-align:left;">&#124;&Phi;<sup style="font-size:0.65em;">-1</sup>(1 &frasl; 4n)&#124;</td>
+	</tr>
+</table>
+<p>where &Phi;<sup style="font-size:0.65em;">-1</sup>(x) is the <a href="https://en.wikipedia.org/wiki/Normal_distribution#Quantile_function">quantile function</a> and n is the sample size.</p>
+<p>The threshold depends on the sample size n as illustrated in Figure 2. For example, if we use a <a href="https://en.wikipedia.org/wiki/Moving_average">moving average</a> algorithm with a window size of 64, then the threshold becomes &theta; &asymp; 2.66 as indicated with the dashed line.</p>
+<p>Chauvenet&#8217;s criterion means that we accept greater deviations as the number of samples grows, and vice versa that we remove samples more aggressively for lower numbers of samples. We should be careful about sample sizes lower than 30, because that is the number of samples needed to approximate a normal distribution according to the <a href="https://en.wikipedia.org/wiki/Central_limit_theorem">central limit theorem</a>.</p>
+<label for='figure-structural-change' class='margin-toggle'>&#8853;</label><p><input type='checkbox' id='figure-structural-change' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/outlier/structuralbreak.png'/><br><em>Figure 3: Structural change.</em> An abrupt change happens in the middle of the time-series. The first half of the samples (inside the green area) are accepted, while the second half are all rejected as outliers. </span></p>
+<h2>Change detection</h2>
+<p>With this understanding of outliers, we can now proceed to the problem of structural change.</p>
+<p>Figure 3 shows a time-series of measurements X<sub>i</sub> received at time T<sub>i</sub>. Initially all samples are within the outlier threshold (the green area) and are therefore accepted as valid measurements. Half ways through a structural change occurs and all subsequent samples are removed as outliers (outside the green area.) This is not what we would anticipated from a visual introspection of the graph: the second half of the samples ought to establish a new baseline with a new expected value, instead of being removed as outliers.</p>
+<p>If measurements changes significantly due to a prolonged alternation of the sensory data, such as a photosensor when turning on the light, then there is a risk that this condition will go unnoticed because all new measurements are removed as outliers.</p>
+<p>If we use outlier removal, then we also need a mechanism to detect structural changes.</p>
+<label for='figure-counter' class='margin-toggle'>&#8853;</label><p><input type='checkbox' id='figure-counter' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/outlier/counter.png'/><br><em>Figure 4: Counters.</em> The back plane is the same as Figure 3. The front plane shows an outlier count in yellow. Midways through, when the measurements becomes outliers, the count is incremented. A structural change is declared when the count reaches the watermark W.</span></p>
+<h3>Counters</h3>
+<p>A simple approach to change detection is to count the number of consecutive measurements that are outliers. A structural change is declared when this count exceeds a counter watermark. Assuming that we receive measurements at a fixed pace, the reaction time before we declare a structural change is a fixed delay.</p>
+<p>This counting approach can be extended in various ways. For example, we could differentiate between outliers above and below the green area respectively. Outliers above are counted up, and outliers below are counted down. A structural change is declared when the absolute value of the counter exceeds the watermark. Such an approach has the advantage of not confusing wild oscillations as structural change.</p>
+<p>As another example we could have both high and low watermarks, and only declare a structural change when the counter exceeds the high watermark. Consecutive outliers that exceeds the low watermark, but not the high watermark, are used to adaptively modify the high watermark when we receive a measurement below the low watermark.</p>
+<label for='figure-cusum' class='margin-toggle'>&#8853;</label><p><input type='checkbox' id='figure-cusum' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/outlier/cusum.png'/><br><em>Figure 5: <span class="caps">CUSUM</span>.</em> The back plane shows the measurements X<sub>i</sub> in blue, and the drift parameter &nu; is marked by the green line. The front plane shows the accumulated deviation S<sub>i</sub>. A structural changes happens when S<sub>i</sub> exceeds a threshold &Theta;.</span></p>
+<h3>Accumulated deviation</h3>
+<p>Another simple approach is to accumulate deviations over a number of consecutive measurements. When this accumulated value exceeds a threshold, a structural change is declared.</p>
+<p>Whereas counters react on the amount of outliers, accumulated deviations react to the magnitude of the outliers. Therefore, the reaction time will depend on how large the deviations are: large structural changes are detected quickly, and small structural changes are detected more slowly.</p>
+<p>For the <a href="https://en.wikipedia.org/wiki/CUSUM">cumulative sum</a> a deviation is calculated as the difference between the current measurement X<sub>i</sub> and an drift parameter &nu;.</p>
+<table>
+	<tr>
+		<td style="width:15%;text-indent:3em;">S<sub>0</sub></td>
+		<td style="width:5%;">=</td>
+		<td style="text-align:left;">0</td>
+	</tr>
+	<tr>
+		<td style="width:15%;text-indent:3em;">S<sub>i</sub></td>
+		<td style="width:5%;">=</td>
+		<td style="text-align:left;">max(0, S<sub>i-1</sub> + X<sub>i</sub> &#8211; &nu; )</td>
+	</tr>
+</table>
+<p>Notice that a positive difference, where X<sub>i</sub> is greater than &nu;, increases the deviation, and negative difference reduces it. A structural change is declared when S<sub>i</sub> exceeds the threshold &Theta;:</p>
+<table>
+	<tr>
+		<td style="width:15%;text-indent:3em;">S<sub>i</sub></td>
+		<td style="width:5%;">&ge;</td>
+		<td style="text-align:left;">&Theta;</td>
+	</tr>
+</table>
+<p>We could make cumulative sum more adaptive by changing the drift parameter &nu; from a constant into the <a href="https://en.wikipedia.org/wiki/Expected_value">expected value</a> E<sub>i</sub>.</p>
+<p>There <label for='gustafsson:2000' class='margin-toggle'> &#8853;</label><input type='checkbox' id='gustafsson:2000' class='margin-toggle'/><span class='marginnote'>Fredrik Gustafsson, <em>Adaptive Filtering and Change Detection</em>, Wiley, 2000. </span> are many more variations of this theme that we will not go into.</p>
+<h3>Statistical outliers</h3>
+<p>The previously mentioned approaches uses the number and magnitude of outliers, but not collected statistics of the measurements. For instance, the accumulation approach can mistake a single very large outlier as a structural change. We therefore continue with a change detection based on statistical concepts.</p>
+<label for='figure-mean-threshold' class='margin-toggle'>&#8853;</label><p><input type='checkbox' id='figure-mean-threshold' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/outlier/meanthreshold.png'/><br><em>Figure 6: Mean with threshold.</em> The yellow line shows the running mean. A structural change is declared when the running mean exceeds the threshold &Theta;.</span></p>
+<h4>Mean with threshold</h4>
+<p>A first approach is to declare a structural change when the sample mean M<sub>i</sub> exceeds a threshold. For instance, we could use the <a href="http://en.wikipedia.org/wiki/Exponential_smoothing">exponential moving average</a> to calculate M<sub>i</sub> from measurement X<sub>i</sub> in this way:</p>
+<table>
+	<tr>
+		<td style="width:15%;text-indent:3em;">M<sub>1</sub></td>
+		<td style="width:5%;">=</td>
+		<td style="text-align:left;">X<sub>1</sub></td>
+	</tr>
+	<tr>
+		<td style="width:15%;text-indent:3em;">M<sub>i</sub></td>
+		<td style="width:5%;">=</td>
+		<td style="text-align:left;">&alpha; X<sub>i</sub> + (1 &#8211; &alpha;) M<sub>i-1</sub></td>
+	</tr>
+</table>
+<p>where &alpha; is a smoothing factor.</p>
+<p>The condition for structural change is then given by:</p>
+<table>
+	<tr>
+		<td style="width:15%;text-indent:3em;">M<sub>i</sub></td>
+		<td style="width:5%;">&ge;</td>
+		<td style="text-align:left;">&Theta;</td>
+	</tr>
+</table>
+<p>Be advised that the exponential moving average has a built-in bias towards the initial measurement X<sub>1</sub>. This bias can be removed by <a href="/2015/10/26/on-average.html">normalization</a>.</p>
+<label for='figure-mean-diff' class='margin-toggle'>&#8853;</label><p><input type='checkbox' id='figure-mean-diff' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/outlier/meandifference.png'/><br><em>Figure 7: Mean as outlier.</em> The yellow line shows the running mean of the raw statistics. In the first half of the graph the raw mean is the same as the filtered running mean, but halfways through it grows to accommodate the outliers. A structural change is declared when the raw mean grows outside the green area.</span></p>
+<h4>Mean as outlier</h4>
+<p>In a second approach we would like a more adaptable threshold &Theta;. We can incorporate the standard deviation to improve threshold. For that purpose we record two sets of statistics:</p>
+<ol>
+	<li><em>Filtered statistics:</em> Remove outliers and calculate the statistics of the remaining measurements. These statistics are used for outlier detection. The filtered mean and standard deviation are called M&#8217;<sub>i</sub> and &sigma;&#8217;<sub>i</sub>.</li>
+	<li><em>Raw statistics:</em> Calculate the statistics of all measurements including the outliers. These statistics are used for change detection. The raw mean and standard deviation are called M<sub>i</sub> and &sigma;<sub>i</sub>.</li>
+</ol>
+<p>The basic idea of statistical change detection is quite simple: query if the mean of the raw measurements M<sub>i</sub> has become an outlier according to the filtered statistics using the z-score:</p>
+<table>
+	<tr>
+		<td style="width:30%;text-indent:3em;">&#124; M<sub>i</sub> &#8211; M&#8217;<sub>i</sub> &#124; &frasl; &sigma;&#8217;<sub>i</sub></td>
+		<td style="width:5%;">&ge;</td>
+		<td style="text-align:left;">&theta;</td>
+	</tr>
+</table>
+<p>The reaction time depends on the filters used. In the example shown in Figure 7, we used arithmetic mean of all measurements. If we want faster reaction times we could limit the statistics to the more recent measurements, for instance by using a <a href="https://en.wikipedia.org/wiki/Moving_average">moving average</a> over a sliding window.</p>
+    <br/>
+<br/>
+<br/>
+<hr>
+&copy; 2016 <a href="http://breese.github.io/">Bj&oslash;rn Reese</a>.
+
+  </body>
+</html>
