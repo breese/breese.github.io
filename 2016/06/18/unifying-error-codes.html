@@ -14,6 +14,15 @@
   </head>
 
   <body>
+    <table style="border: 0; margin: 0;">
+  <tr>
+    <td align="center" style="align: center; width: 25%;"><a href="/blog">Blog</a></td>
+    <td align="center" style="align: center; width: 25%;"><a href="/feed.xml">RSS</a></td>
+    <td align="center" style="align: center; width: 25%;"><a href="https://github.org/breese/">GitHub</a></td>
+    <td align="center" style="align: center; width: 25%;"><a href="https://www.linkedin.com/pub/bj%C3%B8rn-reese/1/660/846">LinkedIn</a></td>
+  </tr>
+</table>
+
     <h1>Unifying error codes</h1>
     <p>C++11 and Boost both have an <code>error_code</code> class, but they cannot be used interchangeably despite their close resemblance. We introduce a trick of re-catogorizing the <code>error_code</code> from Boost to make it compatible with C++11. This enables us to use <code>std::error_code</code> throughout our entire project, and still integrate with third-party libraries that use <code>boost::system::error_code</code>.</p>
 <p>First we have to learn how to define custom error codes.</p>

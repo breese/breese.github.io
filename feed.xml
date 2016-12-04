@@ -5,8 +5,23 @@
     <description>by Bjorn Reese</description>
     <link>http://breese.github.io/blog/</link>
     <atom:link href="http://breese.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>07 August 2016</pubDate>
-    <lastBuildDate>Sun, 07 Aug 2016 13:03:29 +0200</lastBuildDate>
+    <pubDate>04 December 2016</pubDate>
+    <lastBuildDate>Sun, 04 Dec 2016 13:18:57 +0100</lastBuildDate>
+    
+    <item>
+        <title>Receiving Datagrams</title>
+        <description>&lt;p&gt;The &lt;a href=&quot;https://en.wikipedia.org/wiki/Berkeley_sockets&quot;&gt;socket &lt;span class=&quot;caps&quot;&gt;API&lt;/span&gt;&lt;/a&gt; is defined such that the user supplies a buffer of a pre-determined size that &lt;span class=&quot;caps&quot;&gt;UDP&lt;/span&gt; datagrams are read into. If the buffer is smaller than the datagram, then the surplus bytes from the datagram are discarded.&lt;/p&gt;
+&lt;p&gt;How can we read the entire datagram when we do not know its size in advance?&lt;/p&gt;</description>
+        <pubDate>03 December 2016</pubDate>
+        <link>http://breese.github.io/2016/12/03/receiving-datagrams.html</link>
+        <guid isPermaLink="true">http://breese.github.io/2016/12/03/receiving-datagrams.html</guid>
+        
+        <category>C++</category>
+        
+        <category>network</category>
+        
+        
+    </item>
     
     <item>
         <title>Outliers and Structural Change</title>
