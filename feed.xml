@@ -5,8 +5,23 @@
     <description>by Bjorn Reese</description>
     <link>http://breese.github.io/blog/</link>
     <atom:link href="http://breese.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>04 December 2016</pubDate>
-    <lastBuildDate>Sun, 04 Dec 2016 13:18:57 +0100</lastBuildDate>
+    <pubDate>12 May 2017</pubDate>
+    <lastBuildDate>Fri, 12 May 2017 12:49:16 +0200</lastBuildDate>
+    
+    <item>
+        <title>Customizing Error Codes</title>
+        <description>&lt;p&gt;Many C libraries follow the &lt;a href=&quot;http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html&quot;&gt;&lt;span class=&quot;caps&quot;&gt;POSIX&lt;/span&gt; tradition&lt;/a&gt; of returning errors as integers. Some libraries reuse the pre-defined &lt;a href=&quot;http://en.cppreference.com/w/cpp/header/cerrno&quot;&gt;&lt;code&gt;errno&lt;/code&gt;&lt;/a&gt; values, while others define their own library-specific values.&lt;/p&gt;
+&lt;p&gt;We show how to integrate the error values of such C libraries with &lt;code&gt;std::error_code&lt;/code&gt;. The choice of &lt;code&gt;std::error_code&lt;/code&gt; gives us several advantages: (i) errors are type-erased, (ii) errors are propagated without loss of information, and (iii) errors are interoperable.&lt;/p&gt;</description>
+        <pubDate>12 May 2017</pubDate>
+        <link>http://breese.github.io/2017/05/12/customizing-error-codes.html</link>
+        <guid isPermaLink="true">http://breese.github.io/2017/05/12/customizing-error-codes.html</guid>
+        
+        <category>C++,</category>
+        
+        <category>error</category>
+        
+        
+    </item>
     
     <item>
         <title>Receiving Datagrams</title>

@@ -17,13 +17,27 @@
   <tr>
     <td align="center" style="align: center; width: 25%;"><a href="/blog">Blog</a></td>
     <td align="center" style="align: center; width: 25%;"><a href="/feed.xml">RSS</a></td>
-    <td align="center" style="align: center; width: 25%;"><a href="https://github.org/breese/">GitHub</a></td>
+    <td align="center" style="align: center; width: 25%;"><a href="https://github.com/breese/">GitHub</a></td>
     <td align="center" style="align: center; width: 25%;"><a href="https://www.linkedin.com/pub/bj%C3%B8rn-reese/1/660/846">LinkedIn</a></td>
   </tr>
 </table>
 
     <h1>Under Development</h1>
 <p style="font-style: italic;">by Bj&oslash;rn Reese</p>
+<article>
+
+  <p><span class='marginnote'><em>C++,</em></span></p>
+
+  <p><span class='marginnote'><em>Error</em></span></p>
+
+  <center class='postdate'>12 May 2017</center>
+<span class='postdateseparator'></span>
+  <h3><a href="/2017/05/12/customizing-error-codes.html">Customizing Error Codes</a></h3>
+<blockquote>
+  <p>Many C libraries follow the <a href="http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html"><span class="caps"><span class="caps">POSIX</span></span> tradition</a> of returning errors as integers. Some libraries reuse the pre-defined <a href="http://en.cppreference.com/w/cpp/header/cerrno"><code>errno</code></a> values, while others define their own library-specific values.</p>
+<p>We show how to integrate the error values of such C libraries with <code>std::error_code</code>. The choice of <code>std::error_code</code> gives us several advantages: (i) errors are type-erased, (ii) errors are propagated without loss of information, and (iii) errors are interoperable.</p>
+</blockquote>
+</article>
 <article>
 
   <p><span class='marginnote'><em>C++</em></span></p>

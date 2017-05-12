@@ -18,7 +18,7 @@
   <tr>
     <td align="center" style="align: center; width: 25%;"><a href="/blog">Blog</a></td>
     <td align="center" style="align: center; width: 25%;"><a href="/feed.xml">RSS</a></td>
-    <td align="center" style="align: center; width: 25%;"><a href="https://github.org/breese/">GitHub</a></td>
+    <td align="center" style="align: center; width: 25%;"><a href="https://github.com/breese/">GitHub</a></td>
     <td align="center" style="align: center; width: 25%;"><a href="https://www.linkedin.com/pub/bj%C3%B8rn-reese/1/660/846">LinkedIn</a></td>
   </tr>
 </table>
@@ -96,7 +96,7 @@
 <span class="p">}</span> <span class="c1">// namespace detail
 </span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">error_category</span><span class="o">&amp;</span> <span class="n">some_category</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="n">detail</span><span class="o">::</span><span class="n">some_category</span> <span class="n">instance</span><span class="p">;</span>
+    <span class="k">static</span> <span class="n">detail</span><span class="o">::</span><span class="n">some_category</span> <span class="n">instance</span><span class="p">;</span>
     <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">custom</span></code></pre></figure><h2>Error impedance</h2>
@@ -149,7 +149,7 @@
 <span class="p">}</span> <span class="c1">// namespace detail
 </span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">error_category</span><span class="o">&amp;</span> <span class="n">generic_category</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="n">detail</span><span class="o">::</span><span class="n">generic_category</span> <span class="n">instance</span><span class="p">;</span>
+    <span class="k">static</span> <span class="n">detail</span><span class="o">::</span><span class="n">generic_category</span> <span class="n">instance</span><span class="p">;</span>
     <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">bridge</span></code></pre></figure><p>The above procedure can also be applied to Boost.Asio error codes.</p>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/tufte.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/breese.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pygment_trac.css" media="screen" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="application/atom+xml" rel="alternate" href="http://breese.github.io/feed.xml" title="" />
+    <title>Customizing Error Codes</title>
+  </head>
+
+  <body>
+    <table style="border: 0; margin: 0;">
+  <tr>
+    <td align="center" style="align: center; width: 25%;"><a href="/blog">Blog</a></td>
+    <td align="center" style="align: center; width: 25%;"><a href="/feed.xml">RSS</a></td>
+    <td align="center" style="align: center; width: 25%;"><a href="https://github.com/breese/">GitHub</a></td>
+    <td align="center" style="align: center; width: 25%;"><a href="https://www.linkedin.com/pub/bj%C3%B8rn-reese/1/660/846">LinkedIn</a></td>
+  </tr>
+</table>
+
+    <h1>Customizing Error Codes</h1>
+    <p>Many C libraries follow the <a href="http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html"><span class="caps">POSIX</span> tradition</a> of returning errors as integers. Some libraries reuse the pre-defined <a href="http://en.cppreference.com/w/cpp/header/cerrno"><code>errno</code></a> values, while others define their own library-specific values.</p>
+<p>We show how to integrate the error values of such C libraries with <code>std::error_code</code>. The choice of <code>std::error_code</code> gives us several advantages: (i) errors are type-erased, (ii) errors are propagated without loss of information, and (iii) errors are interoperable.</p>
+<p><!--more--></p>
+<h2>Type-erased error</h2>
+<label for='figure-std-error-code' class='margin-toggle'>&#8853;</label><p><input type='checkbox' id='figure-std-error-code' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/customize/error_code.png'/><br><em>Figure 1</em>: Anatomy of std::error&#95;code.</span></p>
+<p><a href="http://en.cppreference.com/w/cpp/error/error_code"><code>std::error_code</code></a> holds two member variables: an error value of type <code>int</code>, and a pointer to a library-specific category that represents the error type. The category is a singleton which inherits from <a href="http://en.cppreference.com/w/cpp/error/error_category"><code>std::error_category</code></a>.</p>
+<p>Each library must define its own error category that overrides the <code>name()</code> and <code>message()</code> functions of <code>std::error_category</code>. The former returns the name of the category, and the latter a textual representation of a concrete error value. The category can be considered a polymorphic <a href="http://en.cppreference.com/w/cpp/types/type_info"><code>std::type_info</code></a> that must be implemented manually and therefore works without <a href="https://en.wikipedia.org/wiki/Run-time_type_information"><span class="caps">RTTI</span></a>.</p>
+<p>Two <code>std::error_code</code> objects are equal if they have the same error value and they point to the same category singleton.</p>
+<p><code>std::error_code</code> is type-erased, which means that its type remains the same regardless of which error types it embeds. This is achieved because the error category is a polymorphic<label for='1' class='margin-toggle sidenote-number'></label><input type='checkbox' id='1' class='margin-toggle'/><span class='sidenote'>Polymorphism is a type-erasure technique. </span> singleton, and because <code>std::error_code</code> stores the address of a category singleton, no <a href="https://en.wikipedia.org/wiki/Object_slicing">object-slicing</a> will take place when <code>std::error_code</code> is copied.</p>
+<p>Type-erasure gives us some advantages:</p>
+<ol>
+	<li>Type-erasure enables us to build <a href="http://en.cppreference.com/w/cpp/language/pimpl">compilation firewalls</a>, whereby our C++ headers do not accidentially expose macros and global symbols from the underlying C library.</li>
+	<li>Lossless propagation means that although the error is type-erased, we preserve both the original error value from the C library and its type. The type is not preserved directly but can be deduced from the category. If an upgrade of the C library introduces new error values, they will be propagated even if we do not upgrade our C++ adapters.</li>
+	<li>Errors from different categories can be compared with each other because the error category has a concept for equivalence. Equivalence makes it easier to add new C libraries to the fray as demonstrated below.</li>
+</ol>
+<h2>Audio codecs as example</h2>
+<p>The running example here is C++ adaptors for <a href="https://en.wikipedia.org/wiki/Audio_codec">audio codec</a> libraries.</p>
+<p>These libraries are particularly interesting for our purposes, because although they implement different audio codecs, and they are written by different developers, their error values share a <a href="https://en.wikipedia.org/wiki/Family_resemblance">family-resemblance</a> &#8212; there is sufficient overlap between their error values so they can be handled in the same manner. For instance, all audio codecs support a limited amount of sample rates, and they return an error if the caller selects an unsupported sample rate.</p>
+<p>At the same time, there are also differences so we cannot translate the error values into a pre-defined set of common errors. We therefore want to propagate the actual error value without loss of information, but we only want to compare and react to well-known errors.</p>
+<p><code>std::error_code</code> was originally designed to allow multiple subsystems to encapsulate their own error values in a common error container. We can therefore use <code>std::error_code</code> to propagate the error values from all audio codec libraries. We just have to define an error category for each library.</p>
+<p>Furthermore, the audio decoders are paired with a transport mechanism that feeds them with data &#8212; e.g. a file reader or network streaming &#8212; so we must be able to pass through transport errors as well. We are going to assume that errors from the transport layer are already wrapped in <code>std::error_code</code>. If not, the techniques described below can be used.</p>
+<h2>Native adapters</h2>
+<p>Suppose we want to create a C++ adapter for the <a href="https://mpg123.org/">mpg123</a> audio codec library. Below is a selective part of its error values.</p>
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="c1">// mpg123.h
+</span>
+<span class="k">enum</span> <span class="n">mpg123_errors</span>
+<span class="p">{</span>
+  <span class="n">MPG123_OK</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="n">MPG123_BAD_RATE</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+  <span class="n">MPG123_BAD_PARAM</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+  <span class="n">MPG123_OUT_OF_MEMORY</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span>
+  <span class="c1">// ...
+</span><span class="p">};</span>
+
+<span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">mpg123_plain_strerror</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span></code></pre></figure><p>The <code>mpg123_plain_strerror()</code> function converts an error value into a textual representation.</p>
+<label for='figure-mpg123' class='margin-toggle'>&#8853;</label><p><input type='checkbox' id='figure-mpg123' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/customize/mpg123_error.png'/><br><em>Figure 2</em>: Native adapter for mpg123.</span></p>
+<p>The C++ adapter simply consists of an error category and a <code>make_error_code()</code> function that is used to convert mpg123 error values into <code>std::error_code</code>.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// mgp123.hpp
+</span>
+<span class="cp">#include &lt;system_error&gt;
+</span>
+<span class="k">namespace</span> <span class="n">mpg123</span>
+<span class="p">{</span>
+
+<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">error_category</span><span class="o">&amp;</span> <span class="n">category</span><span class="p">();</span>
+
+<span class="kr">inline</span> <span class="n">std</span><span class="o">::</span><span class="n">error_code</span> <span class="n">make_error_code</span><span class="p">(</span><span class="kt">int</span> <span class="n">mpg123_value</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="c1">// Create an error_code with the original mpg123 error value
+</span>  <span class="c1">// and the mgp123 error category.
+</span>  <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">error_code</span><span class="p">(</span><span class="n">mpg123_value</span><span class="p">,</span> <span class="n">mgp123</span><span class="o">::</span><span class="n">category</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">mgp123</span></code></pre></figure><p>Notice that this header does not include the C library header <code>&lt;mpg123.h&gt;</code>, so we have not polluted the global namespace with symbols from the C library.</p>
+<p>Most of the implementation is boiler-plate code, whose main purpose is to delegate the category <code>message()</code> call to the <code>mpg123_plain_strerror()</code> function.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// mgp123.cpp
+</span>
+<span class="cp">#include &lt;mgp123.h&gt; // C header
+#include &lt;mgp123.hpp&gt; // Adapter
+</span>
+<span class="k">namespace</span> <span class="n">mgp123</span>
+<span class="p">{</span>
+<span class="k">namespace</span> <span class="n">detail</span>
+<span class="p">{</span>
+
+<span class="k">class</span> <span class="nc">category</span> <span class="o">:</span> <span class="k">public</span> <span class="n">std</span><span class="o">::</span><span class="n">error_category</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+  <span class="k">virtual</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">()</span> <span class="k">const</span> <span class="n">noexcept</span> <span class="n">override</span>
+  <span class="p">{</span>
+    <span class="k">return</span> <span class="s">"mgp123::category"</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">virtual</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">message</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="k">const</span> <span class="n">override</span>
+  <span class="p">{</span>
+    <span class="c1">// Let the native function do the actual work
+</span>    <span class="k">return</span> <span class="o">::</span><span class="n">mpg123_plain_strerror</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="p">}</span> <span class="c1">// namespace detail
+</span>
+<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">error_category</span><span class="o">&amp;</span> <span class="n">category</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="c1">// The category singleton
+</span>  <span class="k">static</span> <span class="n">detail</span><span class="o">::</span><span class="n">category</span> <span class="n">instance</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">mgp123</span></code></pre></figure><p>We can define adapters for other audio codec libraries in a similar manner.</p>
+<h3>Using the adapter</h3>
+<p>Whenever the C++ adapter encounters an error from the mgp123 library, we can use <code>mpg123::make_error_code()</code> to return a <code>std::error_code</code> to the caller.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++">  <span class="c1">// ...
+</span>  <span class="kt">int</span> <span class="n">error</span> <span class="o">=</span> <span class="n">mpg123_getformat</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rate</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">channels</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">encoding</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">error</span> <span class="o">!=</span> <span class="n">MPG123_OK</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mpg123</span><span class="o">::</span><span class="n">make_error_code</span><span class="p">(</span><span class="n">error</span><span class="p">);</span></code></pre></figure><p>The caller then has several options:</p>
+<ol>
+	<li>Print the error. This is done with <code>error_code::message()</code>.</li>
+	<li>Throw the error. Wrap the <code>error_code</code> in a <a href="http://en.cppreference.com/w/cpp/error/system_error"><code>std::system_error</code></a> exception. Better yet, define an <code>mpg123::error</code> exception that inherits from <code>std::system_error</code>, so exceptions from the mpg123 adapter can be distinguished from other <code>system_error</code> exceptions in the <code>try-catch</code> block.</li>
+	<li>Check the error value. As the <code>error_code</code> contains the original error value, the caller must first check that the error code belongs to the <code>mgp123::category</code> and then compare the <code>error_code::value()</code> against <code>mpg123_errors</code> enumerators defined in <code>&lt;mpg123.h&gt;</code>.</li>
+</ol>
+<p>If the comparison is done in a <code>.cpp</code> file, then all options above can be done behind a compilation firewall.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// caller.cpp
+</span>
+<span class="cp">#include &lt;mpg123.h&gt;
+#include &lt;mpg123.hpp&gt;
+</span>
+<span class="kt">void</span> <span class="nf">inform</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">error_code</span><span class="o">&amp;</span> <span class="n">error</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">category</span><span class="p">()</span> <span class="o">==</span> <span class="n">mpg123</span><span class="o">::</span><span class="n">category</span><span class="p">())</span>
+  <span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">value</span><span class="p">())</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="n">MGP123_OK</span><span class="p">:</span>
+      <span class="k">break</span><span class="p">;</span> <span class="c1">// Nothing to report
+</span>    <span class="k">case</span> <span class="n">MGP123_BAD_RATE</span><span class="p">:</span>
+      <span class="n">inform_bad_format</span><span class="p">();</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="n">MGP123_BAD_PARAM</span><span class="p">:</span>
+      <span class="n">inform_illegal_argument</span><span class="p">();</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="n">MPG123_OUT_OF_MEMORY</span><span class="p">:</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure><p>This is a manageable solution, albeit not an elegant one. When we add another audio codec, say <a href="https://opus-codec.org/">libopus</a>, then the caller must check for its error values as well.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// caller.cpp
+</span>
+<span class="cp">#include &lt;mpg123.h&gt;
+#include &lt;opus/opus.h&gt;
+#include &lt;mpg123.hpp&gt;
+#include &lt;opus.hpp&gt;
+</span>
+<span class="kt">void</span> <span class="nf">inform</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">error_code</span><span class="o">&amp;</span> <span class="n">error</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">category</span><span class="p">()</span> <span class="o">==</span> <span class="n">mpg123</span><span class="o">::</span><span class="n">category</span><span class="p">())</span>
+  <span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">value</span><span class="p">())</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="n">MGP123_OK</span><span class="p">:</span>
+      <span class="k">break</span><span class="p">;</span> <span class="c1">// Nothing to report
+</span>    <span class="k">case</span> <span class="n">MGP123_BAD_RATE</span><span class="p">:</span>
+      <span class="n">inform_bad_format</span><span class="p">();</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="n">MGP123_BAD_PARAM</span><span class="p">:</span>
+      <span class="n">inform_illegal_argument</span><span class="p">();</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="n">MPG123_OUT_OF_MEMORY</span><span class="p">:</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">category</span><span class="p">()</span> <span class="o">==</span> <span class="n">opus</span><span class="o">::</span><span class="n">category</span><span class="p">())</span>
+  <span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">value</span><span class="p">())</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="n">OPUS_OK</span><span class="p">:</span>
+      <span class="k">break</span><span class="p">;</span> <span class="c1">// Nothing to report
+</span>    <span class="k">case</span> <span class="n">OPUS_BAD_ARG</span><span class="p">:</span>
+      <span class="n">inform_illegal_argument</span><span class="p">();</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="n">OPUS_INVALID_PACKET</span><span class="p">:</span>
+      <span class="n">inform_bad_format</span><span class="p">();</span>
+    <span class="k">case</span> <span class="n">OPUS_ALLOC_FAIL</span><span class="p">:</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure><p>Although our printing and throwing use cases are really simple, the checking use case places a heavy burden on the user of our C++ adapters, and the burden grows for each audio codec we wrap. We need something better.</p>
+<h2>Generic enumeration</h2>
+<p>A more user-friendly way of checking errors is to define enumerators to compare with. We notice that some of the native error values are already covered by <a href="http://en.cppreference.com/w/cpp/error/errc"><code>std::errc</code></a>, such as <code>invalid_argument</code>, so we will not include them in our own enumeration.</p>
+<p>The caller should be able to write the following. Notice the omission of the C library <code>&lt;mpg123.h&gt;</code> and <code>&lt;opus/opus.h&gt;</code> headers. This means that we maintain the compilation firewall.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// caller2.cpp
+</span>
+<span class="cp">#include &lt;codec.hpp&gt;
+</span>
+<span class="kt">void</span> <span class="nf">inform</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">error_code</span><span class="o">&amp;</span> <span class="n">error</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">error</span> <span class="o">==</span> <span class="n">codec</span><span class="o">::</span><span class="n">illegal_sample_rate</span><span class="p">)</span>
+    <span class="n">inform_bad_format</span><span class="p">();</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">error</span> <span class="o">==</span> <span class="n">std</span><span class="o">::</span><span class="n">errc</span><span class="o">::</span><span class="n">invalid_argument</span><span class="p">)</span>
+    <span class="n">inform_invalid_argument</span><span class="p">();</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">error</span> <span class="o">==</span> <span class="n">std</span><span class="o">::</span><span class="n">errc</span><span class="o">::</span><span class="n">not_enough_memory</span><span class="p">)</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">();</span>
+<span class="p">}</span></code></pre></figure><p>We define a generic enumeration and error category that we want to use across all audio codec libraries.</p>
+<label for='figure-mpg123' class='margin-toggle'>&#8853;</label><p><input type='checkbox' id='figure-mpg123' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/customize/codec_error.png'/><br><em>Figure 3</em>: Generic adapter with enumerators.</span></p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// codec.hpp
+</span>
+<span class="cp">#include &lt;system_error&gt;
+</span>
+<span class="k">namespace</span> <span class="n">codec</span>
+<span class="p">{</span>
+
+<span class="k">enum</span> <span class="k">class</span> <span class="nc">errc</span>
+<span class="p">{</span>
+  <span class="n">success</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="n">illegal_sample_rate</span><span class="p">,</span>
+  <span class="n">illegal_sample_width</span>
+<span class="p">};</span>
+
+<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">error_category</span><span class="o">&amp;</span> <span class="n">category</span><span class="p">();</span>
+<span class="n">std</span><span class="o">::</span><span class="n">error_code</span> <span class="n">make_error_code</span><span class="p">(</span><span class="n">codec</span><span class="o">::</span><span class="n">errc</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">error_condition</span> <span class="n">make_error_condition</span><span class="p">(</span><span class="n">codec</span><span class="o">::</span><span class="n">errc</span><span class="p">);</span>
+
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">codec</span></code></pre></figure><p>As the native error values and the <code>codec::errc</code> enumeration have different types and numerical values, we need a mapping between them. This mapping is done by our category&#8217;s <code>equivalent()</code> member function.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// mpg123.cpp
+</span>
+<span class="cp">#include &lt;mpg123.h&gt;
+#include &lt;codec.hpp&gt;
+#include &lt;mpg123.hpp&gt;
+</span>
+<span class="k">namespace</span> <span class="n">mpg123</span>
+<span class="p">{</span>
+<span class="k">namespace</span> <span class="n">detail</span>
+<span class="p">{</span>
+
+<span class="k">class</span> <span class="nc">category</span> <span class="o">:</span> <span class="k">public</span> <span class="n">std</span><span class="o">::</span><span class="n">error_category</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+
+  <span class="c1">// ...
+</span>
+  <span class="c1">// Compare own value with foreign condition
+</span>  <span class="k">virtual</span> <span class="n">bool</span> <span class="n">equivalent</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">mpg123_value</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">error_condition</span><span class="o">&amp;</span> <span class="n">condition</span><span class="p">)</span> <span class="k">const</span> <span class="n">noexcept</span> <span class="n">override</span>
+  <span class="p">{</span>
+      <span class="k">switch</span> <span class="p">(</span><span class="n">mpg123_value</span><span class="p">)</span>
+      <span class="p">{</span>
+      <span class="k">case</span> <span class="n">MPG123_OK</span><span class="p">:</span>
+          <span class="k">return</span> <span class="n">bool</span><span class="p">(</span><span class="n">condition</span><span class="p">);</span>
+      <span class="k">case</span> <span class="n">MPG123_BAD_RATE</span><span class="p">:</span>
+          <span class="k">return</span> <span class="n">condition</span> <span class="o">==</span>
+            <span class="n">codec</span><span class="o">::</span><span class="n">make_error_condition</span><span class="p">(</span><span class="n">codec</span><span class="o">::</span><span class="n">errc</span><span class="o">::</span><span class="n">illegal_sample_rate</span><span class="p">);</span>
+      <span class="k">case</span> <span class="n">MPG123_BAD_PARAM</span><span class="p">:</span>
+          <span class="k">return</span> <span class="n">condition</span> <span class="o">==</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">make_error_condition</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">errc</span><span class="o">::</span><span class="n">illegal_argument</span><span class="p">);</span>
+      <span class="k">case</span> <span class="n">MPG123_OUT_OF_MEMORY</span><span class="p">:</span>
+          <span class="k">return</span> <span class="n">condition</span> <span class="o">==</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">make_error_condition</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">errc</span><span class="o">::</span><span class="n">not_enough_memory</span><span class="p">);</span>
+      <span class="k">default</span><span class="o">:</span>
+          <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="p">}</span> <span class="c1">// namespace detail
+</span>
+<span class="c1">// ...
+</span>
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">mpg123</span></code></pre></figure><p>Finally we have to create a specialization of <a href="http://en.cppreference.com/w/cpp/error/error_condition/is_error_condition_enum"><code>std::is_error_condition_enum</code></a> so our enum can be compared directly with a <code>std::error_code</code>.</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// codec.hpp
+</span>
+<span class="k">namespace</span> <span class="n">std</span>
+<span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;&gt;</span>
+<span class="k">struct</span> <span class="n">is_error_condition_enum</span><span class="o">&lt;</span><span class="n">codec</span><span class="o">::</span><span class="n">errc</span><span class="o">&gt;</span>
+  <span class="o">:</span> <span class="k">public</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span> <span class="p">{};</span>
+
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">std</span></code></pre></figure><p>The advantage of the above is that we have moved all knowledge of the mpg123 library back into the C++ adapter.</p>
+<h2>Error condition</h2>
+<p>We have used <a href="http://en.cppreference.com/w/cpp/error/error_condition"><code>std::error_condition</code></a> in the comparisons in the C++ adapter. We cannot use <code>std::error_code</code> because it will perform an exact match. Instead <code>std::error_condition</code> was introduced to enable equivalent comparisons.</p>
+<p>The descriptions of <code>std::error_condition</code> are a bit vague. The C++ standard states that</p>
+<label for='1' class='margin-toggle'> &#8853;</label><p><input type='checkbox' id='1' class='margin-toggle'/><span class='marginnote'>[syserr.errcondition.overview] </span></p>
+<blockquote>
+<p>The class error_condition describes an object used to hold values identifying error conditions. [ Note: error_condition values are portable abstractions, while error_code values (19.5.3) are implementation specific. — end note ]</p>
+</blockquote>
+<p>with no elaboration on what an error condition is. This leaves us with an impression that <code>std::error_condition</code> could be used to propagate platform-independent errors. This is collaborated by the fact that its interface is almost identical to <code>std::error_code</code>.</p>
+<p>That is not the case. As one of the original designers <a href="http://blog.think-async.com/2010/04/system-error-support-in-c0x-part-1.html">explains</a></p>
+<blockquote>
+<p>class error_condition &#8211; something that you want to test for and, potentially, react to in your code.</p>
+</blockquote>
+<p>Therefore, a more useful guideline is to:</p>
+<ul>
+	<li>Use <code>std::error_code</code> for error propagation.</li>
+	<li>Use <code>std::error_code</code> for comparison within a category.</li>
+	<li>Use <code>std::error_condition</code> for comparison between categories.</li>
+</ul>
+    <br/>
+<br/>
+<br/>
+<hr>
+&copy; 2017 <a href="http://breese.github.io/">Bj&oslash;rn Reese</a>.
+
+  </body>
+</html>
