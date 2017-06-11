@@ -61,7 +61,7 @@
 <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">mpg123_plain_strerror</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span></code></pre></figure><p>The <code>mpg123_plain_strerror()</code> function converts an error value into a textual representation.</p>
 <label for='figure-mpg123' class='margin-toggle'>&#8853;</label><p><input type='checkbox' id='figure-mpg123' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/customize/mpg123_error.png'/><br><em>Figure 2</em>: Native adapter for mpg123.</span></p>
 <p>The C++ adapter simply consists of an error category and a <code>make_error_code()</code> function that is used to convert mpg123 error values into <code>std::error_code</code>.</p>
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// mgp123.hpp
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// mpg123.hpp
 </span>
 <span class="cp">#include &lt;system_error&gt;
 </span>
@@ -73,18 +73,18 @@
 <span class="kr">inline</span> <span class="n">std</span><span class="o">::</span><span class="n">error_code</span> <span class="n">make_error_code</span><span class="p">(</span><span class="kt">int</span> <span class="n">mpg123_value</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="c1">// Create an error_code with the original mpg123 error value
-</span>  <span class="c1">// and the mgp123 error category.
-</span>  <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">error_code</span><span class="p">(</span><span class="n">mpg123_value</span><span class="p">,</span> <span class="n">mgp123</span><span class="o">::</span><span class="n">category</span><span class="p">());</span>
+</span>  <span class="c1">// and the mpg123 error category.
+</span>  <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">error_code</span><span class="p">(</span><span class="n">mpg123_value</span><span class="p">,</span> <span class="n">mpg123</span><span class="o">::</span><span class="n">category</span><span class="p">());</span>
 <span class="p">}</span>
 
-<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">mgp123</span></code></pre></figure><p>Notice that this header does not include the C library header <code>&lt;mpg123.h&gt;</code>, so we have not polluted the global namespace with symbols from the C library.</p>
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">mpg123</span></code></pre></figure><p>Notice that this header does not include the C library header <code>&lt;mpg123.h&gt;</code>, so we have not polluted the global namespace with symbols from the C library.</p>
 <p>Most of the implementation is boiler-plate code, whose main purpose is to delegate the category <code>message()</code> call to the <code>mpg123_plain_strerror()</code> function.</p>
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// mgp123.cpp
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// mpg123.cpp
 </span>
-<span class="cp">#include &lt;mgp123.h&gt; // C header
-#include &lt;mgp123.hpp&gt; // Adapter
+<span class="cp">#include &lt;mpg123.h&gt; // C header
+#include &lt;mpg123.hpp&gt; // Adapter
 </span>
-<span class="k">namespace</span> <span class="n">mgp123</span>
+<span class="k">namespace</span> <span class="n">mpg123</span>
 <span class="p">{</span>
 <span class="k">namespace</span> <span class="n">detail</span>
 <span class="p">{</span>
@@ -94,7 +94,7 @@
 <span class="k">public</span><span class="o">:</span>
   <span class="k">virtual</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">()</span> <span class="k">const</span> <span class="n">noexcept</span> <span class="n">override</span>
   <span class="p">{</span>
-    <span class="k">return</span> <span class="s">"mgp123::category"</span><span class="p">;</span>
+    <span class="k">return</span> <span class="s">"mpg123::category"</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="k">virtual</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">message</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="k">const</span> <span class="n">override</span>
   <span class="p">{</span>
@@ -112,9 +112,9 @@
   <span class="k">return</span> <span class="n">instance</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">mgp123</span></code></pre></figure><p>We can define adapters for other audio codec libraries in a similar manner.</p>
+<span class="p">}</span> <span class="o">//</span> <span class="k">namespace</span> <span class="n">mpg123</span></code></pre></figure><p>We can define adapters for other audio codec libraries in a similar manner.</p>
 <h3>Using the adapter</h3>
-<p>Whenever the C++ adapter encounters an error from the mgp123 library, we can use <code>mpg123::make_error_code()</code> to return a <code>std::error_code</code> to the caller.</p>
+<p>Whenever the C++ adapter encounters an error from the mpg123 library, we can use <code>mpg123::make_error_code()</code> to return a <code>std::error_code</code> to the caller.</p>
 <figure class="highlight"><pre><code class="language-c--" data-lang="c++">  <span class="c1">// ...
 </span>  <span class="kt">int</span> <span class="n">error</span> <span class="o">=</span> <span class="n">mpg123_getformat</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rate</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">channels</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">encoding</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="n">error</span> <span class="o">!=</span> <span class="n">MPG123_OK</span><span class="p">)</span>
@@ -122,7 +122,7 @@
 <ol>
 	<li>Print the error. This is done with <code>error_code::message()</code>.</li>
 	<li>Throw the error. Wrap the <code>error_code</code> in a <a href="http://en.cppreference.com/w/cpp/error/system_error"><code>std::system_error</code></a> exception. Better yet, define an <code>mpg123::error</code> exception that inherits from <code>std::system_error</code>, so exceptions from the mpg123 adapter can be distinguished from other <code>system_error</code> exceptions in the <code>try-catch</code> block.</li>
-	<li>Check the error value. As the <code>error_code</code> contains the original error value, the caller must first check that the error code belongs to the <code>mgp123::category</code> and then compare the <code>error_code::value()</code> against <code>mpg123_errors</code> enumerators defined in <code>&lt;mpg123.h&gt;</code>.</li>
+	<li>Check the error value. As the <code>error_code</code> contains the original error value, the caller must first check that the error code belongs to the <code>mpg123::category</code> and then compare the <code>error_code::value()</code> against <code>mpg123_errors</code> enumerators defined in <code>&lt;mpg123.h&gt;</code>.</li>
 </ol>
 <p>If the comparison is done in a <code>.cpp</code> file, then all options above can be done behind a compilation firewall.</p>
 <figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">// caller.cpp
@@ -136,12 +136,12 @@
   <span class="p">{</span>
     <span class="k">switch</span> <span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">value</span><span class="p">())</span>
     <span class="p">{</span>
-    <span class="k">case</span> <span class="n">MGP123_OK</span><span class="p">:</span>
+    <span class="k">case</span> <span class="n">MPG123_OK</span><span class="p">:</span>
       <span class="k">break</span><span class="p">;</span> <span class="c1">// Nothing to report
-</span>    <span class="k">case</span> <span class="n">MGP123_BAD_RATE</span><span class="p">:</span>
+</span>    <span class="k">case</span> <span class="n">MPG123_BAD_RATE</span><span class="p">:</span>
       <span class="n">inform_bad_format</span><span class="p">();</span>
       <span class="k">break</span><span class="p">;</span>
-    <span class="k">case</span> <span class="n">MGP123_BAD_PARAM</span><span class="p">:</span>
+    <span class="k">case</span> <span class="n">MPG123_BAD_PARAM</span><span class="p">:</span>
       <span class="n">inform_illegal_argument</span><span class="p">();</span>
       <span class="k">break</span><span class="p">;</span>
     <span class="k">case</span> <span class="n">MPG123_OUT_OF_MEMORY</span><span class="p">:</span>
@@ -162,12 +162,12 @@
   <span class="p">{</span>
     <span class="k">switch</span> <span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">value</span><span class="p">())</span>
     <span class="p">{</span>
-    <span class="k">case</span> <span class="n">MGP123_OK</span><span class="p">:</span>
+    <span class="k">case</span> <span class="n">MPG123_OK</span><span class="p">:</span>
       <span class="k">break</span><span class="p">;</span> <span class="c1">// Nothing to report
-</span>    <span class="k">case</span> <span class="n">MGP123_BAD_RATE</span><span class="p">:</span>
+</span>    <span class="k">case</span> <span class="n">MPG123_BAD_RATE</span><span class="p">:</span>
       <span class="n">inform_bad_format</span><span class="p">();</span>
       <span class="k">break</span><span class="p">;</span>
-    <span class="k">case</span> <span class="n">MGP123_BAD_PARAM</span><span class="p">:</span>
+    <span class="k">case</span> <span class="n">MPG123_BAD_PARAM</span><span class="p">:</span>
       <span class="n">inform_illegal_argument</span><span class="p">();</span>
       <span class="k">break</span><span class="p">;</span>
     <span class="k">case</span> <span class="n">MPG123_OUT_OF_MEMORY</span><span class="p">:</span>
