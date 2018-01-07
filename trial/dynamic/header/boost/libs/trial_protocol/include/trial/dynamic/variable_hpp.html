@@ -1,0 +1,79 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Header &lt;boost/libs/trial.protocol/include/trial/dynamic/variable.hpp&gt;</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_66_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../../../../../../index.html" title="Chapter&#160;1.&#160;Trial.Dynamic">
+<link rel="up" href="../../../../../../../reference.html" title="Reference">
+<link rel="prev" href="../../../../../../../trial/dynamic/token/symbol.html" title="Struct symbol">
+<link rel="next" href="../../../../../../../trial/dynamic/basic_array.html" title="Struct template basic_array">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_66_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../../../../../../trial/dynamic/token/symbol.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../../../../../reference.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../../../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../../../../../../../trial/dynamic/basic_array.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.libs.trial_protocol.include.trial.dynamic.variable_hpp"></a>Header &lt;<a href="http://www.boost.org/doc/libs/1_66_0/boost/libs/trial.protocol/include/trial/dynamic/variable.hpp" target="_top">boost/libs/trial.protocol/include/trial/dynamic/variable.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">trial</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dynamic</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="special">&gt;</span> <span class="keyword">class</span> Allocator<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../../../../../../../trial/dynamic/basic_array.html" title="Struct template basic_array">basic_array</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="special">&gt;</span> <span class="keyword">class</span> Allocator<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../../../../../../../trial/dynamic/basic_map.html" title="Struct template basic_map">basic_map</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="special">&gt;</span> <span class="keyword">class</span> Allocator<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="../../../../../../../trial/dynamic/basic_variable.html" title="Class template basic_variable">basic_variable</a><span class="special">;</span>
+
+    <span class="keyword">struct</span> <a class="link" href="../../../../../../../trial/dynamic/boolean.html" title="Struct boolean">boolean</a><span class="special">;</span>
+    <span class="keyword">struct</span> <a class="link" href="../../../../../../../trial/dynamic/integer.html" title="Struct integer">integer</a><span class="special">;</span>
+    <span class="keyword">struct</span> <a class="link" href="../../../../../../../trial/dynamic/number.html" title="Struct number">number</a><span class="special">;</span>
+    <span class="keyword">struct</span> <a class="link" href="../../../../../../../trial/dynamic/string.html" title="Struct string">string</a><span class="special">;</span>
+    <span class="keyword">struct</span> <a class="link" href="../../../../../../../trial/dynamic/u16string.html" title="Struct u16string">u16string</a><span class="special">;</span>
+    <span class="keyword">struct</span> <a class="link" href="../../../../../../../trial/dynamic/u32string.html" title="Struct u32string">u32string</a><span class="special">;</span>
+    <span class="keyword">struct</span> <a class="link" href="../../../../../../../trial/dynamic/wstring.html" title="Struct wstring">wstring</a><span class="special">;</span>
+
+    <span class="keyword">enum</span> <a name="trial.dynamic.nullable"></a>nullable <span class="special">{</span> null <span class="special">}</span><span class="special">;</span>
+
+    <span class="keyword">typedef</span> <a class="link" href="../../../../../../../trial/dynamic/basic_variable.html" title="Class template basic_variable">basic_variable</a><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span> <span class="special">&gt;</span> <a name="trial.dynamic.variable"></a><span class="identifier">variable</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <a class="link" href="../../../../../../../trial/dynamic/basic_array.html" title="Struct template basic_array">basic_array</a><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span> <span class="special">&gt;</span> <a name="trial.dynamic.array"></a><span class="identifier">array</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <a class="link" href="../../../../../../../trial/dynamic/basic_map.html" title="Struct template basic_map">basic_map</a><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span> <span class="special">&gt;</span> <a name="trial.dynamic.map"></a><span class="identifier">map</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="special">&gt;</span> <span class="keyword">class</span> Allocator<span class="special">,</span> <span class="keyword">typename</span> U<span class="special">&gt;</span> 
+      <a class="link" href="../../../../../../../trial/dynamic/basic_variable.html" title="Class template basic_variable">basic_variable</a><span class="special">&lt;</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span> 
+      <a name="trial.dynamic.operator+_idm7088"></a><span class="keyword">operator</span><span class="special">+</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../../../../../../../trial/dynamic/basic_variable.html" title="Class template basic_variable">basic_variable</a><span class="special">&lt;</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">U</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="special">&gt;</span> <span class="keyword">class</span> Allocator<span class="special">&gt;</span> 
+      <a class="link" href="../../../../../../../trial/dynamic/basic_variable.html" title="Class template basic_variable">basic_variable</a><span class="special">&lt;</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span> 
+      <a name="trial.dynamic.operator+_idm7100"></a><span class="keyword">operator</span><span class="special">+</span><span class="special">(</span><span class="identifier">nullable</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../../../../../../../trial/dynamic/basic_variable.html" title="Class template basic_variable">basic_variable</a><span class="special">&lt;</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">bool</span> <a name="trial.dynamic.operator=="></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">U</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">bool</span> <a name="trial.dynamic.operator!="></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">U</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> U<span class="special">&gt;</span> <span class="keyword">bool</span> <a name="trial.dynamic.operator_idm7129"></a><span class="keyword">operator</span><span class="special">&lt;</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">U</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="special">&gt;</span> <span class="keyword">class</span> Allocator<span class="special">,</span> <span class="keyword">typename</span> U<span class="special">&gt;</span> 
+      <span class="keyword">bool</span> <a name="trial.dynamic.operator_=_idm7138"></a><span class="keyword">operator</span><span class="special">&lt;=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../../../../../../../trial/dynamic/basic_variable.html" title="Class template basic_variable">basic_variable</a><span class="special">&lt;</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">U</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="special">&gt;</span> <span class="keyword">class</span> Allocator<span class="special">,</span> <span class="keyword">typename</span> U<span class="special">&gt;</span> 
+      <span class="keyword">bool</span> <a name="trial.dynamic.operator_idm7149"></a><span class="keyword">operator</span><span class="special">&gt;</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../../../../../../../trial/dynamic/basic_variable.html" title="Class template basic_variable">basic_variable</a><span class="special">&lt;</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">U</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="special">&gt;</span> <span class="keyword">class</span> Allocator<span class="special">,</span> <span class="keyword">typename</span> U<span class="special">&gt;</span> 
+      <span class="keyword">bool</span> <a name="trial.dynamic.operator_=_idm7160"></a><span class="keyword">operator</span><span class="special">&gt;=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../../../../../../../trial/dynamic/basic_variable.html" title="Class template basic_variable">basic_variable</a><span class="special">&lt;</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">U</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2017 Bjorn Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../../../../../../trial/dynamic/token/symbol.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../../../../../reference.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../../../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../../../../../../../trial/dynamic/basic_array.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

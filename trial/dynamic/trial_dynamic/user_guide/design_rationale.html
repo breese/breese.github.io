@@ -1,0 +1,410 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Design Rationale</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_59_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Trial.Dynamic">
+<link rel="up" href="../user_guide.html" title="User Guide">
+<link rel="prev" href="converters.html" title="Converters">
+<link rel="next" href="concepts.html" title="Concepts">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_59_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="converters.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../user_guide.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="concepts.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="trial_dynamic.user_guide.design_rationale"></a><a class="link" href="design_rationale.html" title="Design Rationale">Design Rationale</a>
+</h3></div></div></div>
+<p>
+        This section describes the rationale behind the design of the dynamic variable.
+      </p>
+<h5>
+<a name="trial_dynamic.user_guide.design_rationale.h0"></a>
+        <span class="phrase"><a name="trial_dynamic.user_guide.design_rationale.supported_types"></a></span><a class="link" href="design_rationale.html#trial_dynamic.user_guide.design_rationale.supported_types">Supported
+        Types</a>
+      </h5>
+<p>
+        The dynamic variable only supports a pre-defined list of types. No custom
+        types are allowed. This restriction is imposed to define various relationships
+        between supported types such that the dynamic variable can meet the requirements
+        for the Container concept.
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Tag type
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Indicates the absence of data. It serves a similar purpose as
+                  <a href="http://en.cppreference.com/w/cpp/utility/optional/nullopt_t" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">nullopt_t</span></code>.</a>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">boolean</span></code>
+<code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">integer</span></code>
+<code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">number</span></code></pre>
+              </td>
+<td>
+                <p>
+                  Indicates a single value of an <a href="http://en.cppreference.com/w/c/language/arithmetic_types" target="_top">arithmetic
+                  type</a>. Arithmetic operations on dynamic variables will use
+                  the normal C++ arithmetic operations.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">string</span></code>
+<code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">wstring</span></code>
+<code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">u16string</span></code>
+<code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">u32string</span></code></pre>
+              </td>
+<td>
+                <p>
+                  Indicates a sequence of characters. Single characters<a href="#ftn.trial_dynamic.user_guide.design_rationale.f0" class="footnote" name="trial_dynamic.user_guide.design_rationale.f0"><sup class="footnote">[a]</sup></a> cannot be stored directly, but have to be added as
+                  strings.
+                </p>
+                <p>
+                  The string types are considered incompatible types, so no comparison
+                  or conversion between them are supported.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">array</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Indicates a sequence of nested dynamic variables. Adheres to the
+                  <code class="computeroutput"><span class="identifier">SequenceContainer</span></code>
+                  concept.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">map</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Indicates an ordered sequence of key-value pairs, where both key
+                  and value are dynamic variables.
+                </p>
+                <p>
+                  Adheres to the <code class="computeroutput"><span class="identifier">AssociativeContainer</span></code>
+                  concept with a <code class="computeroutput"><span class="identifier">mapped_type</span></code>.
+                </p>
+              </td>
+</tr>
+</tbody>
+<tbody class="footnotes"><tr><td colspan="2"><div id="ftn.trial_dynamic.user_guide.design_rationale.f0" class="footnote"><p><a href="#trial_dynamic.user_guide.design_rationale.f0" class="para"><sup class="para">[a] </sup></a>
+                    Except <code class="computeroutput"><span class="keyword">signed</span> <span class="keyword">char</span></code>
+                    and <code class="computeroutput"><span class="keyword">unsigned</span> <span class="keyword">char</span></code>
+                    which are considered small integers.
+                  </p></div></td></tr></tbody>
+</table></div>
+<p>
+        A variable can only change its type via construction, assignment, or swapping.
+        For instance, the <code class="computeroutput"><span class="identifier">clear</span><span class="special">()</span></code>
+        member function resets the content of a variable, but retains the type. An
+        exemption is when the variable is nullable, in which case insertion can also
+        change the type.
+      </p>
+<p>
+        As the type can change dynamically during program execution, operations between
+        incompatible supported types results in run-time errors, rather than compile-time
+        errors. Depending on the operation, either a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">error_code</span></code>
+        set to <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">incompatible_types</span></code> is returned, or thrown
+        as a <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">error</span></code> exception containing this error code.
+      </p>
+<p>
+        Assigning an unsupported type to a variable results in a compile-time error.
+      </p>
+<h5>
+<a name="trial_dynamic.user_guide.design_rationale.h1"></a>
+        <span class="phrase"><a name="trial_dynamic.user_guide.design_rationale.concepts"></a></span><a class="link" href="design_rationale.html#trial_dynamic.user_guide.design_rationale.concepts">Concepts</a>
+      </h5>
+<p>
+        The dynamic variable meets the requirements of the <a href="http://en.cppreference.com/w/cpp/concept/Container" target="_top">Container</a>,
+        <a href="http://en.cppreference.com/w/cpp/concept/ReversibleContainer" target="_top">ReversibleContainer</a>,
+        and <a class="link" href="concepts.html#dynamic-container">DynamicContainer</a> concepts.
+      </p>
+<p>
+        Meeting the requirements of the Container concept means that the dynamic
+        variable can be used together with C++ algorithms. In order to meet the Container
+        concept, each supported type must be considered a container. Singular types
+        like the fundamental data types and strings are considered containers with
+        a single element, except nullable which has no elements. The singular types
+        can be used both as a value and as a container. The container size of each
+        supported type is listed in the table below.
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Tag type
+                </p>
+              </th>
+<th>
+                <p>
+                  Container size
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  0
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">boolean</span></code>
+<code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">integer</span></code>
+<code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">number</span></code>
+<code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">string</span></code>
+<code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">wstring</span></code>
+<code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">u16string</span></code>
+<code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">u32string</span></code></pre>
+              </td>
+<td>
+                <p>
+                  1
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">array</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span><span class="special">::</span><span class="identifier">array_type</span><span class="special">::</span><span class="identifier">size</span><span class="special">()</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">map</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span><span class="special">::</span><span class="identifier">map_type</span><span class="special">::</span><span class="identifier">size</span><span class="special">()</span></code>
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+        The DynamicContainer concept has been constructed as a common set of insertion
+        and erasure operations that maps to the <a href="http://en.cppreference.com/w/cpp/concept/SequenceContainer" target="_top">SequenceContainer</a>
+        and <a href="http://en.cppreference.com/w/cpp/concept/AssociativeContainer" target="_top">AssociativeContainer</a>
+        concepts.
+      </p>
+<p>
+        The dynamic variable does not meet the requirements of the <a href="http://en.cppreference.com/w/cpp/concept/AllocatorAwareContainer" target="_top">AllocatorAwareContainer</a>
+        concept.
+      </p>
+<h5>
+<a name="trial_dynamic.user_guide.design_rationale.h2"></a>
+        <span class="phrase"><a name="trial_dynamic.user_guide.design_rationale.type_checks"></a></span><a class="link" href="design_rationale.html#trial_dynamic.user_guide.design_rationale.type_checks">Type Checks</a>
+      </h5>
+<p>
+        The stored type of a variable can be queried in different ways.
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            Query by type is done with the <code class="computeroutput"><span class="identifier">is</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code> and <code class="computeroutput"><span class="identifier">same</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code> member functions. These are primarily
+            intended for checking pre-conditions. Query functions with a template
+            parameter was chosen over explicit query functions, such as <code class="computeroutput"><span class="identifier">is_boolean</span><span class="special">()</span></code>,
+            because the former can be used in generic code.
+          </li>
+<li class="listitem">
+            Query by enumeration is done with the <code class="computeroutput"><span class="identifier">code</span><span class="special">()</span></code> and <code class="computeroutput"><span class="identifier">symbol</span><span class="special">()</span></code> member functions. These are intended
+            for dispatching based on the stored type. The use of enumeration enables
+            the compiler to warn against missing cases in switch statements.
+          </li>
+<li class="listitem">
+            Visitation via the <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">visit</span></code>
+            algorithm.
+          </li>
+</ul></div>
+<h5>
+<a name="trial_dynamic.user_guide.design_rationale.h3"></a>
+        <span class="phrase"><a name="trial_dynamic.user_guide.design_rationale.construction"></a></span><a class="link" href="design_rationale.html#trial_dynamic.user_guide.design_rationale.construction">Construction</a>
+      </h5>
+<h5>
+<a name="trial_dynamic.user_guide.design_rationale.h4"></a>
+        <span class="phrase"><a name="trial_dynamic.user_guide.design_rationale.comparison"></a></span><a class="link" href="design_rationale.html#trial_dynamic.user_guide.design_rationale.comparison">Comparison</a>
+      </h5>
+<p>
+        Comparison takes both the type and value into account. Some types, such as
+        arithmetic types, are directly comparable, and they will be compared using
+        the normal C++ rules. An exemption is comparison between signed and unsigned
+        integers, which does not trigger compiler warnings nor raises run-time errors.
+      </p>
+<p>
+        When supported types are not value-comparable, a type ordering is imposed.
+        Nullable types always compares less than other types. Apart from the nullable
+        type, the ordering between the remaining type has been chosen arbitrarily.
+        The reason for type ordering is to ensure that any combination of values
+        can be compared. This is needed because <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span><span class="special">::</span><span class="identifier">map_type</span></code>
+        uses <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span></code> as the key, so the less-than operator
+        must work. It is also useful for algorithms with predicates that use relational
+        comparison.
+      </p>
+<p>
+        Strings of different types are not value-comparable, which is in accordance
+        with normal C++ rules,<a href="#ftn.trial_dynamic.user_guide.design_rationale.f1" class="footnote" name="trial_dynamic.user_guide.design_rationale.f1"><sup class="footnote">[3]</sup></a> so they will be compared using their types. The ordering between
+        string types is arbitrary.
+      </p>
+<p>
+        Comparison against unsupported types results in compiler errors.
+      </p>
+<h5>
+<a name="trial_dynamic.user_guide.design_rationale.h5"></a>
+        <span class="phrase"><a name="trial_dynamic.user_guide.design_rationale.traversal"></a></span><a class="link" href="design_rationale.html#trial_dynamic.user_guide.design_rationale.traversal">Traversal</a>
+      </h5>
+<p>
+        The dynamic variable supports container types, so it must be possible to
+        traverse the content of these containers. There are two ways to traverse
+        a dynamic variable.
+      </p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+            Adherence to the Container concept means that the dynamic variable can
+            traversed by iterators.
+          </li>
+<li class="listitem">
+            Visitation can be done using the <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">visit</span></code>
+            algorithm. The array and associative arrays can be iterated over for
+            recursive visitation.
+          </li>
+</ol></div>
+<p>
+        Special attention is needed for iterator dereferencing, because it returns
+        a reference to the embedded value. This return type must be the same for
+        any value. The iterators use <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span></code>
+        as the return type. The associative array stands out because the key-value
+        pair is stored as an <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span></code>,
+        not as a <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span></code>. The solution is that dereference
+        returns a reference to the value, not the entire key-value pair. The iterator
+        is therefore a value iterator.
+      </p>
+<p>
+        A consequence of using value iterators is that when sorting an associated
+        array, only the values are sorted. In other words, values are moved between
+        keys. For example, sorting <code class="computeroutput"><span class="special">{</span> <span class="special">{</span><span class="string">"alpha"</span><span class="special">,</span> <span class="number">20</span><span class="special">},</span>
+        <span class="special">{</span><span class="string">"bravo"</span><span class="special">,</span> <span class="number">10</span><span class="special">}</span>
+        <span class="special">}</span></code> becomes <code class="computeroutput"><span class="special">{</span>
+        <span class="special">{</span><span class="string">"alpha"</span><span class="special">,</span> <span class="number">10</span><span class="special">},</span>
+        <span class="special">{</span><span class="string">"bravo"</span><span class="special">,</span> <span class="number">20</span><span class="special">}</span>
+        <span class="special">}</span></code>. This may make more sense if we
+        regard an array as an associative array with the index as the key. For example,
+        the array <code class="computeroutput"><span class="special">{</span><span class="number">20</span><span class="special">,</span> <span class="number">10</span><span class="special">}</span></code>
+        can be regarded as <code class="computeroutput"><span class="special">{</span> <span class="special">{</span><span class="number">0</span><span class="special">,</span> <span class="number">20</span><span class="special">},</span> <span class="special">{</span><span class="number">1</span><span class="special">,</span> <span class="number">10</span><span class="special">}</span>
+        <span class="special">}</span></code>. Sorting this arrays results in
+        <code class="computeroutput"><span class="special">{</span> <span class="special">{</span><span class="number">0</span><span class="special">,</span> <span class="number">10</span><span class="special">},</span> <span class="special">{</span><span class="number">1</span><span class="special">,</span> <span class="number">20</span><span class="special">}</span>
+        <span class="special">}</span></code> which corresponds to <code class="computeroutput"><span class="special">{</span><span class="number">10</span><span class="special">,</span>
+        <span class="number">20</span><span class="special">}</span></code>.
+      </p>
+<p>
+        The iterator has explicit methods to obtain both the key and the value by
+        reference.
+      </p>
+<p>
+        A key iterator also exists. It works like the value iterator but the dereferencing
+        operator returns the key rather than the value. Only the associative array
+        has keys, so the key of other supported types is their index. The key iterator
+        is const, because the key cannot be changed. Changing the key can only be
+        done by erasing the old key and inserting the new key.
+      </p>
+<h5>
+<a name="trial_dynamic.user_guide.design_rationale.h6"></a>
+        <span class="phrase"><a name="trial_dynamic.user_guide.design_rationale.customization"></a></span><a class="link" href="design_rationale.html#trial_dynamic.user_guide.design_rationale.customization">Customization</a>
+      </h5>
+<p>
+        The only customization point in the dynamic variable is allocator support.
+      </p>
+<p>
+        A custom allocator can be specified as a template parameter for the <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">basic_variable</span><span class="special">&lt;</span><span class="identifier">Allocator</span><span class="special">&gt;</span></code>
+        class. This allocator is passed to all string types, as well as <code class="computeroutput"><span class="identifier">array_type</span></code> and <code class="computeroutput"><span class="identifier">map_type</span></code>.
+      </p>
+<p>
+        <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span></code> is a convenience alias for <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">basic_variable</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&gt;</span></code>.
+      </p>
+<div class="footnotes">
+<br><hr style="width:100; text-align:left;margin-left: 0">
+<div id="ftn.trial_dynamic.user_guide.design_rationale.f1" class="footnote"><p><a href="#trial_dynamic.user_guide.design_rationale.f1" class="para"><sup class="para">[3] </sup></a>
+          Despite attempts to make different string types directly comparable, such
+          as <a href="http://www.open-std.org/Jtc1/sc22/wg21/docs/papers/2012/n3398.html" target="_top">N3398</a>.
+        </p></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2017 Bjorn Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="converters.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../user_guide.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="concepts.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

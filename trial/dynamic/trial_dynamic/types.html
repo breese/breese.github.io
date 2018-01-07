@@ -1,0 +1,1130 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Types</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_59_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Trial.Dynamic">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Trial.Dynamic">
+<link rel="prev" href="introduction.html" title="Introduction">
+<link rel="next" href="functions.html" title="Functions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_59_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="introduction.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="functions.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="trial_dynamic.types"></a><a class="link" href="types.html" title="Types">Types</a>
+</h2></div></div></div>
+<p>
+      <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span></code> supports a pre-defined list of fundamental
+      data types, strings, and containers. These are generally referred to as the
+      <span class="emphasis"><em>supported types</em></span>. Each type belongs to a category that
+      is represented by a tag type.
+    </p>
+<div class="table">
+<a name="trial_dynamic.types.supported_types_and_tags"></a><p class="title"><b>Table&#160;1.1.&#160;Supported types and tags</b></p>
+<div class="table-contents"><table class="table" summary="Supported types and tags">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Stored type
+              </p>
+            </th>
+<th>
+              <p>
+                Tag type
+              </p>
+            </th>
+<th>
+              <p>
+                Description
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                No value.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">bool</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">boolean</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Boolean value.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">signed</span> <span class="keyword">char</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Very short signed integer.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">signed</span> <span class="keyword">short</span>
+                <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Short signed integer.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">signed</span> <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Signed integer.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">signed</span> <span class="keyword">long</span>
+                <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Long signed integer.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">signed</span> <span class="keyword">long</span>
+                <span class="keyword">long</span> <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Very long signed integer.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">unsigned</span> <span class="keyword">char</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Very short unsigned integer.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">unsigned</span> <span class="keyword">short</span>
+                <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Short unsigned integer.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">unsigned</span> <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Unsigned integer.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">unsigned</span> <span class="keyword">long</span>
+                <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Long unsigned integer.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">unsigned</span> <span class="keyword">long</span>
+                <span class="keyword">long</span> <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Very long unsigned integer.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">float</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">number</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Short floating-point number.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">double</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">number</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Floating-point number.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">number</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Long floating-point number.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">string_type</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">string</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Narrow-character string. Same as <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span></code>
+                by default.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">wstring_type</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">wstring</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Wide-character string. Same as <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">wstring</span></code>
+                by default.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">u16string_type</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">u16string</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                UTF-16 character string. Same as <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">u16string</span></code>
+                by default.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">u32string_type</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">u32string</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                UTF-32 character string. Same as <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">u32string</span></code>
+                by default.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">array_type</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">array</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Sequence of <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span></code>.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">map_type</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">map</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Ordered sequence of key-value pairs. Both key and value are <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span></code>.
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><h4>
+<a name="trial_dynamic.types.h0"></a>
+      <span class="phrase"><a name="trial_dynamic.types.type_checking"></a></span><a class="link" href="types.html#trial_dynamic.types.type_checking">Type
+      Checking</a>
+    </h4>
+<p>
+      The current type of a variable can either be queried by type, or an enumerator
+      can be obtained.
+    </p>
+<p>
+      Query-by-type is done with the <code class="computeroutput"><span class="identifier">same</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>
+      member function, which returns true if the current value is stored as type
+      <code class="computeroutput"><span class="identifier">T</span></code>.
+</p>
+<pre class="programlisting"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">data</span> <span class="special">=</span> <span class="number">3.0</span><span class="special">;</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">same</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;());</span> <span class="comment">// Value is stored as a double.</span>
+<span class="identifier">assert</span><span class="special">(!</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">same</span><span class="special">&lt;</span><span class="keyword">float</span><span class="special">&gt;());</span> <span class="comment">// Valus is not stored as a float.</span>
+</pre>
+<p>
+      Query-by-tag is done with the <code class="computeroutput"><span class="identifier">is</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>
+      member function, which returns true if the current value is stored as a type
+      belonging to the category <code class="computeroutput"><span class="identifier">T</span></code>.
+      <code class="computeroutput"><span class="identifier">T</span></code> can be a tag or a type. If
+      the latter then the associated tag is looked up, and the variable is queried
+      with this tag.
+</p>
+<pre class="programlisting"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">data</span> <span class="special">=</span> <span class="number">3.0</span><span class="special">;</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">number</span><span class="special">&gt;());</span> <span class="comment">// Value is stored as a floating-point number.</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;());</span> <span class="comment">// Query using the dynamic::number tag.</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="keyword">float</span><span class="special">&gt;());</span> <span class="comment">// Query using the dynamic::number tag.</span>
+</pre>
+<p>
+      Notice that any supported floating-point type can be used to query for the
+      tag.
+    </p>
+<p>
+      Query-by-enumeration is done with the <code class="computeroutput"><span class="identifier">code</span><span class="special">()</span></code> or <code class="computeroutput"><span class="identifier">symbol</span><span class="special">()</span></code> member functions. These returns an enumerator
+      that indicates the type. The enumerator is suitable for <code class="computeroutput"><span class="keyword">switch</span></code>
+      statements.
+</p>
+<pre class="programlisting"><span class="keyword">switch</span> <span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">())</span>
+<span class="special">{</span>
+<span class="keyword">case</span> <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span><span class="special">:</span>
+  <span class="keyword">break</span><span class="special">;</span> <span class="comment">// Do integer stuff</span>
+<span class="keyword">case</span> <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">number</span><span class="special">:</span>
+  <span class="keyword">break</span><span class="special">;</span> <span class="comment">// Do floating-point number stuff</span>
+<span class="keyword">default</span><span class="special">:</span>
+  <span class="keyword">break</span><span class="special">;</span> <span class="comment">// Do other stuff</span>
+<span class="special">}</span>
+</pre>
+<p>
+    </p>
+<div class="table">
+<a name="trial_dynamic.types.codes_and_symbols"></a><p class="title"><b>Table&#160;1.2.&#160;Codes and symbols</b></p>
+<div class="table-contents"><table class="table" summary="Codes and symbols">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Stored type
+              </p>
+            </th>
+<th>
+              <p>
+                Code
+              </p>
+            </th>
+<th>
+              <p>
+                Symbol
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">null</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">null</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">bool</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">boolean</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">boolean</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">signed</span> <span class="keyword">char</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">signed_char</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">signed</span> <span class="keyword">short</span>
+                <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">signed_short_integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">signed</span> <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">signed_integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">signed</span> <span class="keyword">long</span>
+                <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">signed_long_integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">signed</span> <span class="keyword">long</span>
+                <span class="keyword">long</span> <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">signed_long_long_integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">unsigned</span> <span class="keyword">char</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">unsigned_char</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">unsigned</span> <span class="keyword">short</span>
+                <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">unsigned_short_integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">unsigned</span> <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">unsigned_integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">unsigned</span> <span class="keyword">long</span>
+                <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">unsigned_long_integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">unsigned</span> <span class="keyword">long</span>
+                <span class="keyword">long</span> <span class="keyword">int</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">unsigned_long_long_integer</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">float</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">float_number</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">number</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">double</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">double_number</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">number</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">long_double_number</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">number</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">string_type</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">string</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">string</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">wstring_type</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">wstring</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">wstring</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">u16string_type</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">u16string</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">u16string</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">u32string_type</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">u32string</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">u32string</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">array_type</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">array</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">array</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">map_type</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">map</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">map</span></code>
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><h4>
+<a name="trial_dynamic.types.h1"></a>
+      <span class="phrase"><a name="trial_dynamic.types.comparison"></a></span><a class="link" href="types.html#trial_dynamic.types.comparison">Comparison</a>
+    </h4>
+<p>
+      A dynamic variable can be compared against another dynamic variable, or against
+      a supported type. Supported types are grouped into comparison categories as
+      shown below. Comparison against unsupported types results in a compile-time
+      error.
+    </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Comparison category
+              </p>
+            </th>
+<th>
+              <p>
+                Tag type
+              </p>
+            </th>
+<th>
+              <p>
+                Rank
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                Nullable
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                0
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Arithmetic
+              </p>
+            </td>
+<td>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">boolean</span></code>
+<code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">integer</span></code>
+<code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">number</span></code></pre>
+            </td>
+<td>
+              <p>
+                1
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Narrow string
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">string</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                2
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Wide string
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">wstring</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                3
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                UTF-16 string
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">u16string</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                4
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                UTF-32 string
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">u32string</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                5
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Sequenced array
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">array</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                6
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Associative array
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">map</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                7
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+      Equality operations first check the argument types. If the argument types belong
+      to different comparison categories, then they are unequal. Otherwise their
+      values are compared according to the normal C++ rules, with the addition that
+      null compares equal to null.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">first</span><span class="special">;</span>
+<span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">second</span> <span class="special">=</span> <span class="number">2</span><span class="special">;</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">first</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span><span class="special">&gt;());</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">second</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">integer</span><span class="special">&gt;());</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">second</span><span class="special">);</span> <span class="comment">// Incompatible types are unequal</span>
+</pre>
+<p>
+    </p>
+<p>
+      Relative operations first check the argument types. If the argument types belong
+      to different comparison categories, then their ranks are compared. The ranks
+      are shown in the table above. For example, a nullable type is always less than
+      other types, while an associative array is always greater than other types.
+      Otherwise their values are compared according to the normal C++ rules.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">first</span><span class="special">;</span>
+<span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">second</span> <span class="special">=</span> <span class="number">2</span><span class="special">;</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">first</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span><span class="special">&gt;());</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">second</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">integer</span><span class="special">&gt;());</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">first</span> <span class="special">&lt;</span> <span class="identifier">second</span><span class="special">);</span> <span class="comment">// Null is less than integers</span>
+</pre>
+<p>
+    </p>
+<p>
+      Sequenced arrays perform a pair-wise comparison of the elements.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">first</span> <span class="special">=</span> <span class="special">{</span> <span class="number">1</span><span class="special">,</span> <span class="number">20</span><span class="special">,</span> <span class="number">300</span> <span class="special">};</span>
+<span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">second</span> <span class="special">=</span> <span class="special">{</span> <span class="number">1</span><span class="special">,</span> <span class="number">20</span><span class="special">,</span> <span class="number">300</span> <span class="special">};</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">first</span> <span class="special">==</span> <span class="identifier">second</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">first</span> <span class="special">&lt;=</span> <span class="identifier">second</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(!(</span><span class="identifier">first</span> <span class="special">&lt;</span> <span class="identifier">second</span><span class="special">));</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">first</span> <span class="special">&gt;=</span> <span class="identifier">second</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(!(</span><span class="identifier">first</span> <span class="special">&gt;</span> <span class="identifier">second</span><span class="special">));</span>
+</pre>
+<p>
+    </p>
+<p>
+      Associative arrays perform a pair-wise comparison of the key-value elements.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">first</span> <span class="special">=</span> <span class="special">{</span> <span class="special">{</span> <span class="string">"alpha"</span><span class="special">,</span> <span class="keyword">true</span> <span class="special">}</span> <span class="special">};</span>
+<span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">second</span> <span class="special">=</span> <span class="special">{</span> <span class="special">{</span> <span class="string">"alpha"</span><span class="special">,</span> <span class="keyword">true</span> <span class="special">}</span> <span class="special">};</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">first</span> <span class="special">==</span> <span class="identifier">second</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">first</span> <span class="special">&lt;=</span> <span class="identifier">second</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(!(</span><span class="identifier">first</span> <span class="special">&lt;</span> <span class="identifier">second</span><span class="special">));</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">first</span> <span class="special">&gt;=</span> <span class="identifier">second</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(!(</span><span class="identifier">first</span> <span class="special">&gt;</span> <span class="identifier">second</span><span class="special">));</span>
+</pre>
+<p>
+    </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2017 Bjorn Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="introduction.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="functions.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

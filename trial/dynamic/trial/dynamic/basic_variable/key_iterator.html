@@ -1,0 +1,95 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class key_iterator</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_66_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Trial.Dynamic">
+<link rel="up" href="../basic_variable.html#idm6856" title="Description">
+<link rel="prev" href="iterator.html" title="Class iterator">
+<link rel="next" href="tag_traits.html" title="Struct template tag_traits">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_66_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="iterator.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../basic_variable.html#idm6856"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="tag_traits.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="trial.dynamic.basic_variable.key_iterator"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class key_iterator</span></h2>
+<p>trial::dynamic::basic_variable::key_iterator</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../header/boost/libs/trial_protocol/include/trial/dynamic/variable_hpp.html" title="Header &lt;boost/libs/trial.protocol/include/trial/dynamic/variable.hpp&gt;">boost/libs/trial.protocol/include/trial/dynamic/variable.hpp</a>&gt;
+
+</span>
+
+<span class="keyword">class</span> <a class="link" href="key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">:</span>
+  <span class="keyword">public</span> <span class="identifier">iterator_base</span><span class="special">&lt;</span> <span class="identifier">key_iterator</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">basic_variable</span><span class="special">::</span><span class="identifier">value_type</span> <span class="special">&gt;</span>
+<span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// <a class="link" href="key_iterator.html#trial.dynamic.basic_variable.key_iteratorconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="key_iterator.html#idm5564-bb"><span class="identifier">key_iterator</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="key_iterator.html#idm5565-bb"><span class="identifier">key_iterator</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="key_iterator.html#idm5569-bb"><span class="identifier">key_iterator</span></a><span class="special">(</span><a class="link" href="key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="key_iterator.html#idm5586-bb"><span class="identifier">key_iterator</span></a><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;</span> <a class="link" href="key_iterator.html#idm5573-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;</span> <a class="link" href="key_iterator.html#idm5579-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a class="link" href="key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="key_iterator.html#idm5551-bb">public member functions</a></span>
+  <a class="link" href="../basic_variable.html#trial.dynamic.basic_variable.const_reference">const_reference</a> <a class="link" href="key_iterator.html#idm5552-bb"><span class="identifier">key</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="../basic_variable.html#trial.dynamic.basic_variable.const_reference">const_reference</a> <a class="link" href="key_iterator.html#idm5555-bb"><span class="identifier">value</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="../basic_variable.html#trial.dynamic.basic_variable.const_reference">const_reference</a> <a class="link" href="key_iterator.html#idm5558-bb"><span class="keyword">operator</span><span class="special">*</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;</span> <a class="link" href="key_iterator.html#idm5561-bb"><span class="keyword">operator</span><span class="special">++</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idm9655"></a><h2>Description</h2>
+<div class="refsect2">
+<a name="idm9657"></a><h3>
+<a name="trial.dynamic.basic_variable.key_iteratorconstruct-copy-destruct"></a><code class="computeroutput">key_iterator</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><pre class="literallayout"><a name="idm5564-bb"></a><span class="identifier">key_iterator</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idm5565-bb"></a><span class="identifier">key_iterator</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="idm5569-bb"></a><span class="identifier">key_iterator</span><span class="special">(</span><a class="link" href="key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;&amp;</span> other<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">explicit</span> <a name="idm5586-bb"></a><span class="identifier">key_iterator</span><span class="special">(</span><span class="identifier">pointer</span> p<span class="special">,</span> <span class="keyword">bool</span> initialize <span class="special">=</span> <span class="keyword">true</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a class="link" href="key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;</span> <a name="idm5573-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a class="link" href="key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;</span> <a name="idm5579-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><a class="link" href="key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;&amp;</span> other<span class="special">)</span><span class="special">;</span></pre></li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="idm9732"></a><h3>
+<a name="idm5551-bb"></a><code class="computeroutput">key_iterator</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><pre class="literallayout"><a class="link" href="../basic_variable.html#trial.dynamic.basic_variable.const_reference">const_reference</a> <a name="idm5552-bb"></a><span class="identifier">key</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a class="link" href="../basic_variable.html#trial.dynamic.basic_variable.const_reference">const_reference</a> <a name="idm5555-bb"></a><span class="identifier">value</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a class="link" href="../basic_variable.html#trial.dynamic.basic_variable.const_reference">const_reference</a> <a name="idm5558-bb"></a><span class="keyword">operator</span><span class="special">*</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a class="link" href="key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;</span> <a name="idm5561-bb"></a><span class="keyword">operator</span><span class="special">++</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2017 Bjorn Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="iterator.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../basic_variable.html#idm6856"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="tag_traits.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

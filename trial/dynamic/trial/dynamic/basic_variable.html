@@ -1,0 +1,1865 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class template basic_variable</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_66_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Trial.Dynamic">
+<link rel="up" href="../../header/boost/libs/trial_protocol/include/trial/dynamic/variable_hpp.html" title="Header &lt;boost/libs/trial.protocol/include/trial/dynamic/variable.hpp&gt;">
+<link rel="prev" href="basic_map.html" title="Struct template basic_map">
+<link rel="next" href="basic_variable/const_iterator.html" title="Class const_iterator">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_66_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="basic_map.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../header/boost/libs/trial_protocol/include/trial/dynamic/variable_hpp.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="basic_variable/const_iterator.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="trial.dynamic.basic_variable"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class template basic_variable</span></h2>
+<p>trial::dynamic::basic_variable &#8212; Dynamic variable. </p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../header/boost/libs/trial_protocol/include/trial/dynamic/variable_hpp.html" title="Header &lt;boost/libs/trial.protocol/include/trial/dynamic/variable.hpp&gt;">boost/libs/trial.protocol/include/trial/dynamic/variable.hpp</a>&gt;
+
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="special">&gt;</span> <span class="keyword">class</span> Allocator<span class="special">&gt;</span> 
+<span class="keyword">class</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a><span class="special">&lt;</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span>                                            <a name="trial.dynamic.basic_variable.value_type"></a><span class="identifier">value_type</span><span class="special">;</span>            
+  <span class="keyword">typedef</span> <a class="link" href="basic_variable.html#trial.dynamic.basic_variable.value_type">value_type</a> <span class="special">&amp;</span>                                                           <a name="trial.dynamic.basic_variable.reference"></a><span class="identifier">reference</span><span class="special">;</span>             
+  <span class="keyword">typedef</span> <span class="keyword">const</span> <a class="link" href="basic_variable.html#trial.dynamic.basic_variable.value_type">value_type</a> <span class="special">&amp;</span>                                                     <a name="trial.dynamic.basic_variable.const_reference"></a><span class="identifier">const_reference</span><span class="special">;</span>       
+  <span class="keyword">typedef</span> <span class="identifier">unspecified</span>                                                            <a name="trial.dynamic.basic_variable.difference_type"></a><span class="identifier">difference_type</span><span class="special">;</span>         <span class="comment">// signed integer type </span>
+  <span class="keyword">typedef</span> <span class="identifier">unspecified</span>                                                            <a name="trial.dynamic.basic_variable.size_type"></a><span class="identifier">size_type</span><span class="special">;</span>               <span class="comment">// unsigned integer type </span>
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_string</span><span class="special">&lt;</span> <span class="keyword">char</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">char_traits</span><span class="special">&lt;</span> <span class="keyword">char</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span>         <a name="trial.dynamic.basic_variable.string_type"></a><span class="identifier">string_type</span><span class="special">;</span>             <span class="comment">// std::string by default </span>
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_string</span><span class="special">&lt;</span> <span class="keyword">wchar_t</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">char_traits</span><span class="special">&lt;</span> <span class="keyword">wchar_t</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span>   <a name="trial.dynamic.basic_variable.wstring_type"></a><span class="identifier">wstring_type</span><span class="special">;</span>            <span class="comment">// std::wstring by default </span>
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_string</span><span class="special">&lt;</span> <span class="keyword">char16_t</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">char_traits</span><span class="special">&lt;</span> <span class="keyword">char16_t</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span> <a name="trial.dynamic.basic_variable.u16string_type"></a><span class="identifier">u16string_type</span><span class="special">;</span>          <span class="comment">// std::u16string by default </span>
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_string</span><span class="special">&lt;</span> <span class="keyword">char32_t</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">char_traits</span><span class="special">&lt;</span> <span class="keyword">char32_t</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span> <a name="trial.dynamic.basic_variable.u32string_type"></a><span class="identifier">u32string_type</span><span class="special">;</span>          <span class="comment">// std::u32string by default </span>
+  <span class="keyword">typedef</span> <span class="identifier">unspecified</span>                                                            <a name="trial.dynamic.basic_variable.array_type"></a><span class="identifier">array_type</span><span class="special">;</span>              <span class="comment">// SequenceContainer. </span>
+  <span class="keyword">typedef</span> <span class="identifier">unspecified</span>                                                            <a name="trial.dynamic.basic_variable.map_type"></a><span class="identifier">map_type</span><span class="special">;</span>                <span class="comment">// AssociativeContainer. </span>
+  <span class="keyword">typedef</span> <span class="identifier">unspecified</span>                                                            <a name="trial.dynamic.basic_variable.pair_type"></a><span class="identifier">pair_type</span><span class="special">;</span>             
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">reverse_iterator</span><span class="special">&lt;</span> <a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <span class="special">&gt;</span>                                      <a name="trial.dynamic.basic_variable.reverse_iterator"></a><span class="identifier">reverse_iterator</span><span class="special">;</span>      
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">reverse_iterator</span><span class="special">&lt;</span> <a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> <span class="special">&gt;</span>                                <a name="trial.dynamic.basic_variable.const_reverse_iterator"></a><span class="identifier">const_reverse_iterator</span><span class="special">;</span>
+
+  <span class="comment">// member classes/structs/unions</span>
+
+  <span class="keyword">class</span> <a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> <span class="special">:</span>
+    <span class="keyword">public</span> <span class="identifier">iterator_base</span><span class="special">&lt;</span> <span class="identifier">const_iterator</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">basic_variable</span><span class="special">::</span><span class="identifier">value_type</span> <span class="special">&gt;</span>
+  <span class="special">{</span>
+  <span class="keyword">public</span><span class="special">:</span>
+    <span class="comment">// <a class="link" href="basic_variable/const_iterator.html#trial.dynamic.basic_variable.const_iteratorconstruct-copy-destruct">construct/copy/destruct</a></span>
+    <a class="link" href="basic_variable/const_iterator.html#idm5469-bb"><span class="identifier">const_iterator</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="basic_variable/const_iterator.html#idm5470-bb"><span class="identifier">const_iterator</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="basic_variable/const_iterator.html#idm5474-bb"><span class="identifier">const_iterator</span></a><span class="special">(</span><a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="basic_variable/const_iterator.html#idm5478-bb"><span class="identifier">const_iterator</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">explicit</span> <a class="link" href="basic_variable/const_iterator.html#idm5483-bb"><span class="identifier">const_iterator</span></a><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">)</span><span class="special">;</span>
+
+    <span class="comment">// <a class="link" href="basic_variable/const_iterator.html#idm5459-bb">public member functions</a></span>
+    <a class="link" href="basic_variable.html#trial.dynamic.basic_variable.const_reference">const_reference</a> <a class="link" href="basic_variable/const_iterator.html#idm5460-bb"><span class="identifier">key</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+    <a class="link" href="basic_variable.html#trial.dynamic.basic_variable.const_reference">const_reference</a> <a class="link" href="basic_variable/const_iterator.html#idm5463-bb"><span class="identifier">value</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+    <a class="link" href="basic_variable.html#trial.dynamic.basic_variable.const_reference">const_reference</a> <a class="link" href="basic_variable/const_iterator.html#idm5466-bb"><span class="keyword">operator</span><span class="special">*</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
+
+  <span class="keyword">class</span> <a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <span class="special">:</span>
+    <span class="keyword">public</span> <span class="identifier">iterator_base</span><span class="special">&lt;</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">basic_variable</span><span class="special">::</span><span class="identifier">value_type</span> <span class="special">&gt;</span>
+  <span class="special">{</span>
+  <span class="keyword">public</span><span class="special">:</span>
+    <span class="comment">// <a class="link" href="basic_variable/iterator.html#trial.dynamic.basic_variable.iteratorconstruct-copy-destruct">construct/copy/destruct</a></span>
+    <a class="link" href="basic_variable/iterator.html#idm5507-bb"><span class="identifier">iterator</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="basic_variable/iterator.html#idm5508-bb"><span class="identifier">iterator</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="basic_variable/iterator.html#idm5512-bb"><span class="identifier">iterator</span></a><span class="special">(</span><a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">explicit</span> <a class="link" href="basic_variable/iterator.html#idm5529-bb"><span class="identifier">iterator</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">explicit</span> <a class="link" href="basic_variable/iterator.html#idm5533-bb"><span class="identifier">iterator</span></a><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">explicit</span> <a class="link" href="basic_variable/iterator.html#idm5539-bb"><span class="identifier">iterator</span></a><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">super</span><span class="special">::</span><span class="identifier">array_iterator</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">explicit</span> <a class="link" href="basic_variable/iterator.html#idm5544-bb"><span class="identifier">iterator</span></a><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">super</span><span class="special">::</span><span class="identifier">map_iterator</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <span class="special">&amp;</span> <a class="link" href="basic_variable/iterator.html#idm5516-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <span class="special">&amp;</span> <a class="link" href="basic_variable/iterator.html#idm5522-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+
+    <span class="comment">// <a class="link" href="basic_variable/iterator.html#idm5491-bb">public member functions</a></span>
+    <a class="link" href="basic_variable.html#trial.dynamic.basic_variable.const_reference">const_reference</a> <a class="link" href="basic_variable/iterator.html#idm5492-bb"><span class="identifier">key</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+    <a class="link" href="basic_variable.html#trial.dynamic.basic_variable.reference">reference</a> <a class="link" href="basic_variable/iterator.html#idm5495-bb"><span class="identifier">value</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="basic_variable.html#trial.dynamic.basic_variable.const_reference">const_reference</a> <a class="link" href="basic_variable/iterator.html#idm5498-bb"><span class="identifier">value</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+    <a class="link" href="basic_variable.html#trial.dynamic.basic_variable.reference">reference</a> <a class="link" href="basic_variable/iterator.html#idm5501-bb"><span class="keyword">operator</span><span class="special">*</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="basic_variable.html#trial.dynamic.basic_variable.const_reference">const_reference</a> <a class="link" href="basic_variable/iterator.html#idm5504-bb"><span class="keyword">operator</span><span class="special">*</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
+
+  <span class="keyword">class</span> <a class="link" href="basic_variable/key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">:</span>
+    <span class="keyword">public</span> <span class="identifier">iterator_base</span><span class="special">&lt;</span> <span class="identifier">key_iterator</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">basic_variable</span><span class="special">::</span><span class="identifier">value_type</span> <span class="special">&gt;</span>
+  <span class="special">{</span>
+  <span class="keyword">public</span><span class="special">:</span>
+    <span class="comment">// <a class="link" href="basic_variable/key_iterator.html#trial.dynamic.basic_variable.key_iteratorconstruct-copy-destruct">construct/copy/destruct</a></span>
+    <a class="link" href="basic_variable/key_iterator.html#idm5564-bb"><span class="identifier">key_iterator</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="basic_variable/key_iterator.html#idm5565-bb"><span class="identifier">key_iterator</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_variable/key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="basic_variable/key_iterator.html#idm5569-bb"><span class="identifier">key_iterator</span></a><span class="special">(</span><a class="link" href="basic_variable/key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">explicit</span> <a class="link" href="basic_variable/key_iterator.html#idm5586-bb"><span class="identifier">key_iterator</span></a><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="basic_variable/key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;</span> <a class="link" href="basic_variable/key_iterator.html#idm5573-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_variable/key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="basic_variable/key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;</span> <a class="link" href="basic_variable/key_iterator.html#idm5579-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a class="link" href="basic_variable/key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+
+    <span class="comment">// <a class="link" href="basic_variable/key_iterator.html#idm5551-bb">public member functions</a></span>
+    <a class="link" href="basic_variable.html#trial.dynamic.basic_variable.const_reference">const_reference</a> <a class="link" href="basic_variable/key_iterator.html#idm5552-bb"><span class="identifier">key</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+    <a class="link" href="basic_variable.html#trial.dynamic.basic_variable.const_reference">const_reference</a> <a class="link" href="basic_variable/key_iterator.html#idm5555-bb"><span class="identifier">value</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+    <a class="link" href="basic_variable.html#trial.dynamic.basic_variable.const_reference">const_reference</a> <a class="link" href="basic_variable/key_iterator.html#idm5558-bb"><span class="keyword">operator</span><span class="special">*</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+    <a class="link" href="basic_variable/key_iterator.html" title="Class key_iterator">key_iterator</a> <span class="special">&amp;</span> <a class="link" href="basic_variable/key_iterator.html#idm5561-bb"><span class="keyword">operator</span><span class="special">++</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span>  <span class="special">=</span> <span class="keyword">void</span><span class="special">&gt;</span> 
+  <span class="keyword">struct</span> <a class="link" href="basic_variable/tag_traits.html" title="Struct template tag_traits">tag_traits</a> <span class="special">{</span>
+  <span class="special">}</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
+  <span class="keyword">struct</span> <a class="link" href="basic_variable/traits.html" title="Struct template traits">traits</a> <span class="special">{</span>
+  <span class="special">}</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="basic_variable.html#trial.dynamic.basic_variableconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="basic_variable.html#idm6921-bb"><span class="identifier">basic_variable</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html#idm6927-bb"><span class="identifier">basic_variable</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html#idm6933-bb"><span class="identifier">basic_variable</span></a><span class="special">(</span><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <a class="link" href="basic_variable.html#idm6939-bb"><span class="identifier">basic_variable</span></a><span class="special">(</span><span class="identifier">T</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html#idm6949-bb"><span class="identifier">basic_variable</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">initializer_list</span><span class="special">&lt;</span> <a class="link" href="basic_variable.html#trial.dynamic.basic_variable.value_type">value_type</a> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html#idm6959-bb"><span class="identifier">basic_variable</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">nullable</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html#idm6964-bb"><span class="identifier">basic_variable</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html#idm6969-bb"><span class="identifier">basic_variable</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">wchar_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html#idm6974-bb"><span class="identifier">basic_variable</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char16_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html#idm6980-bb"><span class="identifier">basic_variable</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char32_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html#idm6986-bb"><span class="identifier">basic_variable</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">typename</span> <span class="identifier">basic_variable</span><span class="special">::</span><span class="identifier">array_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html#idm6994-bb"><span class="identifier">basic_variable</span></a><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">basic_variable</span><span class="special">::</span><span class="identifier">array_type</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html#idm7002-bb"><span class="identifier">basic_variable</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">typename</span> <span class="identifier">basic_variable</span><span class="special">::</span><span class="identifier">map_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html#idm7010-bb"><span class="identifier">basic_variable</span></a><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">basic_variable</span><span class="special">::</span><span class="identifier">map_type</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm7018-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm7025-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm7032-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="identifier">T</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm7040-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="identifier">nullable</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm7046-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm7052-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">wchar_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm7058-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char16_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm7064-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char32_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="basic_variable.html#idm5641-bb">public member functions</a></span>
+  <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm5642-bb"><span class="keyword">operator</span><span class="special">+=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm5824-bb"><span class="keyword">operator</span><span class="special">+=</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm5833-bb"><span class="keyword">operator</span><span class="special">+=</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm5840-bb"><span class="keyword">operator</span><span class="special">+=</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">wchar_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm5847-bb"><span class="keyword">operator</span><span class="special">+=</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char16_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm5854-bb"><span class="keyword">operator</span><span class="special">+=</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char32_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">T</span> <a class="link" href="basic_variable.html#idm5861-bb"><span class="identifier">value</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">T</span> <a class="link" href="basic_variable.html#idm5881-bb"><span class="identifier">value</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> R<span class="special">&gt;</span> <span class="keyword">explicit</span> <a class="link" href="basic_variable.html#idm5958-bb"><span class="keyword">operator</span> <span class="identifier">R</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> R<span class="special">&gt;</span> <span class="identifier">R</span> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm5972-bb"><span class="identifier">unsafe_get</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> R<span class="special">&gt;</span> <span class="keyword">const</span> <span class="identifier">R</span> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm5986-bb"><span class="identifier">unsafe_get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm5993-bb"><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">const</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm6007-bb"><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm6015-bb"><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">typename</span> <span class="identifier">map_type</span><span class="special">::</span><span class="identifier">key_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">const</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a class="link" href="basic_variable.html#idm6035-bb"><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">typename</span> <span class="identifier">map_type</span><span class="special">::</span><span class="identifier">key_type</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">bool</span> <a class="link" href="basic_variable.html#idm6054-bb"><span class="identifier">is</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">bool</span> <a class="link" href="basic_variable.html#idm6075-bb"><span class="identifier">same</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">value</span> <a class="link" href="basic_variable.html#idm6086-bb"><span class="identifier">code</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">value</span> <a class="link" href="basic_variable.html#idm6205-bb"><span class="identifier">symbol</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="basic_variable.html#idm6349-bb"><span class="identifier">empty</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a class="link" href="basic_variable.html#idm6355-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a class="link" href="basic_variable.html#idm6423-bb"><span class="identifier">max_size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="basic_variable.html#idm6488-bb"><span class="identifier">clear</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <a class="link" href="basic_variable.html#idm6540-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIterator<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="basic_variable.html#idm6594-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">InputIterator</span><span class="special">,</span> <span class="identifier">InputIterator</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <a class="link" href="basic_variable.html#idm6646-bb"><span class="identifier">insert</span></a><span class="special">(</span><a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIterator<span class="special">&gt;</span> 
+    <span class="keyword">void</span> <a class="link" href="basic_variable.html#idm6703-bb"><span class="identifier">insert</span></a><span class="special">(</span><a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a><span class="special">,</span> <span class="identifier">InputIterator</span><span class="special">,</span> <span class="identifier">InputIterator</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <a class="link" href="basic_variable.html#idm6759-bb"><span class="identifier">erase</span></a><span class="special">(</span><a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <a class="link" href="basic_variable.html#idm6811-bb"><span class="identifier">erase</span></a><span class="special">(</span><a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a><span class="special">,</span> <a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="basic_variable.html#idm6864-bb"><span class="identifier">swap</span></a><span class="special">(</span><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <a class="link" href="basic_variable.html#idm6871-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> <a class="link" href="basic_variable.html#idm6875-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> <a class="link" href="basic_variable.html#idm6879-bb"><span class="identifier">cbegin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <a class="link" href="basic_variable.html#idm6883-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> <a class="link" href="basic_variable.html#idm6887-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> <a class="link" href="basic_variable.html#idm6891-bb"><span class="identifier">cend</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reverse_iterator</span> <a class="link" href="basic_variable.html#idm6895-bb"><span class="identifier">rbegin</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a class="link" href="basic_variable.html#idm6898-bb"><span class="identifier">rbegin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a class="link" href="basic_variable.html#idm6901-bb"><span class="identifier">crbegin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reverse_iterator</span> <a class="link" href="basic_variable.html#idm6904-bb"><span class="identifier">rend</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a class="link" href="basic_variable.html#idm6907-bb"><span class="identifier">rend</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a class="link" href="basic_variable.html#idm6910-bb"><span class="identifier">crend</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="basic_variable/key_iterator.html" title="Class key_iterator">key_iterator</a> <a class="link" href="basic_variable.html#idm6913-bb"><span class="identifier">key_begin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="basic_variable/key_iterator.html" title="Class key_iterator">key_iterator</a> <a class="link" href="basic_variable.html#idm6917-bb"><span class="identifier">key_end</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idm6856"></a><h2>Description</h2>
+<p>Dynamic variable is a tagged union that can change both its type and value during program execution.</p>
+<p>Dynamic variable is a heterogenous hierarchical data structure with a pre-determined list of supported types: fundamental data types, strings, arrays, and associative arrays.</p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Type </strong></span></td>
+<td><span class="bold"><strong>Tag  </strong></span></td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::nullable</code> </td>
+<td>
+<code class="computeroutput">dynamic::nullable</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">bool</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="boolean.html" title="Struct boolean">dynamic::boolean</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">signed char</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="integer.html" title="Struct integer">dynamic::integer</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">signed short int</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="integer.html" title="Struct integer">dynamic::integer</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">signed int</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="integer.html" title="Struct integer">dynamic::integer</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">signed long int</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="integer.html" title="Struct integer">dynamic::integer</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">signed long long int</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="integer.html" title="Struct integer">dynamic::integer</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">unsigned char</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="integer.html" title="Struct integer">dynamic::integer</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">unsigned short int</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="integer.html" title="Struct integer">dynamic::integer</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">unsigned int</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="integer.html" title="Struct integer">dynamic::integer</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">unsigned long int</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="integer.html" title="Struct integer">dynamic::integer</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">unsigned long long int</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="integer.html" title="Struct integer">dynamic::integer</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">float</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="number.html" title="Struct number">dynamic::number</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">double</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="number.html" title="Struct number">dynamic::number</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">long double</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="number.html" title="Struct number">dynamic::number</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::string_type</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="string.html" title="Struct string">dynamic::string</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::wstring_type</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="wstring.html" title="Struct wstring">dynamic::wstring</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::u16string_type</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">dynamic::u16string</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::u32string_type</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">dynamic::u32string</a></code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::array_type</code> </td>
+<td>
+<code class="computeroutput">dynamic::array</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::map_type</code> </td>
+<td>
+<code class="computeroutput">dynamic::map</code> </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+
+</p>
+<div class="refsect2">
+<a name="idm6992"></a><h3>Template Parameters</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="special">&gt;</span> <span class="keyword">class</span> Allocator</pre>
+<p>Allocator type (defaults to <code class="computeroutput">std::allocator</code>) </p>
+</li></ol></div>
+</div>
+<div class="refsect2">
+<a name="idm7006"></a><h3>
+<a name="trial.dynamic.basic_variableconstruct-copy-destruct"></a><code class="computeroutput">basic_variable</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a name="idm6921-bb"></a><span class="identifier">basic_variable</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Constructs a default variable of type <code class="computeroutput">nullable</code>. <p>A default constructed variable contains <code class="computeroutput">null</code>, which means it has no value. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="idm6927-bb"></a><span class="identifier">basic_variable</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> element<span class="special">)</span><span class="special">;</span></pre>Copy-constructs a copy of <code class="computeroutput">element</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a name="idm6933-bb"></a><span class="identifier">basic_variable</span><span class="special">(</span><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;&amp;</span> element<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Move-constructs a copy of <code class="computeroutput">element</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <a name="idm6939-bb"></a><span class="identifier">basic_variable</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span><span class="special">;</span></pre>Constructs a variable of type <code class="computeroutput">T</code>. <p><code class="computeroutput">T</code> must be a supported type, otherwise a compilation error occurs. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="idm6949-bb"></a><span class="identifier">basic_variable</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">initializer_list</span><span class="special">&lt;</span> <a class="link" href="basic_variable.html#trial.dynamic.basic_variable.value_type">value_type</a> <span class="special">&gt;</span> <span class="special">&amp;</span> elements<span class="special">)</span><span class="special">;</span></pre>Constructs a variable from initializer list. <p>If the initializer list <code class="computeroutput">elements</code> contains an array of pairs then the variable will be of type <code class="computeroutput">map</code>, otherwise of type <code class="computeroutput">array</code>. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="idm6959-bb"></a><span class="identifier">basic_variable</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">nullable</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre>Constructs a variable of type <code class="computeroutput">nullable</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a name="idm6964-bb"></a><span class="identifier">basic_variable</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span></pre>Constructs a variable of type <code class="computeroutput">string</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a name="idm6969-bb"></a><span class="identifier">basic_variable</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">wchar_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span></pre>Constructs a variable of type <code class="computeroutput">wstring</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a name="idm6974-bb"></a><span class="identifier">basic_variable</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char16_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span></pre>Constructs a variable of type <code class="computeroutput"><code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code></code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a name="idm6980-bb"></a><span class="identifier">basic_variable</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char32_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span></pre>Constructs a variable of type <code class="computeroutput"><code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code></code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a name="idm6986-bb"></a><span class="identifier">basic_variable</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">typename</span> <span class="identifier">basic_variable</span><span class="special">::</span><span class="identifier">array_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre>Construct a variable from array type. <p>Re-construct a variable from the value returned by <code class="computeroutput">unsafe_get</code>.</p>
+<p>Prefer to use factory or initializer-lists when creating arrays. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="idm6994-bb"></a><span class="identifier">basic_variable</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">basic_variable</span><span class="special">::</span><span class="identifier">array_type</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span></pre>Construct a variable from array type. <p>Re-construct a variable from the value returned by <code class="computeroutput">unsafe_get</code>.</p>
+<p>Prefer to use factory or initializer-lists when creating arrays. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="idm7002-bb"></a><span class="identifier">basic_variable</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">typename</span> <span class="identifier">basic_variable</span><span class="special">::</span><span class="identifier">map_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre>Construct a variable from map type. <p>Re-construct a variable from the value returned by <code class="computeroutput">unsafe_get</code>.</p>
+<p>Prefer to use factory or initializer-lists when creating associative arrays. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="idm7010-bb"></a><span class="identifier">basic_variable</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">basic_variable</span><span class="special">::</span><span class="identifier">map_type</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span></pre>Construct a variable from map type. <p>Re-construct a variable from the value returned by <code class="computeroutput">unsafe_get</code>.</p>
+<p>Prefer to use factory or initializer-lists when creating associative arrays. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm7018-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre>Copy-asigns one variable to another. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm7025-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span></pre>Move-assigns one variable to another. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm7032-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span><span class="special">;</span></pre>Assigns content to a variable. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm7040-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="identifier">nullable</span><span class="special">)</span><span class="special">;</span></pre>Assigns null to variable. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm7046-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span></pre>Assigns a string literal to a variable. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm7052-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">wchar_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span></pre>Assigns a wide-string literal to a variable. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm7058-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char16_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span></pre>Assigns a UTF-16 encoded string literal to a variable. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm7064-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char32_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span></pre>Assigns a UTF-32 encoded string literal to a variable. </li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="idm7323"></a><h3>
+<a name="idm5641-bb"></a><code class="computeroutput">basic_variable</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm5642-bb"></a><span class="keyword">operator</span><span class="special">+=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre>Appends values. <p>The append operator has different meanings depending on the types.</p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>Appending null to any other type has no effect.</p></li>
+<li class="listitem"><p>Appending any value to null overwrites the variable.</p></li>
+<li class="listitem"><p>Appending an integral value with another integral value adds the two.</p></li>
+<li class="listitem"><p>Appending a string to another string concatenates the two.</p></li>
+<li class="listitem"><p>Appending a wide string to another wide string concatenates the two.</p></li>
+<li class="listitem"><p>Appending a UTF-16 encoded string to another UTF-16 encoded string concatenates the two.</p></li>
+<li class="listitem"><p>Appending a UTF-32 encoded string to another UTF-32 encoded string concatenates the two.</p></li>
+<li class="listitem"><p>Appending an array to an array concatenates the two.</p></li>
+<li class="listitem"><p>Appending any type to an array inserts the value at the end of the array.</p></li>
+<li class="listitem"><p>Appending a map to a map merges the two.</p></li>
+</ul></div>
+<p>
+</p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Tag </strong></span></td>
+<td><span class="bold"><strong>nullable </strong></span></td>
+<td><span class="bold"><strong>boolean </strong></span></td>
+<td><span class="bold"><strong>integer </strong></span></td>
+<td><span class="bold"><strong>number </strong></span></td>
+<td><span class="bold"><strong>string </strong></span></td>
+<td><span class="bold"><strong>wstring </strong></span></td>
+<td><span class="bold"><strong><code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code> </strong></span></td>
+<td><span class="bold"><strong><code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code> </strong></span></td>
+<td><span class="bold"><strong>array </strong></span></td>
+<td><span class="bold"><strong>map  </strong></span></td>
+</tr>
+<tr>
+<td>nullable </td>
+<td>No effect </td>
+<td>Assigns </td>
+<td>Assigns </td>
+<td>Assigns </td>
+<td>Assigns </td>
+<td>Assigns </td>
+<td>Assigns </td>
+<td>Assigns </td>
+<td>Assigns </td>
+<td>Assigns </td>
+</tr>
+<tr>
+<td>boolean </td>
+<td>No effect </td>
+<td>Adds </td>
+<td>Adds </td>
+<td>Adds </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+</tr>
+<tr>
+<td>integer </td>
+<td>No effect </td>
+<td>Adds </td>
+<td>Adds </td>
+<td>Adds </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+</tr>
+<tr>
+<td>number </td>
+<td>No effect </td>
+<td>Adds </td>
+<td>Adds </td>
+<td>Adds </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+</tr>
+<tr>
+<td>string </td>
+<td>No effect </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Concats </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+</tr>
+<tr>
+<td>wstring </td>
+<td>No effect </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Concats </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+</tr>
+<tr>
+<td><code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code></td>
+<td>No effect </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Concats </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+</tr>
+<tr>
+<td><code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code></td>
+<td>No effect </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Concats </td>
+<td>Fails </td>
+<td>Fails </td>
+</tr>
+<tr>
+<td>array </td>
+<td>No effect </td>
+<td>Inserts </td>
+<td>Inserts </td>
+<td>Inserts </td>
+<td>Inserts </td>
+<td>Inserts </td>
+<td>Inserts </td>
+<td>Inserts </td>
+<td>Concats </td>
+<td>Inserts </td>
+</tr>
+<tr>
+<td>map </td>
+<td>No effect </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Fails </td>
+<td>Merges </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm5824-bb"></a><span class="keyword">operator</span><span class="special">+=</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre>
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm5833-bb"></a><span class="keyword">operator</span><span class="special">+=</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span></pre>
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm5840-bb"></a><span class="keyword">operator</span><span class="special">+=</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">wchar_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span></pre>
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm5847-bb"></a><span class="keyword">operator</span><span class="special">+=</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char16_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span></pre>
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm5854-bb"></a><span class="keyword">operator</span><span class="special">+=</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char32_t</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span></pre>
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">T</span> <a name="idm5861-bb"></a><span class="identifier">value</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns current value as type T. <p>Calls <code class="computeroutput"><code class="computeroutput"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a></code>&lt;Allocator&gt;::value&lt;T&gt;(std::error_code&amp;)</code> and throws an exception if an error occurred.</p>
+<p>
+
+</p>
+<p><span class="bold"><strong>See Also:</strong></span></p>
+<p>basic_variable&lt;Allocator&gt;::value&lt;T&gt;(std::error_code&amp;) </p>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term">Template Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">T</code></span></p></td>
+<td><p>Supported type</p></td>
+</tr></tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Throws:</span></p></td>
+<td>
+<a class="link" href="error.html" title="Class error">dynamic::error</a> with <code class="computeroutput">dynamic::incompatible_type</code> if <code class="computeroutput">T</code> is an unsupported or incompatible type.</td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">T</span> <a name="idm5881-bb"></a><span class="identifier">value</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> error<span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Returns current value as type T. <p><code class="computeroutput">T</code> can either be a type or a tag.</p>
+<p>If current tag is <code class="computeroutput"><code class="computeroutput"><a class="link" href="integer.html" title="Struct integer">dynamic::integer</a></code></code> or <code class="computeroutput"><code class="computeroutput"><a class="link" href="number.html" title="Struct number">dynamic::number</a></code></code>, then <code class="computeroutput">T</code> can be any arithmetic type. Such a conversion may result in loss of precision.</p>
+<p>If current tag is any other type, then <code class="computeroutput">T</code> must be the associated type.</p>
+<p>If <code class="computeroutput">T</code> is a tag, then the following types are used.</p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Tag </strong></span></td>
+<td><span class="bold"><strong>Type  </strong></span></td>
+</tr>
+<tr>
+<td>nullable </td>
+<td>
+<code class="computeroutput">dynamic::nullable</code> </td>
+</tr>
+<tr>
+<td>boolean </td>
+<td>
+<code class="computeroutput">bool</code> </td>
+</tr>
+<tr>
+<td>integer </td>
+<td>
+<code class="computeroutput">int</code> </td>
+</tr>
+<tr>
+<td>number </td>
+<td>
+<code class="computeroutput">float</code> </td>
+</tr>
+<tr>
+<td>string </td>
+<td>
+<code class="computeroutput">variable::string_type</code> </td>
+</tr>
+<tr>
+<td>wstring </td>
+<td>
+<code class="computeroutput">variable::wstring_type</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code> </td>
+<td>
+<code class="computeroutput">variable::u16string_type</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code> </td>
+<td>
+<code class="computeroutput">variable::u32string_type</code> </td>
+</tr>
+<tr>
+<td>array </td>
+<td>
+<code class="computeroutput">variable::array_type</code> </td>
+</tr>
+<tr>
+<td>map </td>
+<td>
+<code class="computeroutput">variable::map_type</code> </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+
+
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">error</code></span></p></td>
+<td><p>Set to <code class="computeroutput">dynamic::incompatible_type</code> if <code class="computeroutput">T</code> is an unsupported or incompatible type, otherwise unchanged. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Template Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">T</code></span></p></td>
+<td><p>Supported type</p></td>
+</tr></tbody>
+</table></div></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> R<span class="special">&gt;</span> <span class="keyword">explicit</span> <a name="idm5958-bb"></a><span class="keyword">operator</span> <span class="identifier">R</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns current value as type <code class="computeroutput">R</code>. <p>Calls <code class="computeroutput"><code class="computeroutput"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a></code>&lt;Allocator&gt;::value&lt;T&gt;()</code></p>
+<p><span class="bold"><strong>See Also:</strong></span></p>
+<p>basic_variable&lt;Allocator&gt;::value&lt;T&gt;() </p>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> R<span class="special">&gt;</span> <span class="identifier">R</span> <span class="special">&amp;</span> <a name="idm5972-bb"></a><span class="identifier">unsafe_get</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Returns reference to stored value. <p><code class="computeroutput">unsafe_get()</code> has a narrow contract. Using a type <code class="computeroutput">R</code> that does not match the type of the stored value results in undefined behavior.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term">Template Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">R</code></span></p></td>
+<td><p>Supported type.</p></td>
+</tr></tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>basic_variable&lt;Allocator&gt;::same&lt;R&gt;() is true. </p></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> R<span class="special">&gt;</span> <span class="keyword">const</span> <span class="identifier">R</span> <span class="special">&amp;</span> <a name="idm5986-bb"></a><span class="identifier">unsafe_get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns constant reference to stored value. <p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm5993-bb"></a><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span><span class="special">(</span><span class="identifier">size_type</span> position<span class="special">)</span><span class="special">;</span></pre>Returns reference to element at specified position. <p>The stored value must be an array.</p>
+<p>No bounds-checking is performed.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">position</code></span></p></td>
+<td><p>Index position.</p></td>
+</tr></tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>basic_variable&lt;Allocator&gt;::is&lt;array&gt;() is true. </p></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">const</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm6007-bb"></a><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span><span class="special">(</span><span class="identifier">size_type</span> position<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns constant reference to element at specified position. <p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> <a name="idm6015-bb"></a><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">typename</span> <span class="identifier">map_type</span><span class="special">::</span><span class="identifier">key_type</span> <span class="special">&amp;</span> key<span class="special">)</span><span class="special">;</span></pre>Returns reference to element indexed by key. <p>Returns a reference to the value associated with <code class="computeroutput">key</code> in an associative array, or inserts a key of none exists.</p>
+<p>If the current tag is <code class="computeroutput">nullable</code>, then the current value is changed into an associative array and <code class="computeroutput">key</code> is inserted.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>basic_variable&lt;Allocator&gt;::is&lt;map&gt;() is true.</p></td>
+</tr>
+<tr>
+<td><p><span class="term">Throws:</span></p></td>
+<td>
+<a class="link" href="error.html" title="Class error">dynamic::error</a> with <code class="computeroutput">dynamic::incompatible_type</code> is thrown if current tag is not <code class="computeroutput">dynamic::map</code>. </td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">const</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> 
+<a name="idm6035-bb"></a><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">typename</span> <span class="identifier">map_type</span><span class="special">::</span><span class="identifier">key_type</span> <span class="special">&amp;</span> key<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns constant reference to element indexed by key. <p>Returns a reference to the value associated with <code class="computeroutput">key</code> in an associative array.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>basic_variable&lt;Allocator&gt;::is&lt;map&gt;() is true.</p></td>
+</tr>
+<tr>
+<td><p><span class="term">Throws:</span></p></td>
+<td>
+<a class="link" href="error.html" title="Class error">dynamic::error</a> with <code class="computeroutput">dynamic::incompatible_type</code> is thrown if <code class="computeroutput">key</code> does not exist in associative array. with <code class="computeroutput">dynamic::incompatible_type</code> is thrown if current tag is not <code class="computeroutput">dynamic::map</code>. </td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">bool</span> <a name="idm6054-bb"></a><span class="identifier">is</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Checks if variable has a given tag. <p>Converts <code class="computeroutput">T</code> into a tag, and returns true if variable has the same tag, otherwise returns false.</p>
+<p>If <code class="computeroutput">T</code> is a tag, then this tag is used directly: variable v = true; // Boolean
+assert(v.is&lt;boolean&gt;());
+</p>
+<p>If <code class="computeroutput">T</code> is a C++ type, then this is converted a tag: variable v = true; // Boolean
+assert(v.is&lt;bool&gt;()); // Same as is&lt;boolean&gt;()
+</p>
+<p>The type-to-tag conversion means that any type from the same category can be used: variable v = 2; // Integer
+assert(v.is&lt;int&gt;()); // Same as is&lt;integer&gt;()
+assert(v.is&lt;long int&gt;()); // Same as is&lt;integer&gt;()
+</p>
+<p>Checking for an array or a map can either be done by a tag: variable v = { 1, 2, 3}; // Array
+assert(v.is&lt;array&gt;());
+</p>
+<p>or by the unspecified <code class="computeroutput">variable::array_type</code> or <code class="computeroutput">variable::map_type</code> type aliases: variable v = { 1, 2, 3}; // Array
+assert(v.is&lt;variable::array_type&gt;());
+</p>
+<p>Using unsupported types will result in a compilation error.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term">Template Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">T</code></span></p></td>
+<td><p>Type or tag to be checked. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">bool</span> <a name="idm6075-bb"></a><span class="identifier">same</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Checks if variable has exactly a given type. <p>Returns true if variable has the exact same type as <code class="computeroutput">T</code>, otherwise returns false. variable v = int(2); // int
+assert(v.same&lt;int&gt;() == true); // Same as int
+assert(v.same&lt;long int&gt;() == false); // Not same as long int
+</p>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term">Template Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">T</code></span></p></td>
+<td><p>Type to be checked. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">value</span> <a name="idm6086-bb"></a><span class="identifier">code</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Returns the current code. <p>Code is an enumerator that represents the exact type that is currently stored.</p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Type </strong></span></td>
+<td><span class="bold"><strong>Code  </strong></span></td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::nullable</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::null</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">bool</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::boolean</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">signed char</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::signed_char</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">signed short int</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::signed_short_integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">signed int</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::signed_integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">signed long int</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::signed_long_integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">signed long long int</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::signed_long_long_integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">unsigned char</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::unsigned_char</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">unsigned short int</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::unsigned_short_integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">unsigned int</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::unsigned_integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">unsigned long int</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::unsigned_long_integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">unsigned long long int</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::unsigned_long_long_integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">float</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::float_number</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">double</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::double_number</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">long double</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::long_double_number</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::string_type</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::string</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::wstring_type</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::wstring</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::u16string_type</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::u16string</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::u32string_type</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::u32string</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::array_type</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::array</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::map_type</code> </td>
+<td>
+<code class="computeroutput">dynamic::code::map</code> </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">value</span> <a name="idm6205-bb"></a><span class="identifier">symbol</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Returns the current symbol. <p>Symbol is an enumerator that represents the tag of the type currently stored.</p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Type </strong></span></td>
+<td><span class="bold"><strong>Tag </strong></span></td>
+<td><span class="bold"><strong>Symbol  </strong></span></td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::nullable</code> </td>
+<td>nullable </td>
+<td>
+<code class="computeroutput">dynamic::symbol::null</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">bool</code> </td>
+<td>boolean </td>
+<td>
+<code class="computeroutput">dynamic::symbol::boolean</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">signed char</code> </td>
+<td>integer </td>
+<td>
+<code class="computeroutput">dynamic::symbol::integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">signed short int</code> </td>
+<td>integer </td>
+<td>
+<code class="computeroutput">dynamic::symbol::integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">signed int</code> </td>
+<td>integer </td>
+<td>
+<code class="computeroutput">dynamic::symbol::integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">signed long int</code> </td>
+<td>integer </td>
+<td>
+<code class="computeroutput">dynamic::symbol::integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">signed long long int</code> </td>
+<td>integer </td>
+<td>
+<code class="computeroutput">dynamic::symbol::integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">unsigned char</code> </td>
+<td>integer </td>
+<td>
+<code class="computeroutput">dynamic::symbol::integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">unsigned short int</code> </td>
+<td>integer </td>
+<td>
+<code class="computeroutput">dynamic::symbol::integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">unsigned int</code> </td>
+<td>integer </td>
+<td>
+<code class="computeroutput">dynamic::symbol::integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">unsigned long int</code> </td>
+<td>integer </td>
+<td>
+<code class="computeroutput">dynamic::symbol::integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">unsigned long long int</code> </td>
+<td>integer </td>
+<td>
+<code class="computeroutput">dynamic::symbol::integer</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">float</code> </td>
+<td>number </td>
+<td>
+<code class="computeroutput">dynamic::symbol::number</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">double</code> </td>
+<td>number </td>
+<td>
+<code class="computeroutput">dynamic::symbol::number</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">long double</code> </td>
+<td>number </td>
+<td>
+<code class="computeroutput">dynamic::symbol::number</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::string_type</code> </td>
+<td>string </td>
+<td>
+<code class="computeroutput">dynamic::symbol::string</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::wstring_type</code> </td>
+<td>wstring </td>
+<td>
+<code class="computeroutput">dynamic::symbol::wstring</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::u16string_type</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code> </td>
+<td>
+<code class="computeroutput">dynamic::symbol::u16string</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::u32string_type</code> </td>
+<td>
+<code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code> </td>
+<td>
+<code class="computeroutput">dynamic::symbol::u32string</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::array_type</code> </td>
+<td>array </td>
+<td>
+<code class="computeroutput">dynamic::symbol::array</code> </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput">dynamic::map_type</code> </td>
+<td>map </td>
+<td>
+<code class="computeroutput">dynamic::symbol::map</code> </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idm6349-bb"></a><span class="identifier">empty</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Checks if variable is empty. <p>Same as <code class="computeroutput">size()</code> == 0 </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="idm6355-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Returns the number of elements in variable. <p>The number of elements stored in a variable corresponds to the iteration count, that is <code class="computeroutput">v.size() == std::distance(v.begin(), v.end())</code>.</p>
+<p>Notice that strings are regarded as single elements, rather than a sequence of characters.</p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Current tag </strong></span></td>
+<td><span class="bold"><strong>Size </strong></span></td>
+<td><span class="bold"><strong>Description  </strong></span></td>
+</tr>
+<tr>
+<td>nullable </td>
+<td>0 </td>
+<td>null is an empty variable. </td>
+</tr>
+<tr>
+<td>boolean </td>
+<td>1 </td>
+<td>boolean is a single element. </td>
+</tr>
+<tr>
+<td>integer </td>
+<td>1 </td>
+<td>integer is a single element. </td>
+</tr>
+<tr>
+<td>number </td>
+<td>1 </td>
+<td>number is a single element. </td>
+</tr>
+<tr>
+<td>string </td>
+<td>1 </td>
+<td>string is a single element, so <code class="computeroutput">variable::string_type::size()</code> is not used. </td>
+</tr>
+<tr>
+<td>wstring </td>
+<td>1 </td>
+<td>wstring is a single element, so <code class="computeroutput">variable::wstring_type::size()</code> is not used. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code> </td>
+<td>1 </td>
+<td>
+<code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code> is a single element, so <code class="computeroutput">variable::u16string_type::size()</code> is not used. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code> </td>
+<td>1 </td>
+<td>
+<code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code> is a single element, so <code class="computeroutput">variable::u32string_type::size()</code> is not used. </td>
+</tr>
+<tr>
+<td>array </td>
+<td>
+<code class="computeroutput">variable::array_type::size()</code> </td>
+<td>The number of elements in the array. </td>
+</tr>
+<tr>
+<td>map </td>
+<td>
+<code class="computeroutput">variable::map_type::size()</code> </td>
+<td>The number of elements (pairs) in the map. </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="idm6423-bb"></a><span class="identifier">max_size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Returns the maximum possible number of elements. <div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Current tag </strong></span></td>
+<td><span class="bold"><strong>Size </strong></span></td>
+<td><span class="bold"><strong>Description  </strong></span></td>
+</tr>
+<tr>
+<td>nullable </td>
+<td>0 </td>
+<td>null cannot contain element. </td>
+</tr>
+<tr>
+<td>boolean </td>
+<td>1 </td>
+<td>Can contain a single boolean element. </td>
+</tr>
+<tr>
+<td>integer </td>
+<td>1 </td>
+<td>Can contain a single integer element. </td>
+</tr>
+<tr>
+<td>number </td>
+<td>1 </td>
+<td>Can contain a single number element. </td>
+</tr>
+<tr>
+<td>string </td>
+<td>1 </td>
+<td>Can contain a single string element, so <code class="computeroutput">variable::string_type::max_size()</code> is not used. </td>
+</tr>
+<tr>
+<td>wstring </td>
+<td>1 </td>
+<td>Can contain a single wstring element, so <code class="computeroutput">variable::wstring_type::max_size()</code> is not used. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code> </td>
+<td>1 </td>
+<td>Can contain a single <code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code> element, so <code class="computeroutput">variable::u16string_type::max_size()</code> is not used. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code> </td>
+<td>1 </td>
+<td>Can contain a single <code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code> element, so <code class="computeroutput">variable::u32string_type::max_size()</code> is not used. </td>
+</tr>
+<tr>
+<td>array </td>
+<td>
+<code class="computeroutput">variable::array_type::max_size()</code> </td>
+<td>The maximum possible number of elements in the array. </td>
+</tr>
+<tr>
+<td>map </td>
+<td>
+<code class="computeroutput">variable::map_type::max_size()</code> </td>
+<td>The maximum possible number of elements (pairs) in the map. </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idm6488-bb"></a><span class="identifier">clear</span><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Clears the content of the variable. <p>Only the value is cleared. The type is not modified.</p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Current tag </strong></span></td>
+<td><span class="bold"><strong>Behavior  </strong></span></td>
+</tr>
+<tr>
+<td>nullable </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>boolean </td>
+<td>Sets the default constructed value. </td>
+</tr>
+<tr>
+<td>integer </td>
+<td>Sets the default constructed value. </td>
+</tr>
+<tr>
+<td>number </td>
+<td>Sets the default constructed value. </td>
+</tr>
+<tr>
+<td>string </td>
+<td>Calls <code class="computeroutput">variable::string_type::clear()</code>. </td>
+</tr>
+<tr>
+<td>wstring </td>
+<td>Calls <code class="computeroutput">variable::wstring_type::clear()</code>. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code> </td>
+<td>Calls <code class="computeroutput">variable::u16string_type::clear()</code>. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code> </td>
+<td>Calls <code class="computeroutput">variable::u32string_type::clear()</code>. </td>
+</tr>
+<tr>
+<td>array </td>
+<td>Calls <code class="computeroutput">variable::array_type::clear()</code>. </td>
+</tr>
+<tr>
+<td>map </td>
+<td>Calls <code class="computeroutput">variable::map_type::clear()</code>. </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <a name="idm6540-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> element<span class="special">)</span><span class="special">;</span></pre>Inserts element into variable. <div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Current tag </strong></span></td>
+<td><span class="bold"><strong>Behavior  </strong></span></td>
+</tr>
+<tr>
+<td>nullable </td>
+<td>Create <code class="computeroutput">array</code> and insert <code class="computeroutput">element</code>. </td>
+</tr>
+<tr>
+<td>boolean </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>integer </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>number </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>string </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>wstring </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code> </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code> </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>array </td>
+<td>Insert <code class="computeroutput">element</code> at end. </td>
+</tr>
+<tr>
+<td>map </td>
+<td>Insert <code class="computeroutput">element</code>, otherwise fails if <code class="computeroutput">element</code> is not pair. </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIterator<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="idm6594-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">InputIterator</span> begin<span class="special">,</span> <span class="identifier">InputIterator</span> end<span class="special">)</span><span class="special">;</span></pre>Inserts range into variable. <div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Current tag </strong></span></td>
+<td><span class="bold"><strong>Behavior  </strong></span></td>
+</tr>
+<tr>
+<td>nullable </td>
+<td>Create <code class="computeroutput">array</code> and insert range. </td>
+</tr>
+<tr>
+<td>boolean </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>integer </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>number </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>string </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>wstring </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code> </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code> </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>array </td>
+<td>Insert range at end. </td>
+</tr>
+<tr>
+<td>map </td>
+<td>Insert range, otherwise fails if any element in range is not pair. </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <a name="idm6646-bb"></a><span class="identifier">insert</span><span class="special">(</span><a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> position<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> element<span class="special">)</span><span class="special">;</span></pre>Inserts element into variable. <div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Current tag </strong></span></td>
+<td><span class="bold"><strong>Behavior  </strong></span></td>
+</tr>
+<tr>
+<td>nullable </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>boolean </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>integer </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>number </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>string </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>wstring </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code> </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code> </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>array </td>
+<td>Insert <code class="computeroutput">element</code> before <code class="computeroutput">position</code>. </td>
+</tr>
+<tr>
+<td>map </td>
+<td>Insert <code class="computeroutput">element</code> with <code class="computeroutput">position</code> as hint, otherwise fails if <code class="computeroutput">element</code> is not pair. </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIterator<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="idm6703-bb"></a><span class="identifier">insert</span><span class="special">(</span><a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a><span class="special">,</span> <span class="identifier">InputIterator</span> begin<span class="special">,</span> <span class="identifier">InputIterator</span> end<span class="special">)</span><span class="special">;</span></pre>Inserts range into variable. <div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Current tag </strong></span></td>
+<td><span class="bold"><strong>Behavior  </strong></span></td>
+</tr>
+<tr>
+<td>nullable </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>boolean </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>integer </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>number </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>string </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>wstring </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code> </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code> </td>
+<td>Fails. </td>
+</tr>
+<tr>
+<td>array </td>
+<td>Insert range before <code class="computeroutput">position</code>. </td>
+</tr>
+<tr>
+<td>map </td>
+<td>Insert range with <code class="computeroutput">position</code> as hint, otherwise fails if any element in range is not pair. </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <a name="idm6759-bb"></a><span class="identifier">erase</span><span class="special">(</span><a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> position<span class="special">)</span><span class="special">;</span></pre>Erases an element from variable. <p>Returns iterator following last erased element.</p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Current tag </strong></span></td>
+<td><span class="bold"><strong>Behavior  </strong></span></td>
+</tr>
+<tr>
+<td>nullable </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>boolean </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>integer </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>number </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>string </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>wstring </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code> </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code> </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>array </td>
+<td>Erases element at <code class="computeroutput">position</code>. </td>
+</tr>
+<tr>
+<td>map </td>
+<td>Erases element at <code class="computeroutput">position</code>. </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <a name="idm6811-bb"></a><span class="identifier">erase</span><span class="special">(</span><a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> begin<span class="special">,</span> <a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> end<span class="special">)</span><span class="special">;</span></pre>Erases range from variable. <p>Returns iterator following last erased element.</p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Current tag </strong></span></td>
+<td><span class="bold"><strong>Behavior  </strong></span></td>
+</tr>
+<tr>
+<td>nullable </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>boolean </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>integer </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>number </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>string </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>wstring </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u16string.html" title="Struct u16string">u16string</a></code> </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>
+<code class="computeroutput"><a class="link" href="u32string.html" title="Struct u32string">u32string</a></code> </td>
+<td>No effect. </td>
+</tr>
+<tr>
+<td>array </td>
+<td>Erases elements in range. </td>
+</tr>
+<tr>
+<td>map </td>
+<td>Erases elements in range. </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idm6864-bb"></a><span class="identifier">swap</span><span class="special">(</span><a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Exchange contents of variable and <code class="computeroutput">other</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <a name="idm6871-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Returns an iterator to the beginning. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> <a name="idm6875-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns an iterator to the beginning. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> <a name="idm6879-bb"></a><span class="identifier">cbegin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns an iterator to the beginning. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable/iterator.html" title="Class iterator">iterator</a> <a name="idm6883-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Returns an iterator to the end. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> <a name="idm6887-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns an iterator to the end. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable/const_iterator.html" title="Class const_iterator">const_iterator</a> <a name="idm6891-bb"></a><span class="identifier">cend</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns an iterator to the end. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">reverse_iterator</span> <a name="idm6895-bb"></a><span class="identifier">rbegin</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Returns a reverse iterator to the beginning. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="idm6898-bb"></a><span class="identifier">rbegin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns a reverse iterator to the beginning. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="idm6901-bb"></a><span class="identifier">crbegin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns a reverse iterator to the beginning. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">reverse_iterator</span> <a name="idm6904-bb"></a><span class="identifier">rend</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Returns a reverse iterator to the end. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="idm6907-bb"></a><span class="identifier">rend</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns a reverse iterator to the end. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="idm6910-bb"></a><span class="identifier">crend</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns a reverse iterator to the end. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable/key_iterator.html" title="Class key_iterator">key_iterator</a> <a name="idm6913-bb"></a><span class="identifier">key_begin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns a key iterator to the beginning. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="basic_variable/key_iterator.html" title="Class key_iterator">key_iterator</a> <a name="idm6917-bb"></a><span class="identifier">key_end</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns a key iterator to the end. </li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2017 Bjorn Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="basic_map.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../header/boost/libs/trial_protocol/include/trial/dynamic/variable_hpp.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="basic_variable/const_iterator.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

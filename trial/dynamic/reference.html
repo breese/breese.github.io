@@ -1,0 +1,69 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Reference</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_66_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="Chapter&#160;1.&#160;Trial.Dynamic">
+<link rel="up" href="index.html" title="Chapter&#160;1.&#160;Trial.Dynamic">
+<link rel="prev" href="protocol/acknowledgement.html" title="Acknowledgement">
+<link rel="next" href="trial/dynamic/visit_idm5167.html" title="Function template visit">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_66_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="protocol/acknowledgement.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="trial/dynamic/visit_idm5167.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="reference"></a>Reference</h2></div></div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="section"><a href="reference.html#header.boost.libs.trial_protocol.include.trial.dynamic.algorithm.visit_hpp">Header &lt;boost/libs/trial.protocol/include/trial/dynamic/algorithm/visit.hpp&gt;</a></span></dt>
+<dd><dl></dl></dd>
+<dt><span class="section"><a href="header/boost/libs/trial_protocol/include/trial/dynamic/error_hpp.html">Header &lt;boost/libs/trial.protocol/include/trial/dynamic/error.hpp&gt;</a></span></dt>
+<dd><dl></dl></dd>
+<dt><span class="section"><a href="header/boost/libs/trial_protocol/include/trial/dynamic/functional_hpp.html">Header &lt;boost/libs/trial.protocol/include/trial/dynamic/functional.hpp&gt;</a></span></dt>
+<dd><dl></dl></dd>
+<dt><span class="section"><a href="header/boost/libs/trial_protocol/include/trial/dynamic/token_hpp.html">Header &lt;boost/libs/trial.protocol/include/trial/dynamic/token.hpp&gt;</a></span></dt>
+<dd><dl></dl></dd>
+<dt><span class="section"><a href="header/boost/libs/trial_protocol/include/trial/dynamic/variable_hpp.html">Header &lt;boost/libs/trial.protocol/include/trial/dynamic/variable.hpp&gt;</a></span></dt>
+<dd><dl></dl></dd>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.libs.trial_protocol.include.trial.dynamic.algorithm.visit_hpp"></a>Header &lt;<a href="http://www.boost.org/doc/libs/1_66_0/boost/libs/trial.protocol/include/trial/dynamic/algorithm/visit.hpp" target="_top">boost/libs/trial.protocol/include/trial/dynamic/algorithm/visit.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">trial</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dynamic</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Visitor<span class="special">,</span> <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="special">&gt;</span> <span class="keyword">class</span> Allocator<span class="special">&gt;</span> 
+      <span class="keyword">auto</span> <a class="link" href="trial/dynamic/visit_idm5167.html" title="Function template visit"><span class="identifier">visit</span></a><span class="special">(</span><span class="identifier">Visitor</span> <span class="special">&amp;&amp;</span><span class="special">,</span> <a class="link" href="trial/dynamic/basic_variable.html" title="Class template basic_variable">basic_variable</a><span class="special">&lt;</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+
+    <span class="comment">// Immutable visitation. </span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Visitor<span class="special">,</span> <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="special">&gt;</span> <span class="keyword">class</span> Allocator<span class="special">&gt;</span> 
+      <span class="keyword">auto</span> <a name="trial.dynamic.visit_idm5191"></a><span class="identifier">visit</span><span class="special">(</span><span class="identifier">Visitor</span> <span class="special">&amp;&amp;</span> visitor<span class="special">,</span> 
+                 <span class="keyword">const</span> <a class="link" href="trial/dynamic/basic_variable.html" title="Class template basic_variable">basic_variable</a><span class="special">&lt;</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span> <span class="special">&amp;</span> variable<span class="special">)</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2017 Bjorn Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="protocol/acknowledgement.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="trial/dynamic/visit_idm5167.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

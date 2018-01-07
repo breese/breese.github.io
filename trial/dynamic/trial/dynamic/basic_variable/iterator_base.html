@@ -1,0 +1,122 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class template iterator_base</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_59_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Trial.Dynamic">
+<link rel="up" href="../basic_variable.html#idm44863561769376" title="Description">
+<link rel="prev" href="iterator.html" title="Class iterator">
+<link rel="next" href="key_iterator.html" title="Class key_iterator">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_59_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="iterator.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../basic_variable.html#idm44863561769376"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="key_iterator.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="trial.dynamic.basic_variable.iterator_base"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class template iterator_base</span></h2>
+<p>trial::dynamic::basic_variable::iterator_base</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../reference.html#header.boost.libs.trial_protocol.include.trial.dynamic.variable_hpp" title="Header &lt;boost/libs/trial.protocol/include/trial/dynamic/variable.hpp&gt;">boost/libs/trial.protocol/include/trial/dynamic/variable.hpp</a>&gt;
+
+</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Derived<span class="special">,</span> <span class="keyword">typename</span> T<span class="special">&gt;</span> 
+<span class="keyword">class</span> <a class="link" href="iterator_base.html" title="Class template iterator_base">iterator_base</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">forward_iterator_tag</span>                                    <a name="trial.dynamic.basic_variable.iterator_base.iterator_category"></a><span class="identifier">iterator_category</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">add_const</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">map_type</span><span class="special">::</span><span class="identifier">key_type</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <a name="trial.dynamic.basic_variable.iterator_base.key_type"></a><span class="identifier">key_type</span><span class="special">;</span>         
+  <span class="keyword">typedef</span> <span class="identifier">T</span>                                                            <a name="trial.dynamic.basic_variable.iterator_base.value_type"></a><span class="identifier">value_type</span><span class="special">;</span>       
+  <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">value_type</span><span class="special">::</span><span class="identifier">difference_type</span>                         <a name="trial.dynamic.basic_variable.iterator_base.difference_type"></a><span class="identifier">difference_type</span><span class="special">;</span>  
+  <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">add_pointer</span><span class="special">&lt;</span> <span class="identifier">value_type</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span>                <a name="trial.dynamic.basic_variable.iterator_base.pointer"></a><span class="identifier">pointer</span><span class="special">;</span>          
+  <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">add_lvalue_reference</span><span class="special">&lt;</span> <span class="identifier">value_type</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span>       <a name="trial.dynamic.basic_variable.iterator_base.reference"></a><span class="identifier">reference</span><span class="special">;</span>        
+  <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">add_const</span><span class="special">&lt;</span> <span class="identifier">reference</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span>                   <a name="trial.dynamic.basic_variable.iterator_base.const_reference"></a><span class="identifier">const_reference</span><span class="special">;</span>  
+
+  <span class="comment">// <a class="link" href="iterator_base.html#trial.dynamic.basic_variable.iterator_baseconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="iterator_base.html#idm45846419978976-bb"><span class="identifier">iterator_base</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="iterator_base.html#idm45846419978720-bb"><span class="identifier">iterator_base</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">iterator_base</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="iterator_base.html#idm45846419977600-bb"><span class="identifier">iterator_base</span></a><span class="special">(</span><span class="identifier">iterator_base</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="iterator_base.html#idm45846419976480-bb"><span class="identifier">iterator_base</span></a><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="iterator_base.html#idm45846419974480-bb"><span class="identifier">iterator_base</span></a><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="identifier">array_iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="iterator_base.html#idm45846419972736-bb"><span class="identifier">iterator_base</span></a><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="identifier">map_iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">Derived</span> <span class="special">&amp;</span> <a class="link" href="iterator_base.html#idm45846419984608-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Derived</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">Derived</span> <span class="special">&amp;</span> <a class="link" href="iterator_base.html#idm45846419983472-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="identifier">Derived</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="iterator_base.html#idm45846419991344-bb">public member functions</a></span>
+  <span class="identifier">Derived</span> <span class="special">&amp;</span> <a class="link" href="iterator_base.html#idm45846419990848-bb"><span class="keyword">operator</span><span class="special">++</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">Derived</span> <a class="link" href="iterator_base.html#idm45846419990096-bb"><span class="keyword">operator</span><span class="special">++</span></a><span class="special">(</span><span class="keyword">int</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">pointer</span> <a class="link" href="iterator_base.html#idm45846419988720-bb"><span class="keyword">operator</span><span class="special">-&gt;</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="iterator_base.html#idm45846419987968-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Derived</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="iterator_base.html#idm45846419986352-bb"><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Derived</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="iterator_base.html#idm45846419982336-bb">protected member functions</a></span>
+  <span class="identifier">const_reference</span> <a class="link" href="iterator_base.html#idm45846419981840-bb"><span class="identifier">key</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reference</span> <a class="link" href="iterator_base.html#idm45846419980848-bb"><span class="identifier">value</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reference</span> <a class="link" href="iterator_base.html#idm45846419980096-bb"><span class="identifier">value</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idm44863560459456"></a><h2>Description</h2>
+<div class="refsect2">
+<a name="idm44863560459040"></a><h3>
+<a name="trial.dynamic.basic_variable.iterator_baseconstruct-copy-destruct"></a><code class="computeroutput">iterator_base</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><pre class="literallayout"><a name="idm45846419978976-bb"></a><span class="identifier">iterator_base</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">explicit</span> <a name="idm45846419978720-bb"></a><span class="identifier">iterator_base</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">iterator_base</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">explicit</span> <a name="idm45846419977600-bb"></a><span class="identifier">iterator_base</span><span class="special">(</span><span class="identifier">iterator_base</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">explicit</span> <a name="idm45846419976480-bb"></a><span class="identifier">iterator_base</span><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">explicit</span> <a name="idm45846419974480-bb"></a><span class="identifier">iterator_base</span><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="identifier">array_iterator</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">explicit</span> <a name="idm45846419972736-bb"></a><span class="identifier">iterator_base</span><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="identifier">map_iterator</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">Derived</span> <span class="special">&amp;</span> <a name="idm45846419984608-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Derived</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">Derived</span> <span class="special">&amp;</span> <a name="idm45846419983472-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="identifier">Derived</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="idm44863560407728"></a><h3>
+<a name="idm45846419991344-bb"></a><code class="computeroutput">iterator_base</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><pre class="literallayout"><span class="identifier">Derived</span> <span class="special">&amp;</span> <a name="idm45846419990848-bb"></a><span class="keyword">operator</span><span class="special">++</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">Derived</span> <a name="idm45846419990096-bb"></a><span class="keyword">operator</span><span class="special">++</span><span class="special">(</span><span class="keyword">int</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">pointer</span> <a name="idm45846419988720-bb"></a><span class="keyword">operator</span><span class="special">-&gt;</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">bool</span> <a name="idm45846419987968-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Derived</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">bool</span> <a name="idm45846419986352-bb"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Derived</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="idm44863560375072"></a><h3>
+<a name="idm45846419982336-bb"></a><code class="computeroutput">iterator_base</code> protected member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><pre class="literallayout"><span class="identifier">const_reference</span> <a name="idm45846419981840-bb"></a><span class="identifier">key</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">reference</span> <a name="idm45846419980848-bb"></a><span class="identifier">value</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">const_reference</span> <a name="idm45846419980096-bb"></a><span class="identifier">value</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2017 Bjorn Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="iterator.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../basic_variable.html#idm44863561769376"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="key_iterator.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

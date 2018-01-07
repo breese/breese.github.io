@@ -1,0 +1,706 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Functions</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_66_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Trial.Dynamic">
+<link rel="up" href="../user_guide.html" title="User Guide">
+<link rel="prev" href="../user_guide.html" title="User Guide">
+<link rel="next" href="algorithms.html" title="Algorithms">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_66_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../user_guide.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../user_guide.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="algorithms.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="trial_dynamic.user_guide.functions"></a><a class="link" href="functions.html" title="Functions">Functions</a>
+</h3></div></div></div>
+<h5>
+<a name="trial_dynamic.user_guide.functions.h0"></a>
+        <span class="phrase"><a name="trial_dynamic.user_guide.functions.construction"></a></span><a class="link" href="functions.html#trial_dynamic.user_guide.functions.construction">Construction</a>
+      </h5>
+<p>
+        Dynamic variables can be created in various ways.
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Expression
+                </p>
+              </th>
+<th>
+                <p>
+                  Semantics
+                </p>
+              </th>
+<th>
+                <p>
+                  Conditions
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">V</span> <span class="identifier">v</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Creates a nullable variable.
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="emphasis"><em>Effects:</em></span>
+                </p>
+                <p>
+                  <a href="http://en.cppreference.com/w/cpp/language/default_initialization" target="_top">Default-initializes</a>
+                  variable to the nullable type.
+                </p>
+                <p>
+                  <span class="emphasis"><em>Example:</em></span>
+                </p>
+                <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="comment">// Default-initializes to nullable type</span>
+<span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">data</span><span class="special">;</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span><span class="special">&gt;());</span>
+</pre>
+<p>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><span class="identifier">V</span> <span class="identifier">v</span><span class="special">(</span><span class="identifier">t</span><span class="special">)</span></code>
+<code class="computeroutput"><span class="identifier">V</span> <span class="identifier">v</span> <span class="special">=</span> <span class="identifier">t</span></code></pre>
+              </td>
+<td>
+                <p>
+                  Creates a variable of given supported type.
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="emphasis"><em>Requires:</em></span>
+                </p>
+                <p>
+                  <code class="computeroutput"><span class="identifier">T</span></code> shall be a supported
+                  type.
+                </p>
+                <p>
+                  <span class="emphasis"><em>Effects:</em></span>
+                </p>
+                <p>
+                  <a href="http://en.cppreference.com/w/cpp/language/direct_initialization" target="_top">Direct-initializes</a>
+                  variable to value.
+                </p>
+                <p>
+                  <span class="emphasis"><em>Example:</em></span>
+                </p>
+                <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="comment">// Direct-initializes to integer type</span>
+<span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">data</span><span class="special">(</span><span class="number">1</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;());</span>
+</pre>
+<p>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><span class="identifier">V</span> <span class="identifier">v</span><span class="special">(</span><span class="identifier">u</span><span class="special">)</span></code>
+<code class="computeroutput"><span class="identifier">V</span> <span class="identifier">v</span> <span class="special">=</span> <span class="identifier">u</span></code></pre>
+              </td>
+<td>
+                <p>
+                  Creates a copy of another dynamic variable.
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="emphasis"><em>Effects:</em></span>
+                </p>
+                <p>
+                  <a href="http://en.cppreference.com/w/cpp/language/copy_initialization" target="_top">Copy-initializes</a>
+                  variable with the type and value from another dynamic variable.
+                </p>
+                <p>
+                  <span class="emphasis"><em>Example:</em></span>
+                </p>
+                <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="comment">// Copy-initializes from other value</span>
+<span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">other</span><span class="special">(</span><span class="number">3.0</span><span class="special">);</span>
+<span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">data</span><span class="special">(</span><span class="identifier">other</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;());</span>
+</pre>
+<p>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><span class="identifier">V</span> <span class="identifier">v</span> <span class="special">{</span> <span class="identifier">u1</span><span class="special">,</span> <span class="identifier">u2</span><span class="special">,</span> <span class="identifier">u3</span><span class="special">,</span> <span class="special">...</span> <span class="special">}</span></code>
+<code class="computeroutput"><span class="identifier">V</span> <span class="identifier">v</span> <span class="special">=</span> <span class="special">{</span> <span class="identifier">u1</span><span class="special">,</span> <span class="identifier">u2</span><span class="special">,</span> <span class="identifier">u3</span><span class="special">,</span> <span class="special">...</span> <span class="special">}</span></code></pre>
+              </td>
+<td>
+                <p>
+                  Creates an array from initializer list.
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="emphasis"><em>Effects:</em></span>
+                </p>
+                <p>
+                  <a href="http://en.cppreference.com/w/cpp/language/list_initialization" target="_top">List-initializes</a>
+                  variable as array from initializer list.
+                </p>
+                <p>
+                  If the initializer list consists of a sequence of pairs, then the
+                  values will be stored as an associative array. Otherwise the values
+                  will be stored as an array. Nested lists are allowed.
+                </p>
+                <p>
+                  <span class="emphasis"><em>Example:</em></span>
+                </p>
+                <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="comment">// List-initializes heterogenous array from initializer list</span>
+<span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">data</span> <span class="special">{</span> <span class="identifier">null</span><span class="special">,</span> <span class="keyword">true</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">3.0</span><span class="special">,</span> <span class="string">"alpha"</span> <span class="special">};</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">array</span><span class="special">&gt;());</span>
+</pre>
+<p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="comment">// List-initializes nested integer array from initializer list</span>
+<span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">data</span> <span class="special">{</span> <span class="number">1</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="special">{</span> <span class="number">3</span><span class="special">,</span> <span class="number">4</span> <span class="special">},</span> <span class="number">5</span> <span class="special">};</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">array</span><span class="special">&gt;());</span>
+</pre>
+<p>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><code class="computeroutput"><span class="identifier">V</span> <span class="identifier">v</span> <span class="special">{</span> <span class="special">{</span><span class="identifier">u1</span><span class="special">,</span> <span class="identifier">u2</span><span class="special">},</span> <span class="special">{</span><span class="identifier">u3</span><span class="special">,</span> <span class="identifier">u4</span><span class="special">},</span> <span class="special">...</span> <span class="special">}</span></code>
+<code class="computeroutput"><span class="identifier">V</span> <span class="identifier">v</span> <span class="special">=</span> <span class="special">{</span> <span class="special">{</span><span class="identifier">u1</span><span class="special">,</span> <span class="identifier">u2</span><span class="special">},</span> <span class="special">{</span><span class="identifier">u3</span><span class="special">,</span> <span class="identifier">u4</span><span class="special">},</span> <span class="special">...</span> <span class="special">}</span></code></pre>
+              </td>
+<td>
+                <p>
+                  Creates an associative array from initializer list.
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="emphasis"><em>Requires:</em></span>
+                </p>
+                <p>
+                  Initializer list shall be a sequence of pairs<a href="#ftn.trial_dynamic.user_guide.functions.f0" class="footnote" name="trial_dynamic.user_guide.functions.f0"><sup class="footnote">[a]</sup></a>.
+                </p>
+                <p>
+                  <span class="emphasis"><em>Effects:</em></span>
+                </p>
+                <p>
+                  <a href="http://en.cppreference.com/w/cpp/language/list_initialization" target="_top">List-initializes</a>
+                  variable as associative array from initializer list.
+                </p>
+                <p>
+                  If the initializer list consists of a sequence of pairs, then the
+                  values will be stored as an associative array. Otherwise the values
+                  will be stored as an array. Nested lists are allowed.
+                </p>
+                <p>
+                  <span class="emphasis"><em>Example:</em></span>
+                </p>
+                <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="comment">// List-initializes associative array from initializer list</span>
+<span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">data</span> <span class="special">{</span> <span class="special">{</span> <span class="string">"alpha"</span><span class="special">,</span> <span class="number">1</span> <span class="special">},</span> <span class="special">{</span> <span class="string">"bravo"</span><span class="special">,</span> <span class="number">2</span> <span class="special">}</span> <span class="special">};</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">map</span><span class="special">&gt;());</span>
+</pre>
+<p>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+              </td>
+<td>
+                <p>
+                  Creates an array from factory method.
+                </p>
+              </td>
+<td>
+              </td>
+</tr>
+<tr>
+<td>
+              </td>
+<td>
+                <p>
+                  Creates an associative array from factory method.
+                </p>
+              </td>
+<td>
+              </td>
+</tr>
+</tbody>
+<tbody class="footnotes"><tr><td colspan="3"><div id="ftn.trial_dynamic.user_guide.functions.f0" class="footnote"><p><a href="#trial_dynamic.user_guide.functions.f0" class="para"><sup class="para">[a] </sup></a>
+                    A pair is a dynamic variable containing an array with exactly
+                    two dynamic variables.
+                  </p></div></td></tr></tbody>
+</table></div>
+<h5>
+<a name="trial_dynamic.user_guide.functions.h1"></a>
+        <span class="phrase"><a name="trial_dynamic.user_guide.functions.factory_initialization"></a></span><a class="link" href="functions.html#trial_dynamic.user_guide.functions.factory_initialization">Factory
+        Initialization</a>
+      </h5>
+<p>
+        Arrays and associated arrays can also be explicitly created with factories.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// Example: List-initializes empty array from factory</span>
+<span class="keyword">auto</span> <span class="identifier">data</span> <span class="special">=</span> <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">array</span><span class="special">::</span><span class="identifier">make</span><span class="special">();</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">array</span><span class="special">&gt;());</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="number">0</span><span class="special">);</span>
+</pre>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// Example: List-initializes array of 42 null values from factory</span>
+<span class="keyword">auto</span> <span class="identifier">data</span> <span class="special">=</span> <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">array</span><span class="special">::</span><span class="identifier">repeat</span><span class="special">(</span><span class="number">42</span><span class="special">,</span> <span class="identifier">null</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">array</span><span class="special">&gt;());</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="number">42</span><span class="special">);</span>
+</pre>
+<p>
+      </p>
+<h5>
+<a name="trial_dynamic.user_guide.functions.h2"></a>
+        <span class="phrase"><a name="trial_dynamic.user_guide.functions.capacity"></a></span><a class="link" href="functions.html#trial_dynamic.user_guide.functions.capacity">Capacity</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Function
+                </p>
+              </th>
+<th>
+                <p>
+                  Returns
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">empty</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="keyword">bool</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Returns true if the variable is empty or nullable; return false
+                  otherwise.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">size_type</span></code>
+                </p>
+              </td>
+<td>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">max_size</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">size_type</span></code>
+                </p>
+              </td>
+<td>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<h5>
+<a name="trial_dynamic.user_guide.functions.h3"></a>
+        <span class="phrase"><a name="trial_dynamic.user_guide.functions.accessor"></a></span><a class="link" href="functions.html#trial_dynamic.user_guide.functions.accessor">Accessor</a>
+      </h5>
+<p>
+        The <code class="computeroutput"><span class="identifier">unsafe_get</span><span class="special">()</span></code>
+        functions have a narrow contract. The requested type <code class="computeroutput"><span class="identifier">T</span></code>
+        must match the stored type exactly. It is undefined behavior if the pre-condition
+        <code class="computeroutput"><span class="identifier">same</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>
+        is false.
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Function
+                </p>
+              </th>
+<th>
+                <p>
+                  Returns
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">T</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Returns stored element by value.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="keyword">operator</span> <span class="identifier">T</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">T</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Conversion operator.
+                </p>
+                <p>
+                  Same operation as <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">unsafe_get</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">T</span><span class="special">&amp;</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Returns stored element by reference.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">unsafe_get</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span>
+                  <span class="keyword">const</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span></code>
+                </p>
+              </td>
+<td>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="keyword">operator</span><span class="special">[</span><span class="identifier">u</span><span class="special">]</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">variable</span><span class="special">&amp;</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Looks up element by key <code class="computeroutput"><span class="identifier">u</span></code>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="keyword">operator</span><span class="special">[</span><span class="identifier">n</span><span class="special">]</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">variable</span><span class="special">&amp;</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Looks up element by integer position <code class="computeroutput"><span class="identifier">n</span></code>.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<h5>
+<a name="trial_dynamic.user_guide.functions.h4"></a>
+        <span class="phrase"><a name="trial_dynamic.user_guide.functions.modifiers"></a></span><a class="link" href="functions.html#trial_dynamic.user_guide.functions.modifiers">Modifiers</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Function
+                </p>
+              </th>
+<th>
+                <p>
+                  Returns
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">clear</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="keyword">void</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Erases all nested elements.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">erase</span><span class="special">(</span><span class="identifier">p</span><span class="special">)</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">iterator</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Erases element at position <code class="computeroutput"><span class="identifier">p</span></code>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">erase</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span>
+                  <span class="identifier">j</span><span class="special">)</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">iterator</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Erases all elements in range [<code class="computeroutput"><span class="identifier">i</span></code>,
+                  <code class="computeroutput"><span class="identifier">j</span></code>).
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">t</span><span class="special">)</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">iterator</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Inserts element <code class="computeroutput"><span class="identifier">t</span></code>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">p</span><span class="special">,</span>
+                  <span class="identifier">t</span><span class="special">)</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">iterator</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Inserts element <code class="computeroutput"><span class="identifier">t</span></code>
+                  at position <code class="computeroutput"><span class="identifier">p</span></code>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span>
+                  <span class="identifier">j</span><span class="special">)</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="keyword">void</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Inserts elements in range [<code class="computeroutput"><span class="identifier">i</span></code>,
+                  <code class="computeroutput"><span class="identifier">j</span></code>).
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">p</span><span class="special">,</span>
+                  <span class="identifier">i</span><span class="special">,</span>
+                  <span class="identifier">j</span><span class="special">)</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="keyword">void</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Inserts elements in range [<code class="computeroutput"><span class="identifier">i</span></code>,
+                  <code class="computeroutput"><span class="identifier">j</span></code>) at position
+                  <code class="computeroutput"><span class="identifier">p</span></code>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">swap</span><span class="special">(</span><span class="identifier">u</span><span class="special">)</span></code>
+                </p>
+              </td>
+<td>
+              </td>
+<td>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<h5>
+<a name="trial_dynamic.user_guide.functions.h5"></a>
+        <span class="phrase"><a name="trial_dynamic.user_guide.functions.operators"></a></span><a class="link" href="functions.html#trial_dynamic.user_guide.functions.operators">Operators</a>
+      </h5>
+<h5>
+<a name="trial_dynamic.user_guide.functions.h6"></a>
+        <span class="phrase"><a name="trial_dynamic.user_guide.functions.iterators"></a></span><a class="link" href="functions.html#trial_dynamic.user_guide.functions.iterators">Iterators</a>
+      </h5>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2017 Bjorn Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../user_guide.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../user_guide.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="algorithms.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

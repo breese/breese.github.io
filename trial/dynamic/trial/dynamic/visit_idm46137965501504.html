@@ -1,0 +1,99 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Function template visit</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_59_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Trial.Dynamic">
+<link rel="up" href="../../reference.html#header.boost.libs.trial_protocol.include.trial.dynamic.algorithm.visit_hpp" title="Header &lt;boost/libs/trial.protocol/include/trial/dynamic/algorithm/visit.hpp&gt;">
+<link rel="prev" href="../../reference.html" title="Reference">
+<link rel="next" href="../../header/boost/libs/trial_protocol/include/trial/dynamic/error_hpp.html" title="Header &lt;boost/libs/trial.protocol/include/trial/dynamic/error.hpp&gt;">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_59_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../reference.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../reference.html#header.boost.libs.trial_protocol.include.trial.dynamic.algorithm.visit_hpp"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../../header/boost/libs/trial_protocol/include/trial/dynamic/error_hpp.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="trial.dynamic.visit_idm46137965501504"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Function template visit</span></h2>
+<p>trial::dynamic::visit &#8212; Mutable visitation. </p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../reference.html#header.boost.libs.trial_protocol.include.trial.dynamic.algorithm.visit_hpp" title="Header &lt;boost/libs/trial.protocol/include/trial/dynamic/algorithm/visit.hpp&gt;">boost/libs/trial.protocol/include/trial/dynamic/algorithm/visit.hpp</a>&gt;
+
+</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Visitor<span class="special">,</span> <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="special">&gt;</span> <span class="keyword">class</span> Allocator<span class="special">&gt;</span> 
+  <span class="keyword">auto</span> <span class="identifier">visit</span><span class="special">(</span><span class="identifier">Visitor</span> <span class="special">&amp;&amp;</span> visitor<span class="special">,</span> <a class="link" href="basic_variable.html" title="Class template basic_variable">basic_variable</a><span class="special">&lt;</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span> <span class="special">&amp;</span> variable<span class="special">)</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idm45680269396048"></a><h2>Description</h2>
+<p>Invokes the call operator on the visitor whose type matches the stored type of the dynamic variable. The type is resolved using the normal rules for C++ function overloading. All call operators must use the same return type.</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">visitor</span>
+<span class="special">{</span>
+  <span class="comment">// Matches any stored type; returns nothing.</span>
+  <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">void</span> <span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span>
+
+<span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">data</span> <span class="special">=</span> <span class="number">1</span><span class="special">;</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">same</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+<span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">visit</span><span class="special">(</span><span class="identifier">visitor</span><span class="special">{</span><span class="special">}</span><span class="special">,</span> <span class="identifier">data</span><span class="special">)</span><span class="special">;</span> <span class="comment">// Invokes visitor.operator()(int)</span>
+</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">variable</code></span></p></td>
+<td><p>Non-const dynamic variable. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">visitor</code></span></p></td>
+<td><p>Visitor object. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>Return type of <code class="computeroutput">Visitor::operator()(nullable)</code>. </p></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2017 Bjorn Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../reference.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../reference.html#header.boost.libs.trial_protocol.include.trial.dynamic.algorithm.visit_hpp"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../../header/boost/libs/trial_protocol/include/trial/dynamic/error_hpp.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

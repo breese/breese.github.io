@@ -1,0 +1,188 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Converters</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_59_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Trial.Dynamic">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Trial.Dynamic">
+<link rel="prev" href="algorithms.html" title="Algorithms">
+<link rel="next" href="design_rationale.html" title="Design Rationale">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_59_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_59_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="algorithms.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="design_rationale.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="trial_dynamic.converters"></a><a class="link" href="converters.html" title="Converters">Converters</a>
+</h2></div></div></div>
+<p>
+      Converters are convenience functions for copying data between the dynamic variable
+      and other containers.
+    </p>
+<p>
+      The general pattern is <code class="computeroutput"><span class="identifier">OutputType</span>
+      <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">convert</span><span class="special">&lt;</span><span class="identifier">OutputType</span><span class="special">&gt;(</span><span class="identifier">InputType</span><span class="special">)</span></code>.
+      The converter derives the <code class="computeroutput"><span class="identifier">InputType</span></code>
+      from the function parameter. The <code class="computeroutput"><span class="identifier">OutputType</span></code>
+      cannot be derived, so it must be specified explicitly as a template parameter.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">InputType</span> <span class="identifier">input</span> <span class="special">=</span> <span class="comment">/* input data */</span><span class="special">;</span>
+
+<span class="keyword">auto</span> <span class="identifier">output</span> <span class="special">=</span> <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">convert</span><span class="special">&lt;</span><span class="identifier">OutputType</span><span class="special">&gt;(</span><span class="identifier">input</span><span class="special">);</span>
+</pre>
+<p>
+    </p>
+<p>
+      or...
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">InputType</span> <span class="identifier">input</span> <span class="special">=</span> <span class="comment">/* input data */</span><span class="special">;</span>
+
+<span class="identifier">OutputType</span> <span class="identifier">output</span> <span class="special">=</span> <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">convert</span><span class="special">&lt;</span><span class="keyword">decltype</span><span class="special">(</span><span class="identifier">output</span><span class="special">)&gt;(</span><span class="identifier">input</span><span class="special">);</span>
+</pre>
+<p>
+    </p>
+<p>
+      An error is raised when converting incompatible types. The error is either
+      passed as an exception, or as an <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">error_code</span></code>
+      if specified as output parameter.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">InputType</span> <span class="identifier">input</span> <span class="special">=</span> <span class="comment">/* input data */</span><span class="special">;</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">error_code</span> <span class="identifier">error</span><span class="special">;</span>
+
+<span class="keyword">auto</span> <span class="identifier">output</span> <span class="special">=</span> <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">convert</span><span class="special">&lt;</span><span class="identifier">OutputType</span><span class="special">&gt;(</span><span class="identifier">input</span><span class="special">,</span> <span class="identifier">error</span><span class="special">);</span>
+<span class="keyword">if</span> <span class="special">(</span><span class="identifier">error</span><span class="special">)</span>
+  <span class="comment">/* Handle errors */</span>
+</pre>
+<p>
+    </p>
+<p>
+      The converters for each container are located in separate header files.
+    </p>
+<h4>
+<a name="trial_dynamic.converters.h0"></a>
+      <span class="phrase"><a name="trial_dynamic.converters.std__vector"></a></span><a class="link" href="converters.html#trial_dynamic.converters.std__vector">std::vector</a>
+    </h4>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">dynamic</span><span class="special">/</span><span class="identifier">std</span><span class="special">/</span><span class="identifier">vector</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
+      </p></td></tr>
+</table></div>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// Convert std::vector into dynamic variable</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">input</span> <span class="special">=</span> <span class="special">{</span> <span class="number">1</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">4</span> <span class="special">};</span>
+
+<span class="keyword">auto</span> <span class="identifier">output</span> <span class="special">=</span> <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">convert</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span><span class="special">&gt;(</span><span class="identifier">input</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">array</span><span class="special">&gt;());</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span><span class="special">.</span><span class="identifier">size</span> <span class="special">==</span> <span class="number">4</span><span class="special">);</span>
+</pre>
+<p>
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// Convert dynamic variable into std::vector</span>
+<span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">input</span> <span class="special">=</span> <span class="special">{</span> <span class="number">1</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">4</span> <span class="special">};</span>
+
+<span class="keyword">auto</span> <span class="identifier">output</span> <span class="special">=</span> <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">convert</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;&gt;(</span><span class="identifier">input</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="number">4</span><span class="special">);</span>
+</pre>
+<p>
+    </p>
+<h4>
+<a name="trial_dynamic.converters.h1"></a>
+      <span class="phrase"><a name="trial_dynamic.converters.std__map"></a></span><a class="link" href="converters.html#trial_dynamic.converters.std__map">std::map</a>
+    </h4>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">dynamic</span><span class="special">/</span><span class="identifier">std</span><span class="special">/</span><span class="identifier">map</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
+      </p></td></tr>
+</table></div>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// Convert std::map into dynamic variable</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">input</span> <span class="special">=</span> <span class="special">{</span> <span class="special">{</span> <span class="string">"alpha"</span><span class="special">,</span> <span class="string">"hydrogen"</span> <span class="special">},</span> <span class="special">{</span> <span class="string">"bravo"</span><span class="special">,</span> <span class="string">"helium"</span> <span class="special">}</span> <span class="special">};</span>
+
+<span class="keyword">auto</span> <span class="identifier">output</span> <span class="special">=</span> <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">convert</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span><span class="special">&gt;(</span><span class="identifier">input</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">map</span><span class="special">&gt;());</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span><span class="special">.</span><span class="identifier">size</span> <span class="special">==</span> <span class="number">2</span><span class="special">);</span>
+</pre>
+<p>
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// Convert dynamic variable into std::map</span>
+<span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">input</span> <span class="special">=</span> <span class="special">{</span> <span class="special">{</span> <span class="string">"alpha"</span><span class="special">,</span> <span class="string">"hydrogen"</span> <span class="special">},</span> <span class="special">{</span> <span class="string">"bravo"</span><span class="special">,</span> <span class="string">"helium"</span> <span class="special">}</span> <span class="special">};</span>
+
+<span class="keyword">auto</span> <span class="identifier">output</span> <span class="special">=</span> <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">convert</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;&gt;(</span><span class="identifier">input</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="number">2</span><span class="special">);</span>
+</pre>
+<p>
+    </p>
+<h4>
+<a name="trial_dynamic.converters.h2"></a>
+      <span class="phrase"><a name="trial_dynamic.converters.boost__any"></a></span><a class="link" href="converters.html#trial_dynamic.converters.boost__any">boost::any</a>
+    </h4>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+        <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">dynamic</span><span class="special">/</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">any</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
+      </p>
+<p>
+        This creates a compile-time dependency on Boost.Any.
+      </p>
+</td></tr>
+</table></div>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// Convert boost::any into dynamic variable</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">any</span> <span class="identifier">input</span> <span class="special">=</span> <span class="number">1</span><span class="special">;</span>
+
+<span class="keyword">auto</span> <span class="identifier">output</span> <span class="special">=</span> <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">convert</span><span class="special">&lt;</span><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span><span class="special">&gt;(</span><span class="identifier">input</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span><span class="special">.</span><span class="identifier">is</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;());</span>
+</pre>
+<p>
+    </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2017 Bjorn Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="algorithms.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="design_rationale.html"><img src="http://www.boost.org/doc/libs/1_59_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
