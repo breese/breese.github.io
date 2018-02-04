@@ -1,0 +1,215 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Incremental Processing</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_66_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Trial.Protocol">
+<link rel="up" href="../tutorial.html" title="Tutorials">
+<link rel="prev" href="../tutorial.html" title="Tutorials">
+<link rel="next" href="push_parser.html" title="Push Parser">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_66_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../tutorial.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../tutorial.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="push_parser.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="trial_protocol.json.tutorial.incremental_processing"></a><a class="link" href="incremental_processing.html" title="Incremental Processing">Incremental
+        Processing</a>
+</h4></div></div></div>
+<p>
+          Serialization and document processing is build on top of incremental processing.
+          Incremental processing can also be used directly for more efficient processing
+          such as searching for keys in a JSON file without having to convert strings
+          or from JSON into C++ types.
+        </p>
+<p>
+          We are going to start with incremental generation to create JSON formatted
+          output using the <a class="link" href="../user_guide.html#protocol.json.writer"><code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">writer</span></code></a>.
+          Afterwards we will use the <a class="link" href="../user_guide.html#protocol.json.reader"><code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span></code></a> to parse JSON formatted
+          input.
+        </p>
+<h6>
+<a name="trial_protocol.json.tutorial.incremental_processing.h0"></a>
+          <span class="phrase"><a name="trial_protocol.json.tutorial.incremental_processing.generating_fundamental_types"></a></span><a class="link" href="incremental_processing.html#trial_protocol.json.tutorial.incremental_processing.generating_fundamental_types">Generating
+          fundamental types</a>
+        </h6>
+<p>
+          The <a class="link" href="../user_guide.html#protocol.json.writer"><code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">writer</span></code></a>
+          is used to incrementally generate a JSON formatted buffer. We can either
+          write a fundamental type, or use tags to write special tokens.
+        </p>
+<p>
+          We first need to include a couple of headers.
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">buffer</span><span class="special">/</span><span class="identifier">string</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">json</span><span class="special">/</span><span class="identifier">writer</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+</pre>
+<p>
+          Let us generate a boolean value:
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">output</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">writer</span> <span class="identifier">writer</span><span class="special">(</span><span class="identifier">output</span><span class="special">);</span>
+
+<span class="identifier">writer</span><span class="special">.</span><span class="identifier">write</span><span class="special">(</span><span class="keyword">true</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span> <span class="special">==</span> <span class="string">"true"</span><span class="special">);</span>
+</pre>
+<p>
+          We can also generate a <code class="computeroutput"><span class="identifier">null</span></code>
+          value, which means that the current entry does not have a value. Think
+          of it as an uninitialized optional value. We pass a tag as template parameter
+          to indicate that <code class="computeroutput"><span class="identifier">null</span></code> should
+          be inserted.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">output</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">writer</span> <span class="identifier">writer</span><span class="special">(</span><span class="identifier">output</span><span class="special">);</span>
+
+<span class="identifier">writer</span><span class="special">.</span><span class="identifier">write</span><span class="special">&lt;</span><span class="identifier">json</span><span class="special">::</span><span class="identifier">token</span><span class="special">::</span><span class="identifier">null</span><span class="special">&gt;();</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span> <span class="special">==</span> <span class="string">"null"</span><span class="special">);</span>
+</pre>
+<p>
+        </p>
+<h6>
+<a name="trial_protocol.json.tutorial.incremental_processing.h1"></a>
+          <span class="phrase"><a name="trial_protocol.json.tutorial.incremental_processing.generating_array"></a></span><a class="link" href="incremental_processing.html#trial_protocol.json.tutorial.incremental_processing.generating_array">Generating
+          array</a>
+        </h6>
+<p>
+          Containers have to start with with a begin bracket and terminate with an
+          end bracket. These brackets must be written explicitly with a tag. The
+          separators between entries are automatically inserted.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">buffer</span><span class="special">/</span><span class="identifier">string</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">json</span><span class="special">/</span><span class="identifier">writer</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">output</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">writer</span> <span class="identifier">writer</span><span class="special">(</span><span class="identifier">output</span><span class="special">);</span>
+
+<span class="identifier">writer</span><span class="special">.</span><span class="identifier">write</span><span class="special">&lt;</span><span class="identifier">json</span><span class="special">::</span><span class="identifier">token</span><span class="special">::</span><span class="identifier">begin_array</span><span class="special">&gt;();</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span> <span class="special">==</span> <span class="string">"["</span><span class="special">);</span>
+
+<span class="identifier">writer</span><span class="special">.</span><span class="identifier">write</span><span class="special">(</span><span class="keyword">true</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span> <span class="special">==</span> <span class="string">"[true"</span><span class="special">);</span>
+
+<span class="identifier">writer</span><span class="special">.</span><span class="identifier">write</span><span class="special">(</span><span class="number">2</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span> <span class="special">==</span> <span class="string">"[true,2"</span><span class="special">);</span>
+
+<span class="identifier">writer</span><span class="special">.</span><span class="identifier">write</span><span class="special">(</span><span class="number">3.0</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span> <span class="special">==</span> <span class="string">"[true,2,3.0"</span><span class="special">);</span>
+
+<span class="identifier">writer</span><span class="special">.</span><span class="identifier">write</span><span class="special">(</span><span class="string">"alpha"</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span> <span class="special">==</span> <span class="string">"[true,2,3.0,\"alpha\""</span><span class="special">);</span>
+
+<span class="identifier">writer</span><span class="special">.</span><span class="identifier">write</span><span class="special">&lt;</span><span class="identifier">json</span><span class="special">::</span><span class="identifier">token</span><span class="special">::</span><span class="identifier">end_array</span><span class="special">&gt;();</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span> <span class="special">==</span> <span class="string">"[true,2,3.0.\"alpha\"]"</span><span class="special">);</span>
+</pre>
+<p>
+        </p>
+<h6>
+<a name="trial_protocol.json.tutorial.incremental_processing.h2"></a>
+          <span class="phrase"><a name="trial_protocol.json.tutorial.incremental_processing.counting_keys"></a></span><a class="link" href="incremental_processing.html#trial_protocol.json.tutorial.incremental_processing.counting_keys">Counting
+          keys</a>
+        </h6>
+<p>
+          We now turn our attention to incremental parsing. <a class="link" href="../user_guide.html#protocol.json.reader"><code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span></code></a> is a pull parser that lazily
+          parses a single token in the input. The <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span><span class="special">::</span><span class="identifier">next</span><span class="special">()</span></code> function is used to advance the cursor
+          to the next token.
+        </p>
+<p>
+          Suppose we have string called <code class="computeroutput"><span class="identifier">haystack</span></code>
+          containing a JSON object, and that we want to count all key-value pairs
+          with a given key called <code class="computeroutput"><span class="identifier">needle</span></code>.
+        </p>
+<p>
+          For the sake of simplicity we are going to assume that there are no nested
+          containers.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">json</span><span class="special">/</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">prefix_count</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&amp;</span> <span class="identifier">haystack</span><span class="special">,</span>
+                         <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&amp;</span> <span class="identifier">needle</span><span class="special">)</span>
+<span class="special">{</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">count</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
+  <span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">haystack</span><span class="special">);</span>
+  <span class="keyword">do</span>
+  <span class="special">{</span>
+    <span class="keyword">auto</span> <span class="identifier">key</span> <span class="special">=</span> <span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;();</span>
+    <span class="keyword">if</span> <span class="special">(</span><span class="identifier">key</span> <span class="special">==</span> <span class="identifier">needle</span><span class="special">)</span>
+    <span class="special">{</span>
+      <span class="special">++</span><span class="identifier">count</span><span class="special">;</span>
+    <span class="special">}</span>
+    <span class="identifier">reader</span><span class="special">.</span><span class="identifier">next</span><span class="special">();</span> <span class="comment">// Skip key</span>
+  <span class="special">}</span> <span class="keyword">while</span> <span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">next</span><span class="special">());</span> <span class="comment">// Skip value</span>
+  <span class="keyword">return</span> <span class="identifier">count</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<p>
+          In the above example we convert the current <code class="computeroutput"><span class="identifier">key</span></code>
+          from JSON to <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span></code> before doing the comparison.
+        </p>
+<p>
+          We can optimize this by converting the <code class="computeroutput"><span class="identifier">needle</span></code>
+          into a JSON string and then comparing it with the unconverted JSON string.
+          We will use the <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">writer</span></code> for that.
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">buffer</span><span class="special">/</span><span class="identifier">string</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">json</span><span class="special">/</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">json</span><span class="special">/</span><span class="identifier">writer</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">prefix_count_fast</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&amp;</span> <span class="identifier">haystack</span><span class="special">,</span>
+                              <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&amp;</span> <span class="identifier">needle</span><span class="special">)</span>
+<span class="special">{</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">literal</span><span class="special">;</span>
+  <span class="identifier">json</span><span class="special">::</span><span class="identifier">writer</span> <span class="identifier">writer</span><span class="special">(</span><span class="identifier">literal</span><span class="special">);</span>
+  <span class="identifier">writer</span><span class="special">.</span><span class="identifier">value</span><span class="special">(</span><span class="identifier">needle</span><span class="special">);</span>
+
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">count</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
+  <span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">haystack</span><span class="special">);</span>
+  <span class="keyword">do</span>
+  <span class="special">{</span>
+    <span class="keyword">const</span> <span class="keyword">auto</span><span class="special">&amp;</span> <span class="identifier">key</span> <span class="special">=</span> <span class="identifier">reader</span><span class="special">.</span><span class="identifier">literal</span><span class="special">();</span>
+    <span class="keyword">if</span> <span class="special">(</span><span class="identifier">key</span> <span class="special">==</span> <span class="identifier">literal</span><span class="special">)</span>
+    <span class="special">{</span>
+      <span class="special">++</span><span class="identifier">count</span><span class="special">;</span>
+    <span class="special">}</span>
+    <span class="identifier">reader</span><span class="special">.</span><span class="identifier">next</span><span class="special">();</span> <span class="comment">// Skip key</span>
+  <span class="special">}</span> <span class="keyword">while</span> <span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">next</span><span class="special">())</span> <span class="comment">// Skip value</span>
+  <span class="keyword">return</span> <span class="identifier">count</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2015-2018 Bjorn
+      Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../tutorial.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../tutorial.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="push_parser.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

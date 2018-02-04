@@ -1,0 +1,180 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Tutorials</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_66_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Trial.Protocol">
+<link rel="up" href="../json.html" title="JSON">
+<link rel="prev" href="../json.html" title="JSON">
+<link rel="next" href="tutorial/incremental_processing.html" title="Incremental Processing">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_66_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../json.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../json.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="tutorial/incremental_processing.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="trial_protocol.json.tutorial"></a><a class="link" href="tutorial.html" title="Tutorials">Tutorials</a>
+</h3></div></div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="section"><a href="tutorial.html#trial_protocol.json.tutorial.serialization">Serialization</a></span></dt>
+<dt><span class="section"><a href="tutorial/incremental_processing.html">Incremental
+        Processing</a></span></dt>
+<dt><span class="section"><a href="tutorial/push_parser.html">Push Parser</a></span></dt>
+</dl></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+          The tutorials assume that the following alias has been declared
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">json</span> <span class="special">=</span> <span class="identifier">trial</span><span class="special">::</span><span class="identifier">protocol</span><span class="special">::</span><span class="identifier">json</span><span class="special">;</span>
+</pre>
+<p>
+        </p>
+</td></tr>
+</table></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="trial_protocol.json.tutorial.serialization"></a><a class="link" href="tutorial.html#trial_protocol.json.tutorial.serialization" title="Serialization">Serialization</a>
+</h4></div></div></div>
+<p>
+          This tutorial shows how the <a class="link" href="user_guide/serialization/output_archive.html#protocol.json.oarchive">JSON
+          output archive</a> and the <a class="link" href="user_guide/serialization.html#protocol.json.iarchive">JSON
+          input archive</a> can be used to serialize C++ data into JSON and deserialize
+          JSON into C++ data in just a few lines of code.
+        </p>
+<h6>
+<a name="trial_protocol.json.tutorial.serialization.h0"></a>
+          <span class="phrase"><a name="trial_protocol.json.tutorial.serialization.fundamental_types"></a></span><a class="link" href="tutorial.html#trial_protocol.json.tutorial.serialization.fundamental_types">Fundamental
+          types</a>
+        </h6>
+<p>
+          We start by serializing <a href="http://en.cppreference.com/w/cpp/language/types" target="_top">fundamental
+          types</a>, because there is built-in serialization support for most
+          of them.
+        </p>
+<p>
+          The JSON output archive knows how to generate valid JSON, but it needs
+          a buffer to store the output in. This buffer is passed to the constructor
+          of the output archive. We can choose between several <a class="link" href="../core.html#protocol.core.adapter">buffer
+          types</a>. In the following we will only demonstrate how to serialize
+          to a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span></code>. We first need to include a wrapper
+          for <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span></code> that is used by the output archive.
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">buffer</span><span class="special">/</span><span class="identifier">string</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// Use std::string as output buffer</span>
+</pre>
+<p>
+          We also need to include <a class="link" href="user_guide/serialization/output_archive.html#protocol.json.oarchive"><code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">oarchive</span></code></a> together with other headers
+          to glue Trial.Protocol into Boost.Serialization. This is most easily done
+          like this:
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">json</span><span class="special">/</span><span class="identifier">serialization</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+<p>
+          Serializing is as simple as creating a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span></code>
+          and a <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">oarchive</span></code>, and then stream our data to
+          the archive.
+</p>
+<pre class="programlisting"><span class="comment">// Create data</span>
+<span class="keyword">bool</span> <span class="identifier">input</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span>
+
+<span class="comment">// Serialization</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">buffer</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">oarchive</span> <span class="identifier">oarchive</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">);</span>
+<span class="identifier">oarchive</span> <span class="special">&lt;&lt;</span> <span class="identifier">input</span><span class="special">;</span>
+</pre>
+<p>
+          The <code class="computeroutput"><span class="identifier">buffer</span></code> string now contains
+          the formatted JSON output.
+</p>
+<pre class="programlisting"><span class="identifier">assert</span><span class="special">(</span><span class="identifier">buffer</span> <span class="special">==</span> <span class="string">"true"</span><span class="special">);</span>
+</pre>
+<p>
+        </p>
+<p>
+          We can deserialize the buffer again with the <a class="link" href="user_guide/serialization.html#protocol.json.iarchive">JSON
+          input archive</a>.
+</p>
+<pre class="programlisting"><span class="keyword">bool</span> <span class="identifier">output</span> <span class="special">=</span> <span class="keyword">false</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">iarchive</span> <span class="identifier">iarchive</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">);</span>
+<span class="identifier">iarchive</span> <span class="special">&gt;&gt;</span> <span class="identifier">output</span><span class="special">;</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span> <span class="special">==</span> <span class="keyword">true</span><span class="special">);</span>
+</pre>
+<p>
+        </p>
+<h6>
+<a name="trial_protocol.json.tutorial.serialization.h1"></a>
+          <span class="phrase"><a name="trial_protocol.json.tutorial.serialization.containers"></a></span><a class="link" href="tutorial.html#trial_protocol.json.tutorial.serialization.containers">Containers</a>
+        </h6>
+<p>
+          There is also built-in support for serialization of certain standard C++
+          containers, such as <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span></code>,
+          <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">set</span></code>, and <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span></code>.
+        </p>
+<p>
+          The following example shows how to serialize an <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span></code>.
+          The serialization code follows the same pattern as used in the previous
+          example.
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">buffer</span><span class="special">/</span><span class="identifier">string</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">json</span><span class="special">/</span><span class="identifier">serialization</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="comment">// Build data</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">input</span><span class="special">;</span>
+<span class="identifier">input</span><span class="special">[</span><span class="string">"alpha"</span><span class="special">]</span> <span class="special">=</span> <span class="string">"hydrogen"</span><span class="special">;</span>
+<span class="identifier">input</span><span class="special">[</span><span class="string">"bravo"</span><span class="special">]</span> <span class="special">=</span> <span class="string">"helium"</span><span class="special">;</span>
+
+<span class="comment">// Serialization</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">buffer</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">oarchive</span> <span class="identifier">oarchive</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">);</span>
+<span class="identifier">oarchive</span> <span class="special">&lt;&lt;</span> <span class="identifier">input</span><span class="special">;</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">buffer</span> <span class="special">==</span> <span class="string">"{\"alpha\":\"hydrogen"</span><span class="special">,\</span><span class="string">"bravo\":\"helium\"}"</span><span class="special">);</span>
+</pre>
+<p>
+          Deserialization is done by adding:
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">output</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">iarchive</span> <span class="identifier">iarchive</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">);</span>
+<span class="identifier">iarchive</span> <span class="special">&gt;&gt;</span> <span class="identifier">output</span><span class="special">;</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="number">2</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span><span class="special">[</span><span class="string">"alpha"</span><span class="special">]</span> <span class="special">==</span> <span class="string">"hydrogen"</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">output</span><span class="special">[</span><span class="string">"bravo"</span><span class="special">]</span> <span class="special">==</span> <span class="string">"helium"</span><span class="special">);</span>
+</pre>
+<p>
+        </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2015-2018 Bjorn
+      Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../json.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../json.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="tutorial/incremental_processing.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class template basic_reader</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_66_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Trial.Protocol">
+<link rel="up" href="../../../header/boost/libs/trial_protocol/include/trial/protocol/json/reader_hpp.html" title="Header &lt;boost/libs/trial.protocol/include/trial/protocol/json/reader.hpp&gt;">
+<link rel="prev" href="../../../header/boost/libs/trial_protocol/include/trial/protocol/json/reader_hpp.html" title="Header &lt;boost/libs/trial.protocol/include/trial/protocol/json/reader.hpp&gt;">
+<link rel="next" href="../../../header/boost/libs/trial_protocol/include/trial/protocol/json/serialization/iarchive_hpp.html" title="Header &lt;boost/libs/trial.protocol/include/trial/protocol/json/serialization/iarchive.hpp&gt;">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_66_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../../header/boost/libs/trial_protocol/include/trial/protocol/json/reader_hpp.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../header/boost/libs/trial_protocol/include/trial/protocol/json/reader_hpp.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../../../header/boost/libs/trial_protocol/include/trial/protocol/json/serialization/iarchive_hpp.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="trial.protocol.json.basic_reader"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class template basic_reader</span></h2>
+<p>trial::protocol::json::basic_reader &#8212; Incremental JSON reader. </p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../header/boost/libs/trial_protocol/include/trial/protocol/json/reader_hpp.html" title="Header &lt;boost/libs/trial.protocol/include/trial/protocol/json/reader.hpp&gt;">boost/libs/trial.protocol/include/trial/protocol/json/reader.hpp</a>&gt;
+
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> CharT<span class="special">&gt;</span> 
+<span class="keyword">class</span> <a class="link" href="basic_reader.html" title="Class template basic_reader">basic_reader</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a name="trial.protocol.json.basic_reader.value_type"></a><span class="identifier">value_type</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a name="trial.protocol.json.basic_reader.size_type"></a><span class="identifier">size_type</span><span class="special">;</span> 
+  <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a name="trial.protocol.json.basic_reader.view_type"></a><span class="identifier">view_type</span><span class="special">;</span> 
+
+  <span class="comment">// <a class="link" href="basic_reader.html#trial.protocol.json.basic_readerconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="basic_reader.html#idm3774-bb"><span class="identifier">basic_reader</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">view_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="basic_reader.html#idm3784-bb"><span class="identifier">basic_reader</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_reader.html" title="Class template basic_reader">basic_reader</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="basic_reader.html#idm3684-bb">public member functions</a></span>
+  <span class="keyword">bool</span> <a class="link" href="basic_reader.html#idm3685-bb"><span class="identifier">next</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="basic_reader.html#idm3692-bb"><span class="identifier">next</span></a><span class="special">(</span><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a class="link" href="basic_reader.html#idm3703-bb"><span class="identifier">level</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">value</span> <a class="link" href="basic_reader.html#idm3711-bb"><span class="identifier">code</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="identifier">token</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">value</span> <a class="link" href="basic_reader.html#idm3718-bb"><span class="identifier">symbol</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="identifier">token</span><span class="special">::</span><span class="identifier">category</span><span class="special">::</span><span class="identifier">value</span> <a class="link" href="basic_reader.html#idm3725-bb"><span class="identifier">category</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">error_code</span> <a class="link" href="basic_reader.html#idm3732-bb"><span class="identifier">error</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ReturnType<span class="special">&gt;</span> <span class="identifier">ReturnType</span> <a class="link" href="basic_reader.html#idm3740-bb"><span class="identifier">value</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="identifier">view_type</span> <span class="special">&amp;</span> <a class="link" href="basic_reader.html#idm3762-bb"><span class="identifier">literal</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="identifier">view_type</span> <span class="special">&amp;</span> <a class="link" href="basic_reader.html#idm3768-bb"><span class="identifier">tail</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idm3988"></a><h2>Description</h2>
+<p>Parse a JSON formatted input buffer incrementally. Incrementally means that the reader only parses enough of the input to identify the next token. The entire input has to be parsed by repeating parsing the next token until the end of the input. </p>
+<div class="refsect2">
+<a name="idm3991"></a><h3>
+<a name="trial.protocol.json.basic_readerconstruct-copy-destruct"></a><code class="computeroutput">basic_reader</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a name="idm3774-bb"></a><span class="identifier">basic_reader</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">view_type</span> <span class="special">&amp;</span> view<span class="special">)</span><span class="special">;</span></pre>Construct an incremental JSON reader. <p>The first token is automatically parsed.</p>
+<p>The reader does not assume ownership of the view.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">view</code></span></p></td>
+<td><p>A string view of a JSON formatted buffer. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="idm3784-bb"></a><span class="identifier">basic_reader</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="basic_reader.html" title="Class template basic_reader">basic_reader</a> <span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre>Copy-construct an incremental JSON reader. <p>Copies the internal parsing state from the input reader, and continues parsing independently from where the input reader had reached.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">other</code></span></p></td>
+<td><p>The reader that is copied. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="idm4043"></a><h3>
+<a name="idm3684-bb"></a><code class="computeroutput">basic_reader</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idm3685-bb"></a><span class="identifier">next</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Parse the next token. <p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>false if an error occurred or end-of-input was reached, true otherwise. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idm3692-bb"></a><span class="identifier">next</span><span class="special">(</span><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">value</span> expect<span class="special">)</span><span class="special">;</span></pre>Parse the next token if current token has a given value. <p>
+
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">expect</code></span></p></td>
+<td><p>Expected value of current token. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>false if current token does not have the expected value. </p></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="idm3703-bb"></a><span class="identifier">level</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Get the current nesting level. <p>Keep track of the nesting level of containers. The outermost root level is 0.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The current nesting level. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">value</span> <a name="idm3711-bb"></a><span class="identifier">code</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Get the current token as a detailed code. <p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The code of the current token. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">token</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">value</span> <a name="idm3718-bb"></a><span class="identifier">symbol</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Get the current token as a symbol. <p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The symbol of the current token. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">token</span><span class="special">::</span><span class="identifier">category</span><span class="special">::</span><span class="identifier">value</span> <a name="idm3725-bb"></a><span class="identifier">category</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Get the current token as a category. <p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The category of the current token. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">error_code</span> <a name="idm3732-bb"></a><span class="identifier">error</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Get the current error. <p>The error code contains an error enumerator. If parsing did not result in an error, the json::no_error enumerator is used.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The current error code. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ReturnType<span class="special">&gt;</span> <span class="identifier">ReturnType</span> <a name="idm3740-bb"></a><span class="identifier">value</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Converts the current value into ReturnType. <p>The following conversions are valid:</p>
+<div class="orderedlist"><ol class="orderedlist" type="a">
+<li class="listitem"><p>Convert a symbol::boolean token into bool.</p></li>
+<li class="listitem"><p>Convert a symbol::integer token into an integral C++ type (expect bool.)</p></li>
+<li class="listitem"><p>Convert a symbol::real token into a floating-point C++ type.</p></li>
+<li class="listitem"><p>Convert a symbol::string token into std::string.</p></li>
+</ol></div>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The converted value. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Throws:</span></p></td>
+<td>
+<a class="link" href="error.html" title="Class error">json::error</a> If requested type is incompatible with the current token. </td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">view_type</span> <span class="special">&amp;</span> <a name="idm3762-bb"></a><span class="identifier">literal</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>A view of the current value before it is converted into its type. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">view_type</span> <span class="special">&amp;</span> <a name="idm3768-bb"></a><span class="identifier">tail</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>A view of the remaining buffer. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2015-2018 Bjorn
+      Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../../header/boost/libs/trial_protocol/include/trial/protocol/json/reader_hpp.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../header/boost/libs/trial_protocol/include/trial/protocol/json/reader_hpp.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../../../header/boost/libs/trial_protocol/include/trial/protocol/json/serialization/iarchive_hpp.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

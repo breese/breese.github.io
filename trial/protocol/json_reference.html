@@ -1,0 +1,70 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>JSON Reference</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_66_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="Chapter&#160;1.&#160;Trial.Protocol">
+<link rel="up" href="trial_protocol/json.html" title="JSON">
+<link rel="prev" href="trial_protocol/json/design_rationale.html" title="Design Rationale">
+<link rel="next" href="trial/protocol/json/error.html" title="Class error">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_66_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="trial_protocol/json/design_rationale.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="trial_protocol/json.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="trial/protocol/json/error.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="json_reference"></a>JSON Reference</h3></div></div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="section"><a href="json_reference.html#header.boost.libs.trial_protocol.include.trial.protocol.json.error_hpp">Header &lt;boost/libs/trial.protocol/include/trial/protocol/json/error.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="header/boost/libs/trial_protocol/include/trial/protocol/json/reader_hpp.html">Header &lt;boost/libs/trial.protocol/include/trial/protocol/json/reader.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="header/boost/libs/trial_protocol/include/trial/protocol/json/serialization/iarchive_hpp.html">Header &lt;boost/libs/trial.protocol/include/trial/protocol/json/serialization/iarchive.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="header/boost/libs/trial_protocol/include/trial/protocol/json/writer_hpp.html">Header &lt;boost/libs/trial.protocol/include/trial/protocol/json/writer.hpp&gt;</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="header.boost.libs.trial_protocol.include.trial.protocol.json.error_hpp"></a>Header &lt;<a href="http://www.boost.org/doc/libs/1_66_0/boost/libs/trial.protocol/include/trial/protocol/json/error.hpp" target="_top">boost/libs/trial.protocol/include/trial/protocol/json/error.hpp</a>&gt;</h4></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">trial</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">protocol</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">json</span> <span class="special">{</span>
+      <span class="keyword">class</span> <a class="link" href="trial/protocol/json/error.html" title="Class error">error</a><span class="special">;</span>
+
+      <span class="keyword">enum</span> <a name="trial.protocol.json.errc"></a>errc <span class="special">{</span> no_error = = 0, unexpected_token, invalid_key, 
+                  invalid_value, incompatible_type, unbalanced_end_array, 
+                  unbalanced_end_object, expected_end_array, 
+                  expected_end_object <span class="special">}</span><span class="special">;</span>
+      <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">error_category</span> <span class="special">&amp;</span> <a name="trial.protocol.json.error_category"></a><span class="identifier">error_category</span><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+      <span class="keyword">enum</span> <span class="identifier">errc</span> <a name="trial.protocol.json.to_errc"></a><span class="identifier">to_errc</span><span class="special">(</span><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">;</span>
+      <span class="identifier">std</span><span class="special">::</span><span class="identifier">error_code</span> <a name="trial.protocol.json.make_error_code"></a><span class="identifier">make_error_code</span><span class="special">(</span><span class="identifier">json</span><span class="special">::</span><span class="identifier">errc</span> e <span class="special">=</span> <span class="identifier">no_error</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span><span class="keyword">namespace</span> <span class="identifier">std</span> <span class="special">{</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="std/is_error_code_enum_idm3660.html" title="Struct is_error_code_enum&lt;trial::protocol::json::errc&gt;">is_error_code_enum</a><span class="special">&lt;</span><span class="identifier">trial</span><span class="special">::</span><span class="identifier">protocol</span><span class="special">::</span><span class="identifier">json</span><span class="special">::</span><span class="identifier">errc</span><span class="special">&gt;</span><span class="special">;</span>
+<span class="special">}</span></pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2015-2018 Bjorn
+      Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="trial_protocol/json/design_rationale.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="trial_protocol/json.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="trial/protocol/json/error.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

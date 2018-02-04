@@ -1,0 +1,172 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>JSON</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_66_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Trial.Protocol">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Trial.Protocol">
+<link rel="prev" href="core/serialization.html" title="Serialization">
+<link rel="next" href="json/tutorial.html" title="Tutorials">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_66_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="core/serialization.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="json/tutorial.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="trial_protocol.json"></a><a name="protocol.json"></a><a class="link" href="json.html" title="JSON">JSON</a>
+</h2></div></div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="section"><a href="json.html#trial_protocol.json.overview">Overview</a></span></dt>
+<dt><span class="section"><a href="json/tutorial.html">Tutorials</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="json/tutorial.html#trial_protocol.json.tutorial.serialization">Serialization</a></span></dt>
+<dt><span class="section"><a href="json/tutorial/incremental_processing.html">Incremental
+        Processing</a></span></dt>
+<dt><span class="section"><a href="json/tutorial/push_parser.html">Push Parser</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="json/user_guide.html">User
+      Guide</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="json/user_guide.html#trial_protocol.json.user_guide.incremental_processing">Incremental
+        Processing</a></span></dt>
+<dt><span class="section"><a href="json/user_guide/serialization.html">Serialization</a></span></dt>
+<dt><span class="section"><a href="json/user_guide/tree_processing.html">Tree
+        processing</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="json/design_rationale.html">Design
+      Rationale</a></span></dt>
+<dt><span class="section"><a href="../json_reference.html">JSON Reference</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="../json_reference.html#header.boost.libs.trial_protocol.include.trial.protocol.json.error_hpp">Header &lt;boost/libs/trial.protocol/include/trial/protocol/json/error.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="../header/boost/libs/trial_protocol/include/trial/protocol/json/reader_hpp.html">Header &lt;boost/libs/trial.protocol/include/trial/protocol/json/reader.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="../header/boost/libs/trial_protocol/include/trial/protocol/json/serialization/iarchive_hpp.html">Header &lt;boost/libs/trial.protocol/include/trial/protocol/json/serialization/iarchive.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="../header/boost/libs/trial_protocol/include/trial/protocol/json/writer_hpp.html">Header &lt;boost/libs/trial.protocol/include/trial/protocol/json/writer.hpp&gt;</a></span></dt>
+</dl></dd>
+</dl></div>
+<p>
+      <a href="http://json.org/" target="_top">JSON</a> is a textual data format that encodes
+      booleans, numbers, and strings, as well as <a href="http://en.wikipedia.org/wiki/Array_data_structure" target="_top">arrays</a>
+      and <a href="http://en.wikipedia.org/wiki/Associative_array" target="_top">associative
+      arrays</a> (called JSON objects).
+    </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Trial.Protocol supports <a href="http://tools.ietf.org/html/rfc7159" target="_top">RFC
+        7159</a>. No <a href="http://json5.org/" target="_top">JSON extensions</a> are
+        supported.
+      </p></td></tr>
+</table></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="trial_protocol.json.overview"></a><a class="link" href="json.html#trial_protocol.json.overview" title="Overview">Overview</a>
+</h3></div></div></div>
+<p>
+        Trial.Protocol provides the following classes for JSON parsing and generation.
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              </th>
+<th>
+                <p>
+                  Parser
+                </p>
+              </th>
+<th>
+                <p>
+                  Generator
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  Incremental
+                </p>
+              </td>
+<td>
+                <p>
+                  <a class="link" href="json/user_guide.html#protocol.json.reader"><code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span></code></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  <a class="link" href="json/user_guide.html#protocol.json.writer"><code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">writer</span></code></a>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Serialization
+                </p>
+              </td>
+<td>
+                <p>
+                  <a class="link" href="json/user_guide/serialization.html#protocol.json.iarchive"><code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">iarchive</span></code></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  <a class="link" href="json/user_guide/serialization/output_archive.html#protocol.json.oarchive"><code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">oarchive</span></code></a>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Tree
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">parse</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">format</span></code>
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<a name="protocol.json.reference"></a>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2015-2018 Bjorn
+      Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="core/serialization.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="json/tutorial.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

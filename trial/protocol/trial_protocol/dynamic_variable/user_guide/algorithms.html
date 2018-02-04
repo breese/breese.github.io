@@ -1,0 +1,898 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Algorithms</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_66_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Trial.Protocol">
+<link rel="up" href="../user_guide.html" title="User Guide">
+<link rel="prev" href="functions.html" title="Functions">
+<link rel="next" href="converters.html" title="Converters">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_66_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="functions.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../user_guide.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="converters.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="trial_protocol.dynamic_variable.user_guide.algorithms"></a><a class="link" href="algorithms.html" title="Algorithms">Algorithms</a>
+</h4></div></div></div>
+<p>
+          The dynamic variable is accompanied by a number of algorithms, but also
+          works with most standard C++ algorithms.
+        </p>
+<h6>
+<a name="trial_protocol.dynamic_variable.user_guide.algorithms.h0"></a>
+          <span class="phrase"><a name="trial_protocol.dynamic_variable.user_guide.algorithms.count"></a></span><a class="link" href="algorithms.html#trial_protocol.dynamic_variable.user_guide.algorithms.count">Count</a>
+        </h6>
+<p>
+          Counts the number of matching keys or values in a dynamic variable.
+        </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">dynamic</span><span class="special">/</span><span class="identifier">algorithm</span><span class="special">/</span><span class="identifier">count</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
+          </p></td></tr>
+</table></div>
+<p>
+          There are two count algorithms. One counts matching keys, and the other
+          counts matching values. They are located in the <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">key</span></code>
+          and <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">value</span></code> namespaces respectively.
+        </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Expression
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Return type
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Semantics
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Conditions
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">key</span><span class="special">::</span><span class="identifier">count</span><span class="special">(</span><span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">t</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">size_type</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Counts elements with key <code class="computeroutput"><span class="identifier">t</span></code>
+                    in dynamic variable.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <span class="emphasis"><em>Requires:</em></span>
+                  </p>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">T</span></code> is a supported
+                    type.
+                  </p>
+                  <p>
+                    <span class="emphasis"><em>Effects:</em></span>
+                  </p>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">count</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">key_begin</span><span class="special">(),</span>
+                    <span class="identifier">v</span><span class="special">.</span><span class="identifier">key_end</span><span class="special">(),</span>
+                    <span class="identifier">t</span><span class="special">)</span></code>
+                  </p>
+                  <p>
+                    <span class="emphasis"><em>Returns:</em></span>
+                  </p>
+                  <p>
+                    Number of elements in <code class="computeroutput"><span class="identifier">v</span></code>
+                    matching <code class="computeroutput"><span class="identifier">t</span></code>.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">value</span><span class="special">::</span><span class="identifier">count</span><span class="special">(</span><span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">t</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">size_type</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Counts elements with value <code class="computeroutput"><span class="identifier">t</span></code>
+                    in dynamic variable.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <span class="emphasis"><em>Requires:</em></span>
+                  </p>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">T</span></code> is a supported
+                    type.
+                  </p>
+                  <p>
+                    <span class="emphasis"><em>Effects:</em></span>
+                  </p>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">count</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span>
+                    <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span>
+                    <span class="identifier">t</span><span class="special">)</span></code>
+                  </p>
+                  <p>
+                    <span class="emphasis"><em>Returns:</em></span>
+                  </p>
+                  <p>
+                    Number of elements in <code class="computeroutput"><span class="identifier">v</span></code>
+                    matching <code class="computeroutput"><span class="identifier">t</span></code>.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+<h6>
+<a name="trial_protocol.dynamic_variable.user_guide.algorithms.h1"></a>
+          <span class="phrase"><a name="trial_protocol.dynamic_variable.user_guide.algorithms.find"></a></span><a class="link" href="algorithms.html#trial_protocol.dynamic_variable.user_guide.algorithms.find">Find</a>
+        </h6>
+<p>
+          Finds an element by key or by value in a dynamic variable.
+        </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">dynamic</span><span class="special">/</span><span class="identifier">algorithm</span><span class="special">/</span><span class="identifier">find</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
+          </p></td></tr>
+</table></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Expression
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Return type
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Semantics
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Conditions
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">key</span><span class="special">::</span><span class="identifier">find</span><span class="special">(</span><span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">t</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">key_iterator</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Finds element with key in dynamic variable.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <span class="emphasis"><em>Requires:</em></span>
+                  </p>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">T</span></code> is a supported
+                    type.
+                  </p>
+                  <p>
+                    <span class="emphasis"><em>Effects:</em></span>
+                  </p>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">find</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">key_begin</span><span class="special">(),</span>
+                    <span class="identifier">v</span><span class="special">.</span><span class="identifier">key_end</span><span class="special">(),</span>
+                    <span class="identifier">t</span><span class="special">)</span></code>
+                  </p>
+                  <p>
+                    <span class="emphasis"><em>Returns:</em></span>
+                  </p>
+                  <p>
+                    Iterator pointing to element in <code class="computeroutput"><span class="identifier">v</span></code>
+                    matching <code class="computeroutput"><span class="identifier">t</span></code>, or
+                    <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">key_end</span><span class="special">()</span></code>
+                    if not such element exits.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">value</span><span class="special">::</span><span class="identifier">find</span><span class="special">(</span><span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">t</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">iterator</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Finds element with value in dynamic variable.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <span class="emphasis"><em>Requires:</em></span>
+                  </p>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">T</span></code> is a supported
+                    type.
+                  </p>
+                  <p>
+                    <span class="emphasis"><em>Effects:</em></span>
+                  </p>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">find</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span>
+                    <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span>
+                    <span class="identifier">t</span><span class="special">)</span></code>
+                  </p>
+                  <p>
+                    <span class="emphasis"><em>Returns:</em></span>
+                  </p>
+                  <p>
+                    Iterator pointing to element in <code class="computeroutput"><span class="identifier">v</span></code>
+                    matching <code class="computeroutput"><span class="identifier">t</span></code>, or
+                    <code class="computeroutput"><span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">()</span></code>
+                    if not such element exits.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+<h6>
+<a name="trial_protocol.dynamic_variable.user_guide.algorithms.h2"></a>
+          <span class="phrase"><a name="trial_protocol.dynamic_variable.user_guide.algorithms.visit"></a></span><a class="link" href="algorithms.html#trial_protocol.dynamic_variable.user_guide.algorithms.visit">Visit</a>
+        </h6>
+<p>
+          Invokes a function call operator on a visitor object with the stored value
+          of the dynamic variable as the function parameter.
+        </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">dynamic</span><span class="special">/</span><span class="identifier">algorithm</span><span class="special">/</span><span class="identifier">visit</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
+          </p></td></tr>
+</table></div>
+<p>
+          In addition to various ways of doing type checking, we can also invoke
+          a typed callback on a customized visitor object. The function call operator
+          always takes a single input parameter whose type is one of the supported
+          types. The normal C++ function overloading rules applies when selecting
+          which function call operator to invoke.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">my_visitor</span>
+<span class="special">{</span>
+  <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+  <span class="keyword">void</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">T</span> <span class="identifier">value</span><span class="special">)</span>
+  <span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">value</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">end</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">};</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+  <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">data</span> <span class="special">=</span> <span class="special">{</span> <span class="keyword">true</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">3.0</span><span class="special">,</span> <span class="string">"alpha"</span> <span class="special">};</span>
+
+  <span class="identifier">my_visitor</span> <span class="identifier">visitor</span><span class="special">;</span>
+  <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">visit</span><span class="special">(</span><span class="identifier">vistor</span><span class="special">,</span> <span class="identifier">data</span><span class="special">);</span>
+  <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<p>
+          The function call operator may return a value. All function call operators
+          must use the same return type, which is also the return type of the <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">visit</span></code> algorithm.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">my_returning_visitor</span>
+<span class="special">{</span>
+  <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+  <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">value</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">T</span> <span class="identifier">value</span><span class="special">)</span>
+  <span class="special">{</span>
+    <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">tmp</span><span class="special">(</span><span class="identifier">value</span><span class="special">);</span>
+    <span class="keyword">return</span> <span class="identifier">tmp</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">();</span>
+  <span class="special">}</span>
+<span class="special">};</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+  <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">variable</span> <span class="identifier">data</span> <span class="special">=</span> <span class="special">{</span> <span class="keyword">true</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">3.0</span><span class="special">,</span> <span class="string">"alpha"</span> <span class="special">};</span>
+
+  <span class="identifier">my_returning_visitor</span> <span class="identifier">visitor</span><span class="special">;</span>
+  <span class="keyword">auto</span> <span class="identifier">symbol</span> <span class="special">=</span> <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">visit</span><span class="special">(</span><span class="identifier">vistor</span><span class="special">,</span> <span class="identifier">data</span><span class="special">);</span>
+  <span class="identifier">assert</span><span class="special">(</span><span class="identifier">symbol</span> <span class="special">==</span> <span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">array</span><span class="special">);</span>
+  <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<h6>
+<a name="trial_protocol.dynamic_variable.user_guide.algorithms.h3"></a>
+          <span class="phrase"><a name="trial_protocol.dynamic_variable.user_guide.algorithms._include__lt_algorithm_gt_"></a></span><a class="link" href="algorithms.html#trial_protocol.dynamic_variable.user_guide.algorithms._include__lt_algorithm_gt_">#include
+          &lt;algorithm&gt;</a>
+        </h6>
+<p>
+          The dynamic variable works with standard C++ algorithms that require at
+          most bi-directional iterators.
+        </p>
+<p>
+          Some algorithms assume that if they take two ranges, then the second range
+          is at least as long as the first. <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span></code>
+          is an empty container, so it cannot be used as the second range.
+        </p>
+<p>
+          The algorithms listed in the table below have been verified. Excluded are
+          sorting algorithms and algorithms requiring special operators apart from
+          <code class="computeroutput"><span class="keyword">operator</span><span class="special">+</span></code>
+          (e.g. <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">inner_product</span></code> without binary predicates.)
+        </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Algorithm
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Caveat
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">accumulate</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">adjacent_find</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">all_of</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">any_of</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">binary_search</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">copy</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">copy_backward</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">count</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">count_if</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">equal</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Using <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span></code>
+                    as the first range causes true to be returned regardless of the
+                    second range.
+                  </p>
+                  <p>
+                    Using <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span></code>
+                    as the second range causes undefined behavior.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">equal_range</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">find</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Using <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span></code>
+                    as the range causes nothing to be found.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">find_if</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Using <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span></code>
+                    as the range causes nothing to be found.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">insert_iterator</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">iota</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Only arithmetic types can be inserted.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">is_partitioned</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">is_sorted</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">lexicographical_compare</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">lower_bound</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">max_element</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">mismatch</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Using <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span></code>
+                    as the second range causes undefined behavior.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">move</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">move_backward</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">none_of</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">partial_sum</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">partition</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">partition_point</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">remove</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    In associated arrays entries are removed by value but the key
+                    order is kept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">replace</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Cannot insert container as new value because iterators will be
+                    changed during replacement.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">reverse</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">rotate</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    No effect on singular values.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">search</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Using <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span></code>
+                    as the second range always returns the first entry.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">stable_partition</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">swap_ranges</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Using <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span></code>
+                    as the first range has no effect.
+                  </p>
+                  <p>
+                    Using <code class="computeroutput"><span class="identifier">dynamic</span><span class="special">::</span><span class="identifier">nullable</span></code>
+                    as the second range causes undefined behavior.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">transform</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">unique</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">upper_bound</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    None.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2015-2018 Bjorn
+      Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="functions.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../user_guide.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="converters.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

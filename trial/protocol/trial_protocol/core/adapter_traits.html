@@ -1,0 +1,194 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Adapter Traits</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_66_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Trial.Protocol">
+<link rel="up" href="../core.html" title="Core">
+<link rel="prev" href="../core.html" title="Core">
+<link rel="next" href="serialization.html" title="Serialization">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_66_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../core.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../core.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="serialization.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="trial_protocol.core.adapter_traits"></a><a class="link" href="adapter_traits.html" title="Adapter Traits">Adapter Traits</a>
+</h3></div></div></div>
+<p>
+        The encoded output can be written to other output buffer types. This is done
+        by specifying a buffer adapter and a trait to select this buffer adapter
+        for the output buffer type.
+      </p>
+<p>
+        The buffer adapter must inherit from <code class="computeroutput"><span class="identifier">buffer</span><span class="special">::</span><span class="identifier">base</span></code>
+        and implement the following API:
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Member
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">grow</span><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Reserve space in the output buffer. Returns false if the requested
+                  space cannot be reserved, in which case no further data will be
+                  written to the output buffer.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">write</span><span class="special">(</span><span class="identifier">value_type</span><span class="special">)</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Output a single character.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">write</span><span class="special">(</span><span class="keyword">const</span>
+                  <span class="identifier">view_type</span><span class="special">&amp;)</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Output a sequence of characters.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<h5>
+<a name="trial_protocol.core.adapter_traits.h0"></a>
+        <span class="phrase"><a name="trial_protocol.core.adapter_traits.tutorial__deque_adapter"></a></span><a class="link" href="adapter_traits.html#trial_protocol.core.adapter_traits.tutorial__deque_adapter">Tutorial:
+        Deque Adapter</a>
+      </h5>
+<p>
+        Assume that we add support for <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">deque</span></code>.
+        First the buffer wrapper for <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">deque</span></code>
+        is written like this:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">deque</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">buffer</span><span class="special">/</span><span class="identifier">base</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="keyword">namespace</span> <span class="identifier">my</span> <span class="special">{</span>
+
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="identifier">CharT</span><span class="special">&gt;</span>
+<span class="keyword">class</span> <span class="identifier">deque_wrapper</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">buffer</span><span class="special">::</span><span class="identifier">base</span><span class="special">&lt;</span><span class="identifier">CharT</span><span class="special">&gt;</span>
+<span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+    <span class="keyword">using</span> <span class="identifier">value_type</span> <span class="special">=</span> <span class="keyword">typename</span> <span class="identifier">buffer</span><span class="special">::</span><span class="identifier">base</span><span class="special">&lt;</span><span class="identifier">CharT</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">;</span>
+    <span class="keyword">using</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="keyword">typename</span> <span class="identifier">buffer</span><span class="special">::</span><span class="identifier">base</span><span class="special">&lt;</span><span class="identifier">CharT</span><span class="special">&gt;::</span><span class="identifier">size_type</span><span class="special">;</span>
+    <span class="keyword">using</span> <span class="identifier">view_type</span> <span class="special">=</span> <span class="keyword">typename</span> <span class="identifier">buffer</span><span class="special">::</span><span class="identifier">base</span><span class="special">&lt;</span><span class="identifier">CharT</span><span class="special">&gt;::</span><span class="identifier">view_type</span><span class="special">;</span>
+
+    <span class="identifier">deque_wrapper</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">deque</span><span class="special">&lt;</span><span class="identifier">value_type</span><span class="special">&gt;&amp;</span> <span class="identifier">buffer</span><span class="special">)</span>
+        <span class="special">:</span> <span class="identifier">buffer</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">)</span>
+    <span class="special">{}</span>
+
+<span class="keyword">protected</span><span class="special">:</span>
+    <span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="identifier">grow</span><span class="special">(</span><span class="identifier">size_type</span> <span class="identifier">delta</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="identifier">buffer</span><span class="special">.</span><span class="identifier">resize</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">+</span> <span class="identifier">delta</span><span class="special">);</span>
+    <span class="special">}</span>
+
+    <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="identifier">write</span><span class="special">(</span><span class="identifier">value_type</span> <span class="identifier">value</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="identifier">buffer</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">value</span><span class="special">);</span>
+    <span class="special">}</span>
+
+    <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="identifier">write</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">view_type</span><span class="special">&amp;</span> <span class="identifier">view</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="identifier">buffer</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">view</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">view</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
+    <span class="special">}</span>
+
+<span class="keyword">private</span><span class="special">:</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">deque</span><span class="special">&lt;</span><span class="identifier">value_type</span><span class="special">&gt;&amp;</span> <span class="identifier">buffer</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="special">}</span> <span class="comment">// namespace my</span>
+</pre>
+<p>
+      </p>
+<p>
+        Next we must make this wrapper known to the protocol generator, which is
+        done as follows:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">trial</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">protocol</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">buffer</span> <span class="special">{</span>
+
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">traits</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">deque</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">&gt;</span>
+<span class="special">{</span>
+    <span class="keyword">using</span> <span class="identifier">buffer_type</span> <span class="special">=</span> <span class="identifier">my</span><span class="special">::</span><span class="identifier">deque_wrapper</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;;</span>
+<span class="special">};</span>
+
+<span class="special">}}}</span>
+</pre>
+<p>
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          The <code class="computeroutput"><span class="identifier">traits</span></code> struct must
+          be located inside the <code class="computeroutput"><span class="identifier">trial</span><span class="special">::</span><span class="identifier">protocol</span><span class="special">::</span><span class="identifier">buffer</span></code>
+          namespace.
+        </p></td></tr>
+</table></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2015-2018 Bjorn
+      Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../core.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../core.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="serialization.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

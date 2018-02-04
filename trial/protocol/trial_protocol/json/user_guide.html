@@ -1,0 +1,1343 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>User Guide</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_66_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Trial.Protocol">
+<link rel="up" href="../json.html" title="JSON">
+<link rel="prev" href="tutorial/push_parser.html" title="Push Parser">
+<link rel="next" href="user_guide/serialization.html" title="Serialization">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_66_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_66_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="tutorial/push_parser.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../json.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="user_guide/serialization.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="trial_protocol.json.user_guide"></a><a name="protocol.json.guide"></a><a class="link" href="user_guide.html" title="User Guide">User
+      Guide</a>
+</h3></div></div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="section"><a href="user_guide.html#trial_protocol.json.user_guide.incremental_processing">Incremental
+        Processing</a></span></dt>
+<dt><span class="section"><a href="user_guide/serialization.html">Serialization</a></span></dt>
+<dt><span class="section"><a href="user_guide/tree_processing.html">Tree
+        processing</a></span></dt>
+</dl></div>
+<p>
+        Trial.Protocol can process JSON incrementally or via serialization. Incremental
+        processing handles JSON one token at the time, whereas serialization processes
+        the entire JSON buffer in a single operation. A <a class="link" href="user_guide.html#protocol.json.token">token</a>
+        is a single element in the JSON grammar, such as a number, a string, the
+        beginning or the end of an array.
+      </p>
+<p>
+        Incremental processing has a lower-level interface than serialization or
+        document processing, but even though incremental processing is more laborious
+        to use, it covers more use cases and can be used more efficiently. Some examples
+        of these use cases are:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            The input and output serialization archives are build on top of incremental
+            parser and generators.
+          </li>
+<li class="listitem">
+            Certain operations on JSON buffers does not require that individual JSON
+            elements, such as JSON escaped strings, are converted into in-memory
+            data structures. For instance, searching for data in a JSON file, or
+            pretty-printing the content of a JSON file.
+          </li>
+<li class="listitem">
+            We can build other parser types from an incremental parser, such as the
+            push parser in the tutorials.
+          </li>
+</ul></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="trial_protocol.json.user_guide.incremental_processing"></a><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing" title="Incremental Processing">Incremental
+        Processing</a>
+</h4></div></div></div>
+<p>
+          Incremental processing is a low-level API which regards JSON as a sequence
+          of tokens to be processed one by one.
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="trial_protocol.json.user_guide.incremental_processing.token"></a><a name="protocol.json.token"></a><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.token" title="Token">Token</a>
+</h5></div></div></div>
+<p>
+            The JSON parser and generator use tokens to identify data types as well
+            as errors. All token-related types are located in the <code class="computeroutput"><span class="identifier">trial</span><span class="special">::</span><span class="identifier">protocol</span><span class="special">::</span><span class="identifier">json</span><span class="special">::</span><span class="identifier">token</span></code>
+            namespace, which we will simply refer to as <code class="computeroutput"><span class="identifier">token</span></code>
+            below.
+          </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+              Tokens are located in the <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">json</span><span class="special">/</span><span class="identifier">token</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
+              header.
+            </p></td></tr>
+</table></div>
+<h5>
+<a name="trial_protocol.json.user_guide.incremental_processing.token.h0"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.token.token_constants"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.token.token_constants">Token
+            constants</a>
+          </h5>
+<p>
+            A token is represented by the <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span></code>
+            enumeration type with a constant for each possible token or error state.
+            This means that each error is represented by its own enumerator constant.
+          </p>
+<h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.token.h1"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.token.symbols"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.token.symbols">Symbols</a>
+          </h6>
+<p>
+            Working directly with <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span></code>
+            can be tedious. Suppose you want to check if an error occurred, then
+            you have to check if the current token is one of the numerous error constants.
+            Each <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span></code> enumerator has therefore been
+            grouped into a more convenient enumeration type called <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">symbol</span></code> that is better suited for normal
+            operation.
+          </p>
+<p>
+            All <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span></code> error constants have been grouped
+            into the single <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">error</span></code>
+            constant, and we can now check for errors with a single comparison.
+          </p>
+<div class="table">
+<a name="trial_protocol.json.user_guide.incremental_processing.token.json_symbol_constants"></a><p class="title"><b>Table&#160;1.1.&#160;JSON symbol constants</b></p>
+<div class="table-contents"><table class="table" summary="JSON symbol constants">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">symbol</span></code>
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">boolean</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      True or false.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">integer</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Integer number.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">number</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Floating-point number.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">string</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      String value.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">null</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      No data.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">begin_array</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Start of an array.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">end_array</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      End of an array.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">begin_object</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Start of an associative array.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">end_object</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      End of an associative array.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">separator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      A context-specific separator.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">end</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      End of input or output buffer.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">error</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Erroneous format.
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>
+            The symbol type will be the preferred manner to use tokens in the examples
+            throughout this documentation. In fact, we are not even going to describe
+            the <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span></code> enumerator constants here,<a href="#ftn.trial_protocol.json.user_guide.incremental_processing.token.f0" class="footnote" name="trial_protocol.json.user_guide.incremental_processing.token.f0"><sup class="footnote">[6]</sup></a> because we are only interested in the subset that contains
+            the error codes and they are described in the section on <a class="link" href="user_guide.html#protocol.json.error">errors</a>.
+          </p>
+<h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.token.h2"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.token.categories"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.token.categories">Categories</a>
+          </h6>
+<p>
+            The symbol constants are grouped into the <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">category</span></code>
+            enumeration type. There are different categories of tokens:
+          </p>
+<div class="table">
+<a name="trial_protocol.json.user_guide.incremental_processing.token.json_category_constants"></a><p class="title"><b>Table&#160;1.2.&#160;JSON category constants</b></p>
+<div class="table-contents"><table class="table" summary="JSON category constants">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">category</span></code>
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">data</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Data tokens have a value associated with them, whose content
+                      can be retrieved. Examples of data tokens are booleans, numbers,
+                      and strings.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">structural</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Structural tokens wrap containers and separate items.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">nullable</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The nullable token is a special case, because it can represent
+                      either a data token without and associated value or structural
+                      token without an associated container, such as a missing integer
+                      or a missing array. The nullable token is typeless.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">status</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      A status token indicates another condition.
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>
+            The following table shows which categories the the various symbols belong
+            to.
+          </p>
+<div class="table">
+<a name="trial_protocol.json.user_guide.incremental_processing.token.relation_between_symbols_and_categories"></a><p class="title"><b>Table&#160;1.3.&#160;Relation between symbols and categories</b></p>
+<div class="table-contents"><table class="table" summary="Relation between symbols and categories">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">symbol</span></code>
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">category</span></code>
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">boolean</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">data</span></code>
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">integer</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">data</span></code>
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">number</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">data</span></code>
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">string</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">data</span></code>
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">null</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">nullable</span></code>
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">begin_array</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">structural</span></code>
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">end_array</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">structural</span></code>
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">begin_object</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">structural</span></code>
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">end_object</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">structural</span></code>
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">separator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">structural</span></code>
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">end</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">status</span></code>
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">error</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">status</span></code>
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="trial_protocol.json.user_guide.incremental_processing.error"></a><a name="protocol.json.error"></a><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.error" title="Error">Error</a>
+</h5></div></div></div>
+<p>
+            The <a href="http://en.cppreference.com/w/cpp/header/system_error" target="_top"><code class="computeroutput"><span class="special">&lt;</span><span class="identifier">system_error</span><span class="special">&gt;</span></code></a> framework is used for error
+            codes and exceptions.
+          </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+              Error codes and utilities are located in the <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">json</span><span class="special">/</span><span class="identifier">error</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
+              header.
+            </p></td></tr>
+</table></div>
+<h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.error.h0"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.error.error_codes"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.error.error_codes">Error
+            codes</a>
+          </h6>
+<p>
+            Trial.Protocol defines its own <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">error_category</span></code>
+            with associated error enumerator constants.
+          </p>
+<p>
+            Normally, an <code class="computeroutput"><span class="identifier">error_code</span></code>
+            of the current error can be obtained via an <code class="computeroutput"><span class="identifier">error</span><span class="special">()</span></code> member function.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"illegal"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">error</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">error</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">invalid_value</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<p>
+            This conversion can also be done manually with <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">to_errc</span><span class="special">()</span></code> and <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">make_error_code</span><span class="special">()</span></code>.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"illegal"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">error</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">code</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">error_invalid_value</span><span class="special">);</span>
+
+<span class="keyword">enum</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">errc</span> <span class="identifier">ec</span> <span class="special">=</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">to_errc</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">code</span><span class="special">());</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">ec</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">invalid_value</span><span class="special">);</span>
+
+<span class="keyword">auto</span> <span class="identifier">error</span> <span class="special">=</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">make_error_code</span><span class="special">(</span><span class="identifier">ec</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">error</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">invalid_value</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<p>
+            The following error codes exists.
+          </p>
+<div class="table">
+<a name="trial_protocol.json.user_guide.incremental_processing.error.error_codes0"></a><p class="title"><b>Table&#160;1.4.&#160;Error codes</b></p>
+<div class="table-contents"><table class="table" summary="Error codes">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">errc</span></code>
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">unexpected_token</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      An unexpected token is encountered in the input.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">invalid_key</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      An associative array key is not in a valid format.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">invalid_value</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The content is not in a valid format.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">incompatible_type</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Conversion between two incompatible types failed.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">unbalanced_end_array</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Encountered an end array token without a corresponding begin
+                      array token.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">unbalanced_end_object</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Encountered an end object token without a corresponding begin
+                      object token.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">expected_end_array</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Encountered an end array token outside an array.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">expected_end_object</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Encountered an end object token outside an associative array.
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.error.h1"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.error.exception"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.error.exception">Exception</a>
+          </h6>
+<p>
+            Conversion errors will result in <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">error</span></code>
+            exceptions being thrown. <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">error</span></code>
+            inherits from <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">system_error</span></code> which contains a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">error_code</span></code>.
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="trial_protocol.json.user_guide.incremental_processing.reader"></a><a name="protocol.json.reader"></a><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.reader" title="Reader">Reader</a>
+</h5></div></div></div>
+<p>
+            Reader is an incremental parser (also called a pull parser) that transforms
+            the JSON input into a sequence of C++ tokens. This transformation is
+            done piecemeal, which means that the reader will stay at the first token
+            until explicitly instructed to parse the next token.
+          </p>
+<p>
+            Based on the <a href="http://en.wikipedia.org/wiki/Iterator_pattern" target="_top">Iterator
+            design pattern</a>, <code class="computeroutput"><span class="identifier">reader</span></code>
+            parses just enough of the input to identify a single token. The <code class="computeroutput"><span class="identifier">reader</span></code> provides various accessors that
+            can be used to examine or convert the current <a class="link" href="user_guide.html#protocol.json.token">token</a>.
+          </p>
+<div class="table">
+<a name="trial_protocol.json.user_guide.incremental_processing.reader.reader_accessors"></a><p class="title"><b>Table&#160;1.5.&#160;Reader Accessors</b></p>
+<div class="table-contents"><table class="table" summary="Reader Accessors">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Reader member function
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span><span class="special">::</span><span class="identifier">value</span> <span class="identifier">code</span><span class="special">()</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Returns the current token.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">value</span> <span class="identifier">symbol</span><span class="special">()</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Returns the symbol of the current token.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">category</span><span class="special">::</span><span class="identifier">value</span> <span class="identifier">category</span><span class="special">()</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Returns the category of the current token.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span> <span class="identifier">level</span><span class="special">()</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Returns the current level of nested containers. The levels
+                      starts with zero for the outmost level.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">error_code</span> <span class="identifier">error</span><span class="special">()</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Returns the current error code.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">view_type</span><span class="special">&amp;</span> <span class="identifier">literal</span><span class="special">()</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Returns a view of the raw input of the current value.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">T</span> <span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Returns the current value. The raw input is converted into
+                      the requested value type.
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>
+            No data is converted until explicitly requested with <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>. Notice that the return type for
+            <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>
+            must be specified as a template parameter. The return type can be a boolean,
+            a number, or a string as described below. The requested type must match
+            the current token as returned by <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">type</span><span class="special">()</span></code>; otherwise a run-time error will be
+            raised.
+          </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+              Requesting the value of an incompatible type will result in a run-time
+              error. For example, attempting to read a string as an integer:
+</p>
+<pre class="programlisting"><span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">string</span><span class="special">);</span>
+<span class="keyword">int</span> <span class="identifier">number</span> <span class="special">=</span> <span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;();</span> <span class="comment">// Throws exception</span>
+</pre>
+<p>
+            </p>
+</td></tr>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+              Requesting an unsupported type will result in a compile-time error.
+              For example, attempting to read a user-defined struct:
+</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">dummy</span> <span class="special">{};</span>
+<span class="identifier">dummy</span> <span class="identifier">d</span> <span class="special">=</span> <span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">dummy</span><span class="special">&gt;();</span> <span class="comment">// Causes compilation error</span>
+</pre>
+<p>
+            </p>
+</td></tr>
+</table></div>
+<p>
+            The unconverted textual data of the current token can be obtained with
+            <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">literal</span><span class="special">()</span></code>.
+            This can be useful when displaying errors. The result of <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">literal</span><span class="special">()</span></code>
+            is different from <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;()</span></code>.
+          </p>
+<p>
+            When you are done with the current token, the next token is found with
+            <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">next</span><span class="special">()</span></code>.
+            This function returns a bool, which is true unless either an error or
+            the end of the input was encountered. Whitespaces and separators are
+            skipped.
+          </p>
+<p>
+            Errors in the input are identified with an error token, and the current
+            error can be obtained with <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">error</span><span class="special">()</span></code>.
+          </p>
+<h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.reader.h0"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.reader.boolean"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.reader.boolean">Boolean</a>
+          </h6>
+<p>
+            Boolean values are indicated by the <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">boolean</span></code>
+            token. The value is requested by <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">&gt;()</span></code>.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"true"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">boolean</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">literal</span><span class="special">()</span> <span class="special">==</span> <span class="string">"true"</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">&gt;());</span>
+</pre>
+<p>
+          </p>
+<h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.reader.h1"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.reader.number"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.reader.number">Number</a>
+          </h6>
+<p>
+            While JSON does not distinguish between integer and floating-point numbers,
+            C++ does make this distinction and therefore Trial.Protocol does too.
+            However, integers can be read as floating-point numbers, and floating-point
+            numbers can be read as integers.
+          </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+              Reading a floating-point number as an integer will round the number,
+              so it may result in loss of information.
+            </p></td></tr>
+</table></div>
+<p>
+            Numbers are identified as integers if the consists of digits only.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"42"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">literal</span><span class="special">()</span> <span class="special">==</span> <span class="string">"42"</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;()</span> <span class="special">==</span> <span class="number">42</span><span class="special">);</span>
+</pre>
+<p>
+            Numbers are detected as floating-point if they contain a decimal point
+            or an exponent.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"3.1415"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">number</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">literal</span><span class="special">()</span> <span class="special">==</span> <span class="string">"3.1415"</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;()</span> <span class="special">==</span> <span class="number">3.1415</span><span class="special">);</span>
+</pre>
+<p>
+            Integers can be read as floating-point numbers as well.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"42"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;()</span> <span class="special">==</span> <span class="number">42.0</span><span class="special">);</span>
+</pre>
+<p>
+            Floating-point numbers can also be read as integers. The number will
+            be rounded to the nearest integer.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"3.1415"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">number</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;()</span> <span class="special">==</span> <span class="number">3</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<p>
+            Any kind of additional constraints have to be enforced by the application
+            layer. For instance, if we have a protocol with a size field, then logically
+            this field cannot be negative or a fraction, even if JSON numbers allow
+            this.
+          </p>
+<h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.reader.h2"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.reader.string"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.reader.string">String</a>
+          </h6>
+<p>
+            Strings are identified with the <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">string</span></code>
+            token, and is converted into a UTF-8 encoded string with <code class="computeroutput"><span class="identifier">reader</span><span class="special">::</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;()</span></code>.
+          </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"\"alpha\\n\""</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">string</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">literal</span><span class="special">()</span> <span class="special">==</span> <span class="string">"\"alpha\\n\""</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;()</span> <span class="special">==</span> <span class="string">"alpha\n"</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.reader.h3"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.reader.null"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.reader.null">Null</a>
+          </h6>
+<p>
+            Null indicates the absence of a value, although it is encoded explicitly
+            in the JSON format as the <code class="computeroutput"><span class="identifier">null</span></code>
+            literal string.
+          </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"null"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">null</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.reader.h4"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.reader.array"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.reader.array">Array</a>
+          </h6>
+<p>
+            Arrays are delimited by a begin-token and an end-token. Array members
+            are comma separated. Arrays can contain any JSON type, including a nested
+            array or a nested associative array.
+          </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">input</span> <span class="special">=</span> <span class="string">"[42]"</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">reader</span> <span class="identifier">reader</span><span class="special">(</span><span class="identifier">input</span><span class="special">);</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">begin_array</span><span class="special">);</span>
+
+<span class="identifier">reader</span><span class="special">.</span><span class="identifier">next</span><span class="special">();</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">integer</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;()</span> <span class="special">==</span> <span class="number">42</span><span class="special">);</span>
+
+<span class="identifier">reader</span><span class="special">.</span><span class="identifier">next</span><span class="special">();</span>
+
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">reader</span><span class="special">.</span><span class="identifier">symbol</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">json</span><span class="special">::</span><span class="identifier">symbol</span><span class="special">::</span><span class="identifier">end_array</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.reader.h5"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.reader.associative_array"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.reader.associative_array">Associative
+            array</a>
+          </h6>
+<p>
+            An associative array is called a JSON object, which as a first approximation
+            can be thought of as a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span></code>
+            in C++.
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="trial_protocol.json.user_guide.incremental_processing.writer"></a><a name="protocol.json.writer"></a><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.writer" title="Writer">Writer</a>
+</h5></div></div></div>
+<p>
+            Writer is an incremental generator that outputs C++ data types in a JSON
+            format. The output is generated piece by piece as C++ data types are
+            inserted. The <code class="computeroutput"><span class="identifier">writer</span></code>
+            keeps track of the context and inserts the appropriate separators between
+            values where needed.
+          </p>
+<div class="table">
+<a name="trial_protocol.json.user_guide.incremental_processing.writer.writer_accessors"></a><p class="title"><b>Table&#160;1.6.&#160;Writer Accessors</b></p>
+<div class="table-contents"><table class="table" summary="Writer Accessors">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Writer member function
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span> <span class="identifier">level</span><span class="special">()</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Returns the current level of nested containers.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">error_code</span> <span class="identifier">error</span><span class="special">()</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Returns the current error code.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span> <span class="identifier">literal</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">view_type</span><span class="special">&amp;)</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Write a literal value directly into the JSON output without
+                      formatting it. Returns the number of characters written. Returns
+                      zero if an error occurred.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span> <span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Write a formatted tag into the JSON output. Returns the number
+                      of characters written. Returns zero if an error occurred.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span> <span class="identifier">value</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Write a formatted value into the JSON output. Returns the number
+                      of characters written. Returns zero if an error occurred.
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>
+            Values are properly formatted and written into the JSON output with
+            <code class="computeroutput"><span class="identifier">writer</span><span class="special">::</span><span class="identifier">value</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code>.
+            The parameter <code class="computeroutput"><span class="identifier">T</span></code> can be
+            a boolean, a number, or a string. Writing a nullable value or the opening
+            and closing brackets of containers is done by passing special tags as
+            the parameter to the parameter-less version <code class="computeroutput"><span class="identifier">writer</span><span class="special">::</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>.
+          </p>
+<p>
+            Literal values can also be inserted unconverted into the JSON output
+            with <code class="computeroutput"><span class="identifier">writer</span><span class="special">::</span><span class="identifier">literal</span><span class="special">()</span></code>.
+            These can be useful useful for adding whitespaces, but special care should
+            be exerted to not violate the JSON format.
+          </p>
+<p>
+            As <code class="computeroutput"><span class="identifier">writer</span></code> has been designed
+            for wire protocols, it does not insert whitespaces into the output<a href="#ftn.trial_protocol.json.user_guide.incremental_processing.writer.f0" class="footnote" name="trial_protocol.json.user_guide.incremental_processing.writer.f0"><sup class="footnote">[7]</sup></a>.
+          </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+              The following examples assume that you have included the following
+              header files:
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">buffer</span><span class="special">/</span><span class="identifier">ostream</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">trial</span><span class="special">/</span><span class="identifier">protocol</span><span class="special">/</span><span class="identifier">json</span><span class="special">/</span><span class="identifier">writer</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+</pre>
+<p>
+            </p>
+</td></tr>
+</table></div>
+<h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.writer.h0"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.writer.boolean"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.writer.boolean">Boolean</a>
+          </h6>
+<p>
+            Boolean values are output via <code class="computeroutput"><span class="identifier">writer</span><span class="special">::</span><span class="identifier">value</span><span class="special">(</span><span class="keyword">bool</span><span class="special">)</span></code>.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostringstream</span> <span class="identifier">result</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">writer</span> <span class="identifier">writer</span><span class="special">(</span><span class="identifier">result</span><span class="special">);</span>
+
+<span class="identifier">writer</span><span class="special">.</span><span class="identifier">value</span><span class="special">(</span><span class="keyword">true</span><span class="special">);</span> <span class="comment">// Write boolean value</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">result</span><span class="special">.</span><span class="identifier">str</span><span class="special">()</span> <span class="special">==</span> <span class="string">"true"</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.writer.h1"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.writer.number"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.writer.number">Number</a>
+          </h6>
+<p>
+            Numbers can either be integer values or floating-point values.
+          </p>
+<h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.writer.h2"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.writer.string"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.writer.string">String</a>
+          </h6>
+<p>
+            Strings are written by passing an <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span></code>
+            or a string literal to <code class="computeroutput"><span class="identifier">writer</span><span class="special">::</span><span class="identifier">value</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code>. All strings will be quoted in the JSON
+            output, and special characters will be escaped. Strings must be UTF-8
+            encoded.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostringstream</span> <span class="identifier">result</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">writer</span> <span class="identifier">writer</span><span class="special">(</span><span class="identifier">result</span><span class="special">);</span>
+
+<span class="identifier">writer</span><span class="special">.</span><span class="identifier">value</span><span class="special">(</span><span class="string">"alpha"</span><span class="special">);</span> <span class="comment">// Write string</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">result</span><span class="special">.</span><span class="identifier">str</span><span class="special">()</span> <span class="special">==</span> <span class="string">"\"alpha\""</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.writer.h3"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.writer.null"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.writer.null">Null</a>
+          </h6>
+<p>
+            Nullable value are output with <code class="computeroutput"><span class="identifier">writer</span><span class="special">::</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">token</span><span class="special">::</span><span class="identifier">null</span><span class="special">&gt;()</span></code>.
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostringstream</span> <span class="identifier">result</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">writer</span> <span class="identifier">writer</span><span class="special">(</span><span class="identifier">result</span><span class="special">);</span>
+
+<span class="identifier">writer</span><span class="special">.</span><span class="identifier">value</span><span class="special">&lt;</span><span class="identifier">json</span><span class="special">::</span><span class="identifier">token</span><span class="special">::</span><span class="identifier">null</span><span class="special">&gt;();</span> <span class="comment">// Write nullable value</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">result</span><span class="special">.</span><span class="identifier">str</span><span class="special">()</span> <span class="special">==</span> <span class="string">"null"</span><span class="special">);</span>
+</pre>
+<p>
+          </p>
+<h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.writer.h4"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.writer.array"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.writer.array">Array</a>
+          </h6>
+<p>
+            An array is initiated by passing the <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">begin_array</span></code>
+            tag to <code class="computeroutput"><span class="identifier">writer</span><span class="special">::</span><span class="identifier">value</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code>,
+            and terminated by passing the <code class="computeroutput"><span class="identifier">json</span><span class="special">::</span><span class="identifier">end_array</span></code>.
+            These tags must be properly balanced, otherwise an error will be raised.
+          </p>
+<p>
+            Value separators are automatically inserted between values.
+          </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostringstream</span> <span class="identifier">result</span><span class="special">;</span>
+<span class="identifier">json</span><span class="special">::</span><span class="identifier">writer</span> <span class="identifier">writer</span><span class="special">(</span><span class="identifier">result</span><span class="special">);</span>
+
+<span class="identifier">writer</span><span class="special">.</span><span class="identifier">value</span><span class="special">(</span><span class="identifier">json</span><span class="special">::</span><span class="identifier">begin_array</span><span class="special">);</span> <span class="comment">// Write beginning of array</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">result</span><span class="special">.</span><span class="identifier">str</span><span class="special">()</span> <span class="special">==</span> <span class="string">"["</span><span class="special">);</span>
+
+<span class="identifier">writer</span><span class="special">.</span><span class="identifier">value</span><span class="special">(</span><span class="number">42</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">result</span><span class="special">.</span><span class="identifier">str</span><span class="special">()</span> <span class="special">==</span> <span class="string">"[42"</span><span class="special">);</span> <span class="comment">// Write number</span>
+
+<span class="identifier">writer</span><span class="special">.</span><span class="identifier">value</span><span class="special">(</span><span class="number">43</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">result</span><span class="special">.</span><span class="identifier">str</span><span class="special">()</span> <span class="special">==</span> <span class="string">"[42,43"</span><span class="special">);</span> <span class="comment">// Write number</span>
+
+<span class="identifier">writer</span><span class="special">.</span><span class="identifier">value</span><span class="special">(</span><span class="identifier">json</span><span class="special">::</span><span class="identifier">end_array</span><span class="special">);</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">result</span><span class="special">.</span><span class="identifier">str</span><span class="special">()</span> <span class="special">==</span> <span class="string">"[42,43]"</span><span class="special">);</span> <span class="comment">// Write ending of array</span>
+</pre>
+<p>
+          </p>
+<h6>
+<a name="trial_protocol.json.user_guide.incremental_processing.writer.h5"></a>
+            <span class="phrase"><a name="trial_protocol.json.user_guide.incremental_processing.writer.associative_array"></a></span><a class="link" href="user_guide.html#trial_protocol.json.user_guide.incremental_processing.writer.associative_array">Associative
+            array</a>
+          </h6>
+<p>
+            Name separators are automatically inserted between the key and the value,
+            and value separators are automatically inserted between key-value pairs.
+          </p>
+</div>
+</div>
+<div class="footnotes">
+<br><hr style="width:100; text-align:left;margin-left: 0">
+<div id="ftn.trial_protocol.json.user_guide.incremental_processing.token.f0" class="footnote"><p><a href="#trial_protocol.json.user_guide.incremental_processing.token.f0" class="para"><sup class="para">[6] </sup></a>
+              The description of all <code class="computeroutput"><span class="identifier">token</span><span class="special">::</span><span class="identifier">code</span></code>
+              enumerator constants can be found in the reference documentation.
+            </p></div>
+<div id="ftn.trial_protocol.json.user_guide.incremental_processing.writer.f0" class="footnote"><p><a href="#trial_protocol.json.user_guide.incremental_processing.writer.f0" class="para"><sup class="para">[7] </sup></a>
+              See <code class="computeroutput"><span class="identifier">example</span><span class="special">/</span><span class="identifier">json</span><span class="special">/</span><span class="identifier">pretty_printer</span></code> for an example of
+              how to produce an indented output.
+            </p></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2015-2018 Bjorn
+      Reese<p>
+        Distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">Boost
+        Software License, Version 1.0</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="tutorial/push_parser.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../json.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="user_guide/serialization.html"><img src="http://www.boost.org/doc/libs/1_66_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
