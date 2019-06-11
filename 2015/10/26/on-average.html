@@ -60,7 +60,7 @@
 	<tr>
 		<td style="text-align:right;">M&#8217;<sub>i</sub></td>
 		<td>=</td>
-		<td>(1 &#8211; &alpha;)<sup>i-1</sup> X<sub>1</sub> + &alpha; &sum;<sub>k=2</sub> (1 &#8211; &alpha;)<sup>i-1-k</sup> X<sub>k</sub></td>
+		<td>(1 &#8211; &alpha;)<sup>i-1</sup> X<sub>1</sub> + &alpha; &sum;<sub>k=2</sub> (1 &#8211; &alpha;)<sup>i-k</sup> X<sub>k</sub></td>
 	</tr>
 </table>
 <p>If <label for='figure-exponential' class='margin-toggle'>&#8853;</label><input type='checkbox' id='figure-exponential' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/average-exponential.png'/><br><em>Figure 2: Exponential Average.</em> The initial value X<sub>1</sub> contributes disproportionately.</span> we plot the evolvement of this formula just as we did for the arithmetic average, then we arrive at Figure 2. This graph shows a quite surprising feature of the exponential moving average, namely that the initial value X<sub>1</sub> dominates the results for many iterations.</p>
@@ -85,7 +85,7 @@
 <p>In the second equation, when we add a new value X<sub>i</sub> it contributes only by a factor of &alpha;. For &alpha; = <sup>1</sup>&frasl;<sub>8</sub> this becomes 12.5%. The remaining 87.5% comes from the previously calculated mean M<sub>i-1</sub>. This is generally a good solution, but we do have a bootstrap problem. This is solved by setting M<sub>1</sub> to X<sub>1</sub>, but it also create the bias problem described in the previous section.</p>
 <p>Let us dispense with the first equation in the recurrent formula as see if we can come up with a better solution.</p>
 <p>In iteration 1 we calculate the contribution of the initial value X<sub>1</sub> to be &alpha; = 12.5%. In iteration 2 the second value X<sub>2</sub> contributes 12.5% and X<sub>1</sub> contributes &alpha; &times; (1 &#8211; &alpha;) = 10.9%. We can derive the percentages for the remaining iterations from the second term in the non-recurrent formula M&#8217;<sub>i</sub>.</p>
-<p>This gives us values that are much too small during the initial iterations, so we need to scale the 12.5% of X<sub>1</sub> in iteration 1 to 100%, and the 12.5% + 10.9% for X<sub>2</sub> and X<sub>1</sub> in iteration 2 to 100%, and so on. In other works, in iteration 1 we must divide the calculated value by 12.5%, in iteration 2 by 12.5% + 10.9%, and so on.</p>
+<p>This gives us values that are much too small during the initial iterations, so we need to scale the 12.5% of X<sub>1</sub> in iteration 1 to 100%, and the 12.5% + 10.9% for X<sub>2</sub> and X<sub>1</sub> in iteration 2 to 100%, and so on. In other words, in iteration 1 we must divide the calculated value by 12.5%, in iteration 2 by 12.5% + 10.9%, and so on.</p>
 <p>We <label for='figure-gamma' class='margin-toggle'>&#8853;</label><input type='checkbox' id='figure-gamma' class='margin-toggle'/><span class='marginnote'><img class='fullwidth' src='/assets/average-gamma.png'/><br><em>Figure 3: Normalization factor.</em> &gamma;<sub>i</sub> converges towards 100% as i grows.</span> therefore introduce a normalization factor &gamma;<sub>i</sub>. Let us write out some of the values to extrapolate a formula:</p>
 <table>
 	<tr>
