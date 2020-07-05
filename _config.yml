@@ -1,0 +1,14 @@
+title: Under Development
+description:
+baseurl: ""
+repository: breese/breese.github.io
+url: "http://breese.github.io"
+markdown: textile
+excerpt_separator: <!--more-->
+theme: minima
+plugins:
+  - jekyll-textile-converter
+  - jekyll-feed
+exclude:
+  - README.markdown
+  - src

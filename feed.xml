@@ -1,119 +1,32 @@
+---
+layout: null
+category: blog
+title: Under Development
+description: by Bjorn Reese
+---
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-    <title>Under Development</title>
-    <description>by Bjorn Reese</description>
-    <link>http://breese.github.io/blog/</link>
-    <atom:link href="http://breese.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>12 May 2017</pubDate>
-    <lastBuildDate>Fri, 12 May 2017 12:49:16 +0200</lastBuildDate>
-    
+    <title>{{ page.title | xml_escape }}</title>
+    <description>{{ page.description | xml_escape }}</description>
+    <link>{{ site.url }}{{ site.baseurl }}/blog/</link>
+    <atom:link href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" rel="self" type="application/rss+xml"/>
+    <pubDate>{{ site.time | date: "%d %B %Y" }}</pubDate>
+    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
+    {% for post in site.posts limit:10 %}
     <item>
-        <title>Customizing Error Codes</title>
-        <description>&lt;p&gt;Many C libraries follow the &lt;a href=&quot;http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html&quot;&gt;&lt;span class=&quot;caps&quot;&gt;POSIX&lt;/span&gt; tradition&lt;/a&gt; of returning errors as integers. Some libraries reuse the pre-defined &lt;a href=&quot;http://en.cppreference.com/w/cpp/header/cerrno&quot;&gt;&lt;code&gt;errno&lt;/code&gt;&lt;/a&gt; values, while others define their own library-specific values.&lt;/p&gt;
-&lt;p&gt;We show how to integrate the error values of such C libraries with &lt;code&gt;std::error_code&lt;/code&gt;. The choice of &lt;code&gt;std::error_code&lt;/code&gt; gives us several advantages: (i) errors are type-erased, (ii) errors are propagated without loss of information, and (iii) errors are interoperable.&lt;/p&gt;</description>
-        <pubDate>12 May 2017</pubDate>
-        <link>http://breese.github.io/2017/05/12/customizing-error-codes.html</link>
-        <guid isPermaLink="true">http://breese.github.io/2017/05/12/customizing-error-codes.html</guid>
-        
-        <category>C++,</category>
-        
-        <category>error</category>
-        
-        
+        <title>{{ post.title | xml_escape }}</title>
+        <description>{{ post.excerpt | xml_escape }}</description>
+        <pubDate>{{ post.date | date: "%d %B %Y" }}</pubDate>
+        <link>{{ post.url | prepend: site.baseurl | prepend: site.url }}</link>
+        <guid isPermaLink="true">{{ post.url | prepend: site.baseurl | prepend: site.url }}</guid>
+        {% for tag in post.tags %}
+        <category>{{ tag | xml_escape }}</category>
+        {% endfor %}
+        {% for cat in post.categories %}
+        <category>{{ cat | xml_escape }}</category>
+        {% endfor %}
     </item>
-    
-    <item>
-        <title>Receiving Datagrams</title>
-        <description>&lt;p&gt;The &lt;a href=&quot;https://en.wikipedia.org/wiki/Berkeley_sockets&quot;&gt;socket &lt;span class=&quot;caps&quot;&gt;API&lt;/span&gt;&lt;/a&gt; is defined such that the user supplies a buffer of a pre-determined size that &lt;span class=&quot;caps&quot;&gt;UDP&lt;/span&gt; datagrams are read into. If the buffer is smaller than the datagram, then the surplus bytes from the datagram are discarded.&lt;/p&gt;
-&lt;p&gt;How can we read the entire datagram when we do not know its size in advance?&lt;/p&gt;</description>
-        <pubDate>03 December 2016</pubDate>
-        <link>http://breese.github.io/2016/12/03/receiving-datagrams.html</link>
-        <guid isPermaLink="true">http://breese.github.io/2016/12/03/receiving-datagrams.html</guid>
-        
-        <category>C++</category>
-        
-        <category>network</category>
-        
-        
-    </item>
-    
-    <item>
-        <title>Outliers and Structural Change</title>
-        <description>&lt;p&gt;Sensors are prone to measurement errors (deviation from expectation.) Large deviations can have an adverse impact on &lt;a href=&quot;https://en.wikipedia.org/wiki/Online_algorithm&quot;&gt;on-line processing&lt;/a&gt; where irrevocable decisions are made based on partial information. Overreactions can be avoided by removing &lt;a href=&quot;https://en.wikipedia.org/wiki/Outlier&quot;&gt;outliers&lt;/a&gt; (deviations larger than an accepted threshold.) This makes processing less sensitive to random fluctuation in the measurements.&lt;/p&gt;
-&lt;p&gt;The downside of outlier removal is that it makes us blind to abrupt structural changes. If the expected level of the measurements suddenly changes, then all subsequent measurements will be discarded as outliers.&lt;/p&gt;
-&lt;p&gt;We need a way to &lt;a href=&quot;https://en.wikipedia.org/wiki/Change_detection&quot;&gt;detect such structural changes&lt;/a&gt;.&lt;/p&gt;</description>
-        <pubDate>07 August 2016</pubDate>
-        <link>http://breese.github.io/2016/08/07/outliers-and-structural-change.html</link>
-        <guid isPermaLink="true">http://breese.github.io/2016/08/07/outliers-and-structural-change.html</guid>
-        
-        <category>statistics</category>
-        
-        <category>outliers</category>
-        
-        
-    </item>
-    
-    <item>
-        <title>Unifying error codes</title>
-        <description>&lt;p&gt;C++11 and Boost both have an &lt;code&gt;error_code&lt;/code&gt; class, but they cannot be used interchangeably despite their close resemblance. We introduce a trick of re-catogorizing the &lt;code&gt;error_code&lt;/code&gt; from Boost to make it compatible with C++11. This enables us to use &lt;code&gt;std::error_code&lt;/code&gt; throughout our entire project, and still integrate with third-party libraries that use &lt;code&gt;boost::system::error_code&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;First we have to learn how to define custom error codes.&lt;/p&gt;</description>
-        <pubDate>18 June 2016</pubDate>
-        <link>http://breese.github.io/2016/06/18/unifying-error-codes.html</link>
-        <guid isPermaLink="true">http://breese.github.io/2016/06/18/unifying-error-codes.html</guid>
-        
-        <category>C++,</category>
-        
-        <category>error</category>
-        
-        
-    </item>
-    
-    <item>
-        <title>Partiality for Functions</title>
-        <description>&lt;p&gt;While C++ does support partial specialization of templates, it does not do so for function templates. Instead, the general advice is to use function overloading instead. Sometimes that is not a feasible solution though, so we will see how to emulate partial specialization of function template with a some boiler-plate code.&lt;/p&gt;</description>
-        <pubDate>20 December 2015</pubDate>
-        <link>http://breese.github.io/2015/12/20/partiality-for-functions.html</link>
-        <guid isPermaLink="true">http://breese.github.io/2015/12/20/partiality-for-functions.html</guid>
-        
-        <category>C++,</category>
-        
-        <category>template</category>
-        
-        
-    </item>
-    
-    <item>
-        <title>On Average</title>
-        <description>&lt;p&gt;Calculating the &lt;a href=&quot;http://en.wikipedia.org/wiki/Average&quot;&gt;mean&lt;/a&gt; of a sample can be done in various ways. A widely used method is the exponential moving average. We will show that this method has a bias towards the initial value, and present a way to remove the bias from the results.&lt;/p&gt;</description>
-        <pubDate>26 October 2015</pubDate>
-        <link>http://breese.github.io/2015/10/26/on-average.html</link>
-        <guid isPermaLink="true">http://breese.github.io/2015/10/26/on-average.html</guid>
-        
-        <category>statistics</category>
-        
-        
-    </item>
-    
-    <item>
-        <title>Layers of three-valued logic</title>
-        <description>&lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Three-valued_logic&quot;&gt;Three-valued logic&lt;/a&gt; has three states:&lt;/p&gt;
-&lt;ul&gt;
-	&lt;li&gt;True&lt;/li&gt;
-	&lt;li&gt;False&lt;/li&gt;
-	&lt;li&gt;Unknown (or indeterminate)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The unknown state means that we have to device new truth tables for the various logic operators. As there are several different logics of indeterminacy we will end up with different sets of truth tables. This becomes important when we use three-valued logic in composite conditions.&lt;/p&gt;</description>
-        <pubDate>05 July 2015</pubDate>
-        <link>http://breese.github.io/2015/07/05/layers-of-three-valued-logic.html</link>
-        <guid isPermaLink="true">http://breese.github.io/2015/07/05/layers-of-three-valued-logic.html</guid>
-        
-        <category>logic,</category>
-        
-        <category>tribool</category>
-        
-        
-    </item>
-    
+    {% endfor %}
 </channel>
 </rss>
