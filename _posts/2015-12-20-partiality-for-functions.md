@@ -8,9 +8,9 @@ While C++ does support partial specialization of templates, it does not do so fo
 
 <!--more-->
 
-h2. Partial specialization of function templates
+## Partial specialization of function templates
 
-Assume that we have a @formatter@ class that converts C++ values of different types into text, such as a JSON writer. We want this class to have a consistent API where any kind of value is written with the @formatter::write@ function.
+Assume that we have a `formatter` class that converts C++ values of different types into text, such as a JSON writer. We want this class to have a consistent API where any kind of value is written with the `formatter::write` function.
 
 {% highlight c++ %}
 // Create the formatter
@@ -24,7 +24,7 @@ std::map<std::string, int> dictionary = { { "alpha", 1 } };
 output.write(dictionary);
 {% endhighlight %}
 
-The obvious solution to handle any kind of type is to use a (member) function template for @formatter::write@.
+The obvious solution to handle any kind of type is to use a member function template for `formatter::write`.
 
 {% highlight c++ %}
 class formatter
@@ -35,7 +35,7 @@ public:
 };
 {% endhighlight %}
 
-As different types have to be formatted in different ways, we need specializations for the different types that our class is going to support. The @int@ case from the example above is easily added using function overloading.
+As different types have to be formatted in different ways, we need specializations for the different types that our class is going to support. The `int` case from the example above is easily added using function overloading.
 
 {% highlight c++ %}
 class formatter
@@ -49,7 +49,7 @@ public:
 };
 {% endhighlight %}
 
-Adding support for @std::map@ is more tricky, because we want to invoke different formatting depending on the @key_type@ of the map. For instance, when @key_type@ is a string then we want a JSON formatter to output the map as a JSON object, but for all other data types we want to output it as a JSON array of pairs. This is not an arbitrary restriction that I have dreamt up; this is how JSON is defined.
+Adding support for `std::map` is more tricky, because we want to invoke different formatting depending on the `key_type` of the map. For instance, when `key_type` is a string then we want a JSON formatter to output the map as a JSON object, but for all other data types we want to output it as a JSON array of pairs. This is not an arbitrary restriction that I have dreamt up; this is how JSON is defined.
 
 Ideally we would like to be able to write the following:
 
@@ -72,15 +72,15 @@ public:
 };
 {% endhighlight %}
 
-Unfortunately the above specializations of the @write@ function are partial and therefore not legal in C++. We need something else to resolve the different map cases. Function overloading cannot be used in this case either, because all types must be fully specialized but our @Value@ parameter is not specialized in either case.
+Unfortunately the above specializations of the `write` function are partial and therefore not legal in C++. We need something else to resolve the different map cases. Function overloading cannot be used in this case either, because all types must be fully specialized but our `Value` parameter is not specialized in either case.
 
-h2. Indirect specialization
+## Indirect specialization
 
 As in so many other situations, we are going to overcome the limitation with another level of indirection. The basic idea is this:
 
-bq. Use partial specialization of templates to emulate partial specialization of function templates.
+> Use partial specialization of templates to emulate partial specialization of function templates.
 
-In our second attempt, our @formatter::write@ is a single template function that uses forwarding references, and consequently all function overloads have been removed.[1] This function forwards any call to a helper class called @formatter::overloader@, which will handle partial specialization for us.
+In our second attempt, our `formatter::write` is a single template function that uses forwarding references, and consequently all function overloads have been removed.[^1] This function forwards any call to a helper class called `formatter::overloader`, which will handle partial specialization for us.
 
 {% highlight c++ %}
 class formatter
@@ -100,7 +100,7 @@ private:
 };
 {% endhighlight %}
 
-The actual formatting implementations are added as the uniquely named private member functions @write_integral@, @write_map@, and @write_string_map@ in the @formatter@ class.[2]
+The actual formatting implementations are added as the uniquely named private member functions `write_integral`, `write_map`, and `write_string_map` in the `formatter` class.[^2]
 
 {% highlight c++ %}
 class formatter
@@ -132,7 +132,7 @@ private:
 };
 {% endhighlight %}
 
-The @formatter::write@ function forwards calls to the @formatter::overloader<T>::write@ function. We first need to define the general case. This should fail if our input type does not match any of our overloads.
+The `formatter::write` function forwards calls to the `formatter::overloader<T>::write` function. We first need to define the general case. This should fail if our input type does not match any of our overloads.
 
 {% highlight c++ %}
 // Matches all non-specialized types
@@ -143,7 +143,7 @@ struct formatter::overloader
 };
 {% endhighlight %}
 
-Next we define the @int@ case. Let us extend this case to handle any integral type while we are at it. The @write@ function simply calls the appropriate private implementation function on the @formatter@ class.
+Next we define the `int` case. Let us extend this case to handle any integral type while we are at it. The `write` function simply calls the appropriate private implementation function on the `formatter` class.
 
 {% highlight c++ %}
 // Matches any integral type
@@ -162,7 +162,7 @@ struct formatter::overloader<
 };
 {% endhighlight %}
 
-Finally we add the two different @std::map@ cases.
+Finally we add the two different `std::map` cases.
 
 {% highlight c++ %}
 // Matches maps with non-string keys
@@ -198,6 +198,6 @@ struct formatter::overloader<
 
 And that is that. A lot of boiler-plate is needed, but is doable to emulate partial specialization of function templates in C++. The examples above used C++11 for convenience, but this technique can also be written in C++03 with the use of Boost type-traits.
 
-fn1. Read _Item 26: Avoid overloading on universal references_ in Scott Meyers ``Effective Modern C++'' if you wonder why.
+[^1]: Read _Item 26: Avoid overloading on universal references_ in Scott Meyers ``Effective Modern C++'' if you wonder why.
 
-fn2. These implementation functions are part of the boiler-plate code, not of the API. We could just as well have placed them in the @formatter::overloader@ class. That is simply an implementation detail.
+[^2]: These implementation functions are part of the boiler-plate code, not of the API. We could just as well have placed them in the `formatter::overloader` class. That is simply an implementation detail.

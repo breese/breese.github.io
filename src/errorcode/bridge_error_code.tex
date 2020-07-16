@@ -1,0 +1,27 @@
+\documentclass[border=10]{standalone}
+\usepackage{tikz-uml}
+% Workaround for tikz-uml stereotypes
+\renewcommand{\guillemotleft}{$\ll$}
+\renewcommand{\guillemotright}{$\gg$}
+
+\begin{document}
+
+\begin{tikzpicture}
+  \begin{umlpackage}{std}
+    \umlclass[name=std-code,y=2]{error\_code}{}{}
+    \umlclass[name=std-category,y=0]{error\_category}{}{}
+  \end{umlpackage}
+  \begin{umlpackage}[y=-3]{bridge}
+    \umlclass[name=bridge-category]{generic\_category}{}{}
+  \end{umlpackage}
+  \begin{umlpackage}[x=5]{boost}
+    \umlclass[name=boost-category,y=0]{generic\_category}{}{}
+    \umlclass[name=enum,x=3,y=2]{errc\_t}{}{}
+  \end{umlpackage}
+  \umlinherit{bridge-category}{std-category}
+  \umlcompo{std-code}{enum}
+  \umlaggreg[geometry=-|-,arm1=-2.5cm,stereo=singleton,pos stereo=1.65]{std-code}{bridge-category}
+  \umlaggreg[geometry=-|,stereo=singleton,pos stereo=1.8]{bridge-category}{boost-category}
+\end{tikzpicture}
+
+\end{document}

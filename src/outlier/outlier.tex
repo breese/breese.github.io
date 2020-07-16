@@ -1,0 +1,38 @@
+\documentclass[border=10]{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+% Graphics functions
+\pgfmathdeclarefunction{gauss}{2}{%
+  \pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
+\begin{document}
+\begin{tikzpicture}[
+  scale=1.0,
+  every node/.append style={transform shape},
+  font=\small
+  ]
+\begin{axis}[
+  no markers,
+  samples=200,
+  domain=-4:4,
+  axis lines*=left,
+  every axis x label/.style={at={(current axis.right of origin)},anchor=west},
+  xtick=\empty,
+  xticklabels=\empty,
+  ytick=\empty,
+  yticklabels=\empty,
+  extra x ticks={-2,0.75,2,2.75},
+  extra x tick labels={$-\theta$, $Z_{in}$, $\theta$, $Z_{out}$},
+  grid=major,
+  axis on top,
+  enlargelimits=false
+  ]
+  \draw [draw=none,fill=red!60!black!10!white] (axis cs:-4,0.4) rectangle (axis cs:-2,0) node [midway,color=gray!85!white] {Outliers};
+  \draw [draw=none,fill=red!60!black!10!white] (axis cs:2,0.4) rectangle (axis cs:4,0) node [midway,color=gray!85!white] {Outliers};
+  \addplot [fill=blue!15!white,draw=black] {gauss(0,1)};
+  \addplot [fill=blue!10!white!98!red,draw=none,domain=-4:-2] {gauss(0,1)} \closedcycle;
+  \addplot [fill=blue!10!white!98!red,draw=none,domain=2:4] {gauss(0,1)} \closedcycle;
+\end{axis}
+\end{tikzpicture}
+\end{document}

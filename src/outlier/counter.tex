@@ -1,0 +1,65 @@
+\documentclass[border=10]{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+
+\begin{document}
+
+\pgfplotstableset{header=true,col sep=comma}
+\pgfplotstableread{data.csv}{\data}
+
+\begin{tikzpicture}[
+  scale=1.0,
+  every node/.append style={transform shape},
+  font=\small
+  ]
+\begin{axis}[
+  grid=major,
+  view={9}{7.5},  
+  xmin=1,
+  xmax=60,
+  ymin=0,
+  ymax=1,
+  zmin=0,
+  zmax=12,
+  xlabel={$T$},
+  ylabel={},
+  zlabel={$X$},
+  every axis x label/.style={at={(current axis.right of origin)},anchor=west},
+  every axis z label/.style={at={(current axis.north west)},above=2mm},
+  xticklabels=\empty,
+  yticklabels=\empty,
+  zticklabels=\empty,
+  table/x index={0},
+  enlargelimits=false
+  ]
+  % Average
+  \addplot3 [draw=green!50!white!80!black,fill=green!30!white,fill opacity=0.5] coordinates {(1,1,5.558160215442371-3*0.3042254247553009) (60,1,5.558160215442371-3*0.3042254247553009) (60,1,5.558160215442371+3*0.3042254247553009) (1,1,5.558160215442371+3*0.3042254247553009)};
+
+  % Measurements
+  \addplot3 [draw=none,fill=blue!40!white,fill opacity=0.4] table [y expr=1,x={index},z={measurement}] \data
+  -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},1,\pgfkeysvalueof{/pgfplots/zmin})
+  -- (axis cs:1,1,\pgfkeysvalueof{/pgfplots/zmin})
+  -- cycle;
+  \addplot3 [draw=blue!80!white] table [y expr=1,x={index},z={measurement}] \data;
+
+  %\addplot3 [dotted,draw=gray] coordinates {(30.5,0,0) (30.5,1,0) (30.5,1,12)};
+  \addplot3 [draw=gray,fill=gray!80!white,fill opacity=0.4] coordinates {(45,1,0) (45,1,12) (45,0,12) (45,0,0)} node [pos=0.52,left,opacity=1] {Change} -- cycle;
+
+  % Count
+  \clip (axis cs:0,0,-1) rectangle (axis cs:60,0,12);
+  \addplot3 [draw=none,fill=yellow!85!black!80!white,fill opacity=0.7] table [y expr=0,x={index},z expr=\thisrow{count}/4] \data
+  -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},0,\pgfkeysvalueof{/pgfplots/zmin})
+  -- (axis cs:\pgfkeysvalueof{/pgfplots/xmin},0,\pgfkeysvalueof{/pgfplots/zmin})
+  -- cycle;
+  \addplot3 [draw=yellow!40!black] table [y expr=0,x={index},z expr=\thisrow{count}/4] \data;
+  \node [text=black] at (axis cs:52.5,0,2.25) {Count};
+
+  \addplot3 [draw=black,dashed] coordinates {(1,0,3.75) (60,0,3.75)} node [very near start,above,xshift=-1em] {\footnotesize W};
+  \addplot3 [draw=black] coordinates {(45,0,0) (45,0,12)};
+
+  \draw [|<->|] (axis cs:30,0,0.25) -- (axis cs:45,0,0.25) node [midway,above] {$\Delta T$};
+
+\end{axis}
+\end{tikzpicture}
+\end{document}

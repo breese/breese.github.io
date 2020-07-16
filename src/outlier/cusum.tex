@@ -1,0 +1,85 @@
+\documentclass[border=10]{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+
+\begin{document}
+
+\pgfplotstableset{header=true,col sep=comma}
+\pgfplotstableread{data.csv}{\data}
+
+\begin{tikzpicture}[
+  scale=1.0,
+  every node/.append style={transform shape},
+  font=\small
+  ]
+\begin{axis}[
+  grid=major,
+  %view={2}{3},
+  view={10}{7.5},
+  xmin=1,
+  xmax=60,
+  ymin=0,
+  ymax=1,
+  zmin=0,
+  zmax=12,
+  xlabel={$T$},
+  ylabel={},
+  zlabel={$X$},
+  every axis x label/.style={at={(current axis.right of origin)},anchor=west},
+  every axis z label/.style={at={(current axis.north west)},above=2mm},
+  xticklabels=\empty,
+  yticklabels=\empty,
+  zticklabels=\empty,
+  enlargelimits=false
+  ]
+  % Measurement
+  %\addplot3 [draw=none,fill=green!30!white] coordinates {(0,1,5.558160215442371-3*0.3042254247553009) (60,1,5.558160215442371-3*0.3042254247553009) (60,1,5.558160215442371+3*0.3042254247553009) (0,1,5.558160215442371+3*0.3042254247553009)};
+  %\addplot3 [draw=none,fill=blue!20!white,fill opacity=0.7] table [y expr=0,x={index},z={measurement}] \data
+  %-- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},0,5.558160215442371)
+  %-- (axis cs:\pgfkeysvalueof{/pgfplots/xmin},0,5.558160215442371)
+  %-- cycle;
+  \addplot3 [draw=none,fill=blue!40!white,fill opacity=0.4] table [y expr=1,x={index},z={measurement}] \data
+  -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},1,\pgfkeysvalueof{/pgfplots/zmin})
+  -- (axis cs:1,1,\pgfkeysvalueof{/pgfplots/zmin})
+  -- cycle;
+  \addplot3 [draw=blue!80!white] table [y expr=1,x={index},z={measurement}] \data;
+  %\addplot3 [draw=gray,fill=gray!80!black,fill opacity=0.6] coordinates {(60,0,5.558160215442371) (60,1,5.558160215442371) (0,1,5.558160215442371) (0,0,5.558160215442371)} node [below right,opacity=1] {$E_i$};
+  %\addplot3 [draw=cyan] table [y expr=1,x={index},z={mean}] \data node [very near start,below,opacity=1] {$E_i$};
+  \addplot3 [draw=green!50!white!80!black] coordinates {(0,1,5.558160215442371) (60,1,5.558160215442371)} node [below left] {$\nu$};
+
+  % Change
+  %\addplot3 [draw=black,thick] coordinates {(32.5,1,0) (32.5,1,15)} node [very near start,right] {Change};
+  \addplot3 [draw=gray,fill=gray!80!white,fill opacity=0.4] coordinates {(32.5,1,0) (32.5,1,12) (32.5,0,12) (32.5,0,0)} node [pos=0.52,left,opacity=1] {Change} -- cycle;
+
+  % CUSUM
+  %\clip (axis cs:\pgfkeysvalueof{/pgfplots/xmin},0,\pgfkeysvalueof{/pgfplots/zmin}) rectangle (axis cs:\pgfkeysvalueof{/pgfplots/xmax},0,\pgfkeysvalueof{/pgfplots/zmax});
+  \clip (axis cs:0,0,-1) rectangle (axis cs:60,0,12);
+  \addplot3 [draw=none,fill=yellow!85!black!80!white,fill opacity=0.7] table [y expr=0,x={index},z={cusum}] \data
+  -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},0,\pgfkeysvalueof{/pgfplots/zmin})
+  -- (axis cs:\pgfkeysvalueof{/pgfplots/xmin},0,\pgfkeysvalueof{/pgfplots/zmin})
+  -- cycle;
+  \addplot3 [draw=yellow!40!black] table [y expr=0,x={index},z={cusum}] \data;
+  \node [text=black] at (axis cs:19.5,0,0.8) {$S_i$};
+  %\addplot3 [draw=none,fill=red!80!black,fill opacity=0.5] coordinates {(0,1,8) (60,1,8) (60,0,8) (0,0,8)} node [above right,opacity=1] {$\Theta$};
+  \addplot3 [draw=black,dashed] coordinates {(0,0,8) (60,0,8)} node [very near start,above,xshift=-1em] {$\Theta$};
+
+  \addplot3 [draw=black] coordinates {(32.5,0,0) (32.5,0,12)};
+
+  %\addplot3 [draw=none,fill=gray!30!white,fill opacity=0.5] coordinates {(0,0,5.558160215442371) (60,0,5.558160215442371) (60,1,5.558160215442371) (0,1,5.558160215442371)};
+
+  %\addplot3 [draw=green!30!white] table [y expr=1,x={index},z={mean}] \data;
+  %\addplot3 [draw=green!30!white] table [y expr=1,x={index},z expr=\thisrow{mean}+3*\thisrow{stddev}] \data;
+
+  % Measurements
+  %\addplot [draw=blue!80!white,mark=o,mark size=1.4pt] table [x={index},y={measurement}] \data;
+  %\addplot [draw=green!80!black] table [header=false,col sep=comma] {cusum.csv};
+  %\node [text=green!80!black,right] at (axis cs:32,3) {$S_i$};
+  % Average
+  %\draw [draw=gray!95!white,dashed] (axis cs:0,5.56) -- (axis cs:62,5.56);
+  %\node [text=gray!95!white,right] at (axis cs:56,5) {$E_i$};
+
+  %\draw (axis cs:31.8,12) -- (axis cs:31.8,0) node [above right,yshift=1ex] {Change};
+\end{axis}
+\end{tikzpicture}
+\end{document}

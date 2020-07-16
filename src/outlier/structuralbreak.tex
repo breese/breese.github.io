@@ -1,0 +1,45 @@
+\documentclass[border=10]{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+
+\pgfplotstableset{header=true,col sep=comma}
+\pgfplotstableread{data.csv}{\data}
+
+\begin{document}
+\begin{tikzpicture}[
+  scale=1.0,
+  every node/.append style={transform shape},
+  font=\small
+  ]
+\begin{axis}[
+  axis lines*=left,
+  grid=major,
+  xmin=1,
+  xmax=60,
+  ymin=0,
+  ymax=12,
+  xlabel={$T$},
+  ylabel={$X$},
+  every axis x label/.style={at={(current axis.right of origin)},anchor=west},
+  every axis y label/.style={at={(current axis.north west)},above=2mm},
+  xticklabels=\empty,
+  yticklabels=\empty,
+  enlargelimits=false
+  ]
+  % Outlier areas (3 sigma)
+  \draw [draw=green!50!white!80!black,fill=green!30!white,fill opacity=0.5] (axis cs:0,5.558160215442371-3*0.3042254247553009) rectangle (axis cs:62,5.558160215442371+3*0.3042254247553009);
+  %\draw [draw=none,fill=red!60!black!10!white] (axis cs:65,0) rectangle (axis cs:0,4.65) node [yshift=-0.9cm,anchor=west,color=gray!90!white] {Outliers};
+  %\path [draw=none,fill=red!60!black!10!white] (axis cs:65,12) rectangle (axis cs:0,6.47) node [yshift=1.4cm,anchor=west,color=gray!90!white] {Outliers};
+  % Measurements
+  \addplot [draw=none,fill=blue!40!white,fill opacity=0.4] table [x={index},y={measurement}] \data
+  -- (axis cs:60,\pgfkeysvalueof{/pgfplots/ymin})
+  -- (axis cs:1,\pgfkeysvalueof{/pgfplots/ymin})
+  -- cycle;
+  \addplot [draw=blue!80!white] table [x={index},y={measurement}] \data;
+  %\addplot [draw=blue!80!white] table [header=false,col sep=comma] {structuralbreak.csv};
+  % Average
+  %\draw [draw=teal!95!white] (axis cs:0,5.56) -- (axis cs:65,5.56);
+\end{axis}
+\end{tikzpicture}
+\end{document}

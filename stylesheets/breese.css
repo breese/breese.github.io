@@ -99,10 +99,23 @@ hr {
     box-shadow: 7px 6px #ccc;
 }
 
-.imagetable {
+.normalimage {
     width: 55%;
     margin-top: 1rem;
     font-size: 1rem;
     align: center;
     text-align: center;
+}
+
+.marginimage {
+    width: 40%;
+    margin-top: 1rem;
+    font-size: 1rem;
+    align: center;
+    text-align: center;
+    float: right;
+}
+
+.eqnarray {
+    font-size: 90%;
 }

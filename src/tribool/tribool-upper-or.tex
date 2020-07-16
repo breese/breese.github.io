@@ -1,0 +1,63 @@
+\documentclass[border=10]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shadings,shadows,matrix}
+
+\begin{document}
+
+\tikzstyle{reverseclip}=[insert path={(current page.north east) --
+  (current page.south east) --
+  (current page.south west) --
+  (current page.north west) --
+  (current page.north east)}
+]
+
+\def\truecircle{(-1,0.75) circle (1.5cm)}
+\def\falsecircle{(1,0.75) circle (1.5cm)}
+\def\unknowncircle{(0,-0.75) circle (1.5cm)}
+\def\truecolor{green!20!white}
+\def\falsecolor{red!20!white}
+\def\unknowncolor{blue!20!white}
+
+% Compile twice
+\begin{tikzpicture}[remember picture]
+
+  \shade [very thin, ball color=\falsecolor, opacity=0.85] \falsecircle node {$F$};
+  \begin{scope}
+    \clip [reverseclip] \falsecircle;
+    \draw [circular drop shadow={shadow scale=1.05}] \falsecircle;
+  \end{scope}
+  \shade [very thin, ball color=\truecolor, opacity=0.85] \truecircle node {$T$};
+  \begin{scope}
+    \clip [reverseclip] \truecircle;
+    \draw [circular drop shadow={shadow scale=1.05}] \truecircle;
+  \end{scope}
+  \shade [very thin, ball color=\unknowncolor, opacity=0.85] \unknowncircle node {$U$};
+  \begin{scope}
+    \clip [reverseclip] \unknowncircle;
+    \draw [circular drop shadow={shadow scale=1.05}] \unknowncircle;
+  \end{scope}
+
+  \matrix
+  [
+    matrix of nodes,
+    row sep=3pt,
+    column sep=3pt,
+    cell/.style={
+      circle,
+      draw,
+      minimum width=2em,
+      minimum height=2ex,
+      align=center,
+      ball color=#1
+    }
+    ]
+    at (-6,0)
+    {
+      $\vee$ & $F$ & $T$ & $U$ \\
+      $F$ & \node [cell=\falsecolor] {F}; & \node [cell=\truecolor] {T}; & \node [cell=\unknowncolor] {U}; \\
+      $T$ & \node [cell=\truecolor] {T}; & \node [cell=\truecolor] {T}; & \node [cell=\unknowncolor] {U}; \\
+      $U$ & \node [cell=\unknowncolor] {U}; & \node [cell=\unknowncolor] {U}; & \node [cell=\unknowncolor] {U}; \\
+    };
+
+\end{tikzpicture}
+\end{document}

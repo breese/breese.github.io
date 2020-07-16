@@ -1,0 +1,19 @@
+\documentclass[border=10]{standalone}
+\usepackage{tikz-uml}
+% Workaround for tikz-uml stereotypes
+\renewcommand{\guillemotleft}{$\ll$}
+\renewcommand{\guillemotright}{$\gg$}
+
+\begin{document}
+
+\begin{tikzpicture}
+  \begin{umlpackage}{std}
+    \umlclass[name=std-code,x=2]{error\_code}{}{}
+    \umlclass[name=std-enum,x=5]{enum}{}{}
+    \umlclass[name=std-category,x=2,y=-3]{error\_category}{}{}
+    \umlcompo{std-code}{std-enum}
+    \umlaggreg[stereo=singleton,pos stereo=0.8]{std-code}{std-category}
+  \end{umlpackage}
+\end{tikzpicture}
+
+\end{document}

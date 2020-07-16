@@ -1,0 +1,20 @@
+# Octave
+data=[1:60;unifrnd(0,1,[1,30])+5 2*unifrnd(0,1,[1,30])+8]';
+plot(data(:,1),data(:,2))
+dlmwrite("structuralbreak.csv", data)
+
+CUSUM:
+avg=mean(input(1:30,2))
+cusum=[1:60; cumsum(input(:,2).-avg)']'
+dlmwrite("cusum.csv", cusum)
+
+#Statistical change:
+#avgs=[[1:60]', cumsum(input(:,2))./[1:60]']
+#dlmwrite("statisticalchange.csv", avgs)
+
+Statistical change with standard deviation:
+m=repmat(data(:,2)', 60, 1);
+for i = 1:60; mm(i)=mean(m(i,1:i)); endfor
+for i = 1:60; ms(i)=std(m(i,1:i)); endfor
+avgs=[[1:60]', mm', ms'];
+dlmwrite("statisticalchange.csv", avgs)

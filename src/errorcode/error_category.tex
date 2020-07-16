@@ -1,0 +1,23 @@
+\documentclass[border=10]{standalone}
+\usepackage{tikz-uml}
+% Workaround for tikz-uml stereotypes
+\renewcommand{\guillemotleft}{$\ll$}
+\renewcommand{\guillemotright}{$\gg$}
+
+\begin{document}
+
+\begin{tikzpicture}
+  \begin{umlpackage}{std}
+    \umlclass[x=2,y=3]{error\_category}{}{}
+    \umlclass[x=0,y=0]{system\_category}{}{}
+    \umlclass[x=4,y=0]{generic\_category}{}{}
+    \umlVHVinherit{system\_category}{error\_category}
+    \umlVHVinherit{generic\_category}{error\_category}
+  \end{umlpackage}
+  \begin{umlpackage}{my}
+  \umlclass[x=2,y=-3]{my\_category}{}{}
+  \umlinherit{my\_category}{error\_category}
+  \end{umlpackage}
+\end{tikzpicture}
+
+\end{document}

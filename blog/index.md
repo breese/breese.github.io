@@ -9,7 +9,7 @@ title: Under Development
 {% for post in site.posts %}
 <article>
   {% for tag in post.tags %}
-  <p><span class='marginnote'>_{{ tag | capitalize }}_</span></p>
+  <p><span class='marginnote'>{{ tag | capitalize }}</span></p>
   {% endfor %}
   <center class='postdate'>{{ post.date | date: "%d %B %Y" }}</center>
   <span class='postdateseparator'></span>

@@ -1,0 +1,23 @@
+\documentclass[border=10]{standalone}
+\usepackage{tikz-uml}
+% Workaround for tikz-uml stereotypes
+\renewcommand{\guillemotleft}{$\ll$}
+\renewcommand{\guillemotright}{$\gg$}
+
+\begin{document}
+
+\begin{tikzpicture}
+  \begin{umlpackage}{std}
+    \umlclass[name=std-code]{error\_code}{}{}
+    \umlclass[name=std-category,y=-2]{error\_category}{}{}
+  \end{umlpackage}
+  \begin{umlpackage}[y=-6]{custom}
+    \umlclass[name=custom-category]{some\_category}{}{}
+    \umlclass[name=custom-enum,x=3]{errc\_t}{}{}
+  \end{umlpackage}
+  \umlinherit{custom-category}{std-category}
+  \umlcompo[geometry=-|]{std-code}{custom-enum}
+  \umlaggreg[stereo=singleton,pos stereo=1.7,geometry=-|-,arm1=-2.5cm]{std-code}{custom-category}
+\end{tikzpicture}
+
+\end{document}

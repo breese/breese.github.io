@@ -1,0 +1,56 @@
+\documentclass[border=10]{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usetikzlibrary{plotmarks}
+
+\begin{document}
+
+\pgfplotstableset{header=true,col sep=comma}
+\pgfplotstableread{data.csv}{\data}
+
+\pgfplotsset{select between/.style 2 args={
+    x filter/.code={
+        \ifnum\coordindex<#1\def\pgfmathresult{}\fi
+        \ifnum\coordindex>#2\def\pgfmathresult{}\fi
+    }
+}}
+
+\begin{tikzpicture}[
+  scale=1.0,
+  every node/.append style={transform shape},
+  font=\small
+  ]
+\begin{axis}[
+  axis lines*=left,
+  grid=major,
+  xmin=1,
+  xmax=60,
+  ymin=0,
+  ymax=12,
+  xlabel={$T$},
+  ylabel={$X$},
+  every axis x label/.style={at={(current axis.right of origin)},anchor=west},
+  every axis y label/.style={at={(current axis.north west)},above=2mm},
+  xticklabels=\empty,
+  yticklabels=\empty,
+  enlargelimits=false
+  ]
+  % Measurements
+  \addplot [draw=none,fill=blue!40!white,fill opacity=0.4] table [x={index},y={measurement}] \data
+  -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},\pgfkeysvalueof{/pgfplots/ymin})
+  -- (axis cs:\pgfkeysvalueof{/pgfplots/xmin},\pgfkeysvalueof{/pgfplots/ymin})
+  -- cycle;
+  \addplot [draw=blue!80!white] table [x={index},y={measurement}] \data;
+
+  % Average
+  \addplot [draw=yellow!30!black,mark=triangle*,mark options={fill=yellow!75!black!80!white},mark repeat=5,mark phase=3] table[x={index},y={mean}]{\data};
+
+  % Threshold
+  \draw [dashed] (axis cs:\pgfkeysvalueof{/pgfplots/xmin},6.8) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},6.8) node [very near start,above,xshift=-1em] {$\Theta$};
+
+  % Change
+  \draw (axis cs:48,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:48,\pgfkeysvalueof{/pgfplots/ymax}) node [pos=0.925,left] {Change};
+\end{axis}
+\end{tikzpicture}
+\end{document}
