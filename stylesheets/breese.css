@@ -116,6 +116,15 @@ hr {
     float: right;
 }
 
+.margintext {
+    width: 40%;
+    margin-top: 1rem;
+    font-size: 1rem;
+    align: left;
+    text-align: left;
+    float: right;
+}
+
 .eqnarray {
     font-size: 90%;
 }
