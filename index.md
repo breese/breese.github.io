@@ -24,7 +24,7 @@ of smouldering red, orange and yellow.<br/></quote>
 {% for post in site.posts limit:10 %}
 <tr>
 <td><a href="{{ post.url }}">{{ post.title }}</a></td>
-<td>{{ post.date | date: "%Y-%M-%d" }}</td>
+<td>{{ post.date | date: "%Y-%m-%d" }}</td>
 </tr>
 {% endfor %}
 <tr>
