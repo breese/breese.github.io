@@ -125,6 +125,15 @@ hr {
     float: right;
 }
 
+span.marginnote {
+    width: 40%;
+    margin-top: 1rem;
+    font-size: 1rem;
+    align: left;
+    text-align: left;
+    float: right;
+}
+
 .eqnarray {
     font-size: 90%;
 }
