@@ -295,19 +295,19 @@ type-trait above to determine whether or not to do run-time checking of invalid 
 template <typename T>
 struct my_vector : public std::vector<T>
 {
-    // Expects: index < N
+    // Expects: position < size()
     template <typename Policy = void>
-    const_reference at(size_type pos) const
+    const_reference at(size_type position) const
     {
         if constexpr (is_checked_policy_v<Policy>)
 	{
             // Wide contract: requirements checked.
-            if (pos >= base::size())
+            if (position >= base::size())
 	    {
 	        throw std::range_error("index exceeds capacity");
 	    }
 	}
-        return base::operator[](pos);
+        return base::operator[](position);
     }
 };
 {% endhighlight %}
@@ -358,19 +358,19 @@ This technique also works for operators.
 template <typename T>
 struct my_vector : public std::vector<T>
 {
-    // Expects: index < N
+    // Expects: position < size()
     template <typename Policy = void>
-    const_reference operator[](size_type pos) const
+    const_reference operator[](size_type position) const
     {
         if constexpr (is_checked_policy_v<Policy>)
 	{
             // Wide contract: requirements checked.
-            if (pos >= base::size())
+            if (position >= base::size())
 	    {
 	        throw std::range_error("index exceeds capacity");
 	    }
 	}
-        return base::operator[](pos);
+        return base::operator[](position);
     }
 };
 {% endhighlight %}
