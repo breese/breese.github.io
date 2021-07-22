@@ -8,7 +8,7 @@ tags: logic, tribool
 
 * True
 * False
-* Unknown (or indeterminate)
+* Unknown or indeterminate
 
 The unknown state means that we have to device new truth tables for the various logic operators. As there are several different logics of indeterminacy we will end up with different sets of truth tables. This becomes important when we use three-valued logic in composite conditions.
 
