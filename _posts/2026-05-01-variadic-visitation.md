@@ -14,6 +14,7 @@ only works with compile-time indices, and for a good reason. Consider a function
 that returns the Nth element of a parameter pack
 
 {% highlight c++ %}
+template <size_t N>
 auto pack_at(integral_constant<size_t, N> index, auto... args)
 {
   return args...[N];
@@ -125,7 +126,7 @@ template <typename T>
 struct constructor
 {
   template <typename... Args>
-  constexpr T operator()(Args&&... args)
+  constexpr T operator()(Args&&... args) const
     noexcept(is_nothrow_constructible_v<T, Args...>)
   {
     return T(forward<Args>(args)...);
@@ -196,10 +197,13 @@ template <typename Visitor,
 	 R = common_type_t<invoke_result_t<Visitor>, Args>...>>
 constexpr R variadic_visit(Visitor&& v, size_t index, Args&&... args)
 {
+  using table_type = variadic_visit_table<R,
+                                          index_sequence_for<Args...>,
+                                          Visitor,
+                                          Args...>;
   // Immediately invoked function object
   return (index < sizeof...(Args))
-    ? variadic_visit_table<R, index_sequence_for<Args...>, Visitor, Args...>{}
-        (forward<Visitor>(v), index, forward<Args>(args)...)
+    ? table_type{}(forward<Visitor>(v), index, forward<Args>(args)...)
     : throw out_of_range{"variadic_visit"};
 }
 {% endhighlight %}
@@ -239,7 +243,7 @@ public:
 
   // Preconditions:
   // - index is within bounds.
-  constexpr R operator()(Visitor&& v, size_t index, Args&&... args)
+  constexpr R operator()(Visitor&& v, size_t index, Args&&... args) const
   {
       return table[index](forward<Visitor>(v), forward<Args>(args)...);
   }
@@ -250,7 +254,7 @@ The `pack_at` function is similar to that defined earlier, but needs to
 be back-ported from C++26 to earlier standards.
 
 {% highlight c++ %}
-template <typename... Args>
+template <size_t N, typename... Args>
 auto pack_at(integral_constant<size_t, N> index, Args&&... args)
 {
 #if __cpp_pack_indexing >= 202311L
