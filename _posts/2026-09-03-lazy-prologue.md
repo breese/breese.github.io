@@ -64,7 +64,7 @@ This uses a complicated syntax that only works for one type.
 <em>If the postfix-expression is the address of an overloaded set, overload
 resolution is applied</em>
 <br/>
--- C++ Standard N4950, section $[$over.match.call.general$]$
+-- C++ Standard N4950, section [over.match.call.general]
 </p>
 The underlying problem is that passing an overloaded function as argument
 causes overload resolution to kick in prematurely. We would like to defer
@@ -98,7 +98,7 @@ algorithmic template, the interface is specified to accept a function object.
 This not only makes algorithmic templates work with pointers to functions,
 but also enables them to work with arbitrary function objects.</em>
 <br/>
--- C++ Standard N4950, section $[$function.object.general$]$
+-- C++ Standard N4950, section [function.object.general]
 </p>
 `std::plus` works because it is a [function object](https://cppreference.net/cpp/named_req/FunctionObject.html),
 and `std::max` fails because it a function template.
