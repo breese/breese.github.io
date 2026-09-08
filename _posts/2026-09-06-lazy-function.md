@@ -242,9 +242,6 @@ Calling a lazy bind expression with lazy arguments results in a new bind
 expression where placeholders in the former have been substituted by the
 lazy arguments. This is called reseating.
 
-|![Reseat](/assets/lazy/reseat-ramp.png){: style="width:100%;"}|
-|Reseating|
-{: class="marginimage"}
 Assume that we have defined a lazy maximum function as described above.
 
 {% highlight c++ %}
@@ -254,17 +251,12 @@ auto ramp = via::max(0, 1_p);
 auto ramp = lazy::max(0, 1_p);
 
 // which becomes
-auto ramp = bind(via::max, 1_p, 2_p)(0, 1_p);
-
-// which becomes
-//   1_p is substituted with 0
-//   2_p is substituted with 1_p
 auto ramp = bind(via::max, 0, 1_p);
 {% endhighlight %}
 
 Notice how the lazy evaluation of `via::max` results in a bind expression that
 uses `via::max`.
-This enables further reseating.
+This enables reseating.
 
 |![Reseat ramp](/assets/lazy/reseat-diff.png){: style="width:100%;"}|
 |Extending at placeholder|
@@ -278,10 +270,11 @@ us a reseated bind expression.
 auto ramp_diff = ramp(1_p - 2_p);
 
 // becomes
-auto ramp_diff = bind(via::max, 1_p, 2_p)(0, bind(minus{}, 1_p, 2_p));
+auto ramp_diff = bind(via::max, 0, 1_p)(1_p - 2_p);
 
 // which becomes (via reseating)
-auto ramp_diff = bind(via::max, 0, bind(minus{}, 1_p, 2_p));
+//   1_p is substituted with 1_p - 2_p
+auto ramp_diff = bind(via::max, 0, 1_p - 2_p);
 {% endhighlight %}
 
 Reseating gives us the ability to construct new expressions by calling lazy bind
