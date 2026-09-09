@@ -295,8 +295,9 @@ show the overloaded assignment operator that returns a bind expression that can 
 template <int N>
 struct placeholder {
   template <typename T>
-  constexpr auto operator=(T&& t) const {
-    return std::bind(via::assign, placeholder<N>{}, forward<T>(t));
+  constexpr auto operator=(T&& t) const
+    -> decltype(std::bind(via::assign, *this, declval<T>())) {
+    return std::bind(via::assign, *this, forward<T>(t));
   }
 };
 {% endhighlight %}
