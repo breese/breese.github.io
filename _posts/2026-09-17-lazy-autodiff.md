@@ -34,7 +34,7 @@ are used in expressions, the real part calculates the expression and the imagina
 part calculates the derivative of the expression.
 
 Operations on dual numbers can be derived by expanding the equations and
-canceling terms with \(\epsilon^2\).
+canceling terms with $$\epsilon^2$$.
 The following shows the result of various operations without the intermediate
 derivations.
 
@@ -80,7 +80,7 @@ $$\begin{eqnarray*}
 
 If we do a [Taylor expansion](https://en.wikipedia.org/wiki/Taylor_series) of an analytic
 function `f` with a dual number all higher-order terms cancels out because they contain
-an \(\epsilon^2\) which leaves us with
+an $$\epsilon^2$$ which leaves us with
 
 <p class="eqnarray">
 $$\begin{eqnarray*}
@@ -202,7 +202,7 @@ In this case the tangent arguments are used to determine the
 [directional derivative](https://en.wikipedia.org/wiki/Directional_derivative).
 The [partial derivative](https://en.wikipedia.org/wiki/Partial_derivative)
 is a special case where the directional vector is a unit vector.
-Consider a simple equation that is differentiated with respect to \(x\).
+Consider a simple equation that is differentiated with respect to $$x$$.
 
 <p class="eqnarray">
 $$\begin{eqnarray*}
@@ -230,7 +230,7 @@ auto r = x * x + y;
 
 We have already seen that applying a dual number to an analytic function
 yields an imaginary part that uses the derivative of said function.
-Our framework must therefore contain the \(f \to f^\prime\) mapping.
+Our framework must therefore contain the $$f \to f^\prime$$ mapping.
 This is usually the bulk of automatic differentiation frameworks, but
 we will only demonstrate this with the sine function.
 
@@ -361,8 +361,8 @@ assert(dfdx(a, b) == 1 * a + a * 1 + 0); // == 2 * a
 
 The derived lazy bind expressions can become quite extensive.
 The partial derivative of the square operation above yielded
-`1_p * 2_p + 2_p * 1_p`, which is \(x \dot{x} + \dot{x} x\) rather than
-the reduced \(2 x \dot{x}\).
+`1_p * 2_p + 2_p * 1_p`, which is $$x \dot{x} + \dot{x} x$$ rather than
+the reduced $$2 x \dot{x}$$.
 So the bind expression contains more terms than strictly necessary.
 This becomes more apparent for the cube operation.
 
@@ -374,8 +374,8 @@ auto expr = x * x * x;
 //   expr.tangent() == (1_p * 1_p) * 2_p + (1_p * 2_p + 2_p * 1_p) * 1_p;
 {% endhighlight %}
 
-The tangent \((x x) \dot{x} + (x \dot{x} + \dot{x} x) x\) above can be reduced
-to \(3 x^2 \dot{x}\) that symbolic differentiation usually yields, but we cannot
+The tangent $$(x x) \dot{x} + (x \dot{x} + \dot{x} x) x$$ above can be reduced
+to $$3 x^2 \dot{x}$$ that symbolic differentiation usually yields, but we cannot
 reduce the bind expression.
 So the resulting bind expression is correct, but large, which increases the
 compilation time because the lazy bind expression is encoded by the type
@@ -430,7 +430,7 @@ auto f = dual::sin(x);
 auto f = dual::make_number(via::sin(1_p), 2_p * via::cos(1_p));
 {% endhighlight %}
 
-This also works for composed expressions such as \(\sin(x^2)\).
+This also works for composed expressions such as $$\sin(x^2)$$.
 
 {% highlight c++ %}
 auto f = via::sin(x * x);
@@ -446,7 +446,7 @@ auto f = dual::make_number(via::sin(1_p * 1_p),
                            (1_p * 2_p + 2_p * 1_p) * via::cos(1_p * 1_p));
 {% endhighlight %}
 
-The tangent reduces to \(\dot{x}\ 2 x \cos(x^2)\) as expected by the
+The tangent reduces to $$\dot{x}\ 2 x \cos(x^2)$$ as expected by the
 chain rule
 
 <p class="eqnarray">
